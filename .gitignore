@@ -1,0 +1,16 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Recruitment/bin/Debug/net8.0
+/Recruitment/obj
+/Recruitment.Common/bin/Debug/net8.0
+/Recruitment.Common/obj
+/Recruitment.IService/bin/Debug/net8.0
+/Recruitment.IService/obj
+/Recruitment.Model/bin/Debug/net8.0
+/Recruitment.Model/obj
+/Recruitment.Security/bin/Debug/net8.0
+/Recruitment.Security/obj
+/Recruitment.Services/bin/Debug/net8.0
+/Recruitment.Services/obj

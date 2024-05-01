@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Recruitment.Common\Recruitment.Common.csproj" />
+    <ProjectReference Include="..\Recruitment.IService\Recruitment.IService.csproj" />
+    <ProjectReference Include="..\Recruitment.Model\Recruitment.Model.csproj" />
+    <ProjectReference Include="..\Recruitment.Services\Recruitment.Services.csproj" />
+  </ItemGroup>
+
+</Project>

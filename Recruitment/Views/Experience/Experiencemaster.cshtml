@@ -1,0 +1,80 @@
+﻿@model List<Recruitment.Model.Service.ExperienceModel>
+
+<h2>Experience List</h2>
+
+<section class="basic-elements">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-outline-primary">
+                <div class="card-body collapse show">
+                    <div class="card-block card-dashboard">
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                @* <button type="button" class="btn btn-outline-primary btn-round mr-2" id="btnAddNew"> *@
+                                @*  <i class="fa fa-plus mr-1"></i>Add New @ViewData["Title"] *@
+                                <a href="@Url.Action("Experiencemaster", "Experience")" id="addExperienceBtn" data-bs-toggle="modal" data-bs-target="#addExperienceModal" class="btn btn-outline-primary btn-round mr-2">Add Experience</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table display nowrap table-striped table-bordered scroll-horizontal w-100 text-center nowrap dataTable no-footer" id="tbldata">
+                                    <thead>
+                                        <tr>
+                                            <th>Sr No.</th>
+                                            <th>Year</th>
+                                            <th>Is Active</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+@section Scripts {
+    <script src="@Href("~/js/Experience.js")"></script>
+    <!-- Modal -->
+    <div class="modal fade" id="addExperienceModal" tabindex="-1" aria-labelledby="addQualificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addExperienceModalLabel">@ViewData["Title"] Experience</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <form id="form">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="@Model[0].exp_id" />
+                        <div class="mb-3">
+                            <label for="experienceyear" class="form-label" asp-for="@Model[0].experienceyear">Experience</label>
+                            <input type="text" class="form-control" id="experienceyear" name="experienceyear" required>
+                            <span class="text-danger" id="experienceError"></span>
+                            <div class="col-md-4 mt-1">
+                                <div class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
+                                    <br />
+                                    <input type="checkbox" class="custom-control-input" asp-for="@Model[0].IsActive" />
+                                    <label class="custom-control-label float-left" asp-for="@Model[0].IsActive">Is Active</label>
+                                </div>
+                          </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                        <button type="button" class="btn grey btn-outline-secondary btn-round" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-outline-primary btn-round" id="btnMdlSave">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
