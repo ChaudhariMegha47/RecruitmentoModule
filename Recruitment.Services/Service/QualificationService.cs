@@ -26,14 +26,16 @@ namespace Recruitment.Services.Service
         #endregion
 
 
-        public JsonResponseModel AddOrUpdate(QualificationModel model )
+        public JsonResponseModel AddOrUpdate(QualificationModel model)
         {
             JsonResponseModel response = new JsonResponseModel();
             try
             {
                 Dictionary<string, object> dictionary = new Dictionary<string, object>();
-                dictionary.Add("Edu_id", model.edu_id);
+                dictionary.Add("id", model.edu_id);
                 dictionary.Add("Qualificationname", model.qualificationname);
+                dictionary.Add("IsActive", model.IsActive);
+              
 
                 // Assuming dapperConnection is your Dapper connection instance
                 //var data = dapperConnection.GetListResult("InsertOrUpdateEmployee",  CommandType.StoredProcedure, dictionary).ToList();
@@ -41,7 +43,7 @@ namespace Recruitment.Services.Service
 
                 if (model.edu_id == 0)
                 {
-                    response.strMessage = "Register successfully";
+                    response.strMessage = "Add successfully";
                 }
                 else
                 {
@@ -52,18 +54,20 @@ namespace Recruitment.Services.Service
                 response.result = data;
 
                 response.Success = true;
-                response.Message = "Qualification Name added/updated successfully.";
+                response.Message = "Qualification added/updated successfully.";
             }
             catch (Exception ex)
             {
-                ErrorLogger.Error("Error adding/updating Qualification Name.", ex.ToString(), "QualificationService", "AddOrUpdate");
+                ErrorLogger.Error("Error adding/updating employee.", ex.ToString(), "QualificationService", "AddOrUpdate");
                 response.Success = false;
-                response.Message = "An error occurred while adding/updating Qualification Name.";
+                response.Message = "An error occurred while adding/updating employee.";
             }
             return response;
+
         }
 
-       
+
+
 
         public JsonResponseModel Delete(long Edu_id)
         {

@@ -7,4 +7,19 @@
         warning,
         info
     }
+
+    public enum ControlInputType
+    {
+        none,
+        text,
+        number,
+        email,
+        password,
+        mobileno,
+        pincode,
+        dropdown,
+        decimalno
+    }
+
 }
+

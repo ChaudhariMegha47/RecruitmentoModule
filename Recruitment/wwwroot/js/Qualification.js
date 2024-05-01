@@ -2,41 +2,65 @@
 $(document).ready(function () {
     BindGrid();
     $('#btnMdlSave').click(function () {
-
+        //console.log("into this");
+        debugger;
         // Validation
-        var Qualification = $('#qualificationname').val();
+        var QuaName = $('#QuaName').val();
+        // Reset previous errors
+        $('.text-danger').text('');
 
         // Custom validations
-        if (!Qualification) {
-            $('#qualificationError').text('Please enter Qualification.');
+        if (!QuaName) {
+            $('#qualificationError').text('Please enter First Name.');
             return;
         }
+        var isActive = $('#IsActive').is(':checked');
 
-        var formdata = new FormData($('#form')[0]); // Create FormData object from the form
+        var formdata = new FormData($('#form')[0]);
 
-        // Send AJAX request to add qualification
+        //$.ajax({
+
+        //    type: "POST",
+        //    url: "/Qualification/SaveQualificationData",
+        //    contentType: false,
+        //    data: formdata,
+        //    dataType: "json",
+        //    success: function (res) {
+        //        $("#LanguageId").empty();
+        //        $.each(res, function (data, value) {
+        //            $("#LanguageId").append($("<option></option>").val(value.value).html(value.text));
+        //        });
+        //        HideLoader();
+        //    }
+
+        //});
+
         $.ajax({
             type: "POST",
-            url: "/Qualification/AddOrUpdate",
+            url: "/Qualification/SaveQualificationData",
             data: formdata,
-            dataType: 'json',
             processData: false,
             contentType: false,
-            success: function (result) {
-                if (result != null && result != undefined) {
-                    alert(result.Message); // Assuming 'Message' is the property that holds the success message
-                    $('#addQualificationModal').modal('hide');
-                    ClearForm(); // Assuming this function clears the form
-                    // Reload the page to update the qualification list
-                    BindGrid(); // Assuming 'BindGrid()' function reloads the table data
-                } else {
-                    alert("Record not saved, Try again");
+            dataType: 'json',
+            success: function (data) {
+                if (data != null && data != undefined) {
+                    ShowMessage(data.strMessage, "", data.type);
+                    BindGrid();
+                    $('#addQualificationModal').modal('show');
+                    if (typeof data.isError != 'undefined' && data.isError == false) {
+                        $('#addQualificationModal').modal('hide');
+                        ClearForm();
+                    }
+                }
+                else {
+                    ShowMessage("Record not saved, Try again", "", "error");
                 }
             },
             error: function (ex) {
-                alert("Something went wrong, Try again!");
+                ShowMessage("Something went wrong, Try again!", "", "error");
             }
         });
+
     });
 });
 
@@ -177,8 +201,8 @@ function BindGrid() {
             {
                 data: null,
                 render: function (data, type, row) {
-                    var strEdit = "<a class=\"btn mb-0 btn-outline-success btnedit\" title=\"Edit\" onclick=\"EditModel('" + row.id + "','" + 1 + "');\" ><i class=\"fas fa-pencil-alt\"></i></a>&nbsp;";
-                    var strRemove = "<a class=\"btn mb-0 btn-outline-danger btndelete\" title=\"Delete\" onclick=\"DeleteData('" + row.id + "', '" + row.title + "');\"><i class=\"fas fa-trash-alt\"></i></a>";
+                    var strEdit = "<a class=\"btn mb-0 btn-outline-success btnedit\" title=\"Edit\" onclick=\"EditModel('" + row.id + "','" + 1 + "');\" ><i class=\"fas fa-pencil-alt\"></i>Edit</a>&nbsp;";
+                    var strRemove = "<a class=\"btn mb-0 btn-outline-danger btndelete\" title=\"Delete\" onclick=\"DeleteData('" + row.id + "', '" + row.title + "');\"><i class=\"fas fa-trash-alt\"></i>Delete</a>";
                     var strMain = strEdit + strRemove;
                     return strMain;
                 }, autoWidth: true
@@ -187,3 +211,11 @@ function BindGrid() {
 
     });
 }
+
+
+
+
+
+
+
+

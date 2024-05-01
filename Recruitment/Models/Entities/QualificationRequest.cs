@@ -2,7 +2,8 @@
 {
     public class QualificationRequest
     {
-        public int? EduId { get; set; }
+        public long EduId { get; set; }
         public string QuaName { get; set; }
+        public bool IsActive { get; set; } = true;
     }
 }

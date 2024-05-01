@@ -6,7 +6,9 @@ using Recruitment.Model.System;
 using Recruitment.Models.Entities;
 using Recruitment.Services.Service;
 using System;
+using System.Net.Http;
 using System.Web;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Recruitment.Controllers
 {
@@ -52,7 +54,90 @@ namespace Recruitment.Controllers
             return objreturn;
         }
 
-        
+
+      [HttpPost]
+[Route("/Qualification/SaveQualificationData")]
+public JsonResult SaveQualificationData([FromForm] QualificationRequest formmodel)
+{
+    JsonResponseModel objreturn = new JsonResponseModel();
+    try
+    {
+        if (ValidQualificationData(formmodel, ref objreturn))
+        {
+            if (ModelState.IsValid)
+            {
+                QualificationModel QualificationModel = new QualificationModel();
+                QualificationModel.qualificationname = formmodel.QuaName;
+                QualificationModel.IsActive = formmodel.IsActive;
+                objreturn = qualificationservice.AddOrUpdate(QualificationModel);
+            }
+            else
+            {
+                objreturn.strMessage = "Form Input is not valid";
+                objreturn.isError = true;
+                objreturn.type = PopupMessageType.error.ToString();
+            }
+        }
+        else
+        {
+            objreturn.strMessage = objreturn.strMessage;
+            objreturn.isError = true;
+            objreturn.type = PopupMessageType.error.ToString();
+        }
+    }
+    catch (Exception ex)
+    {
+        ErrorLogger.Error(ex.Message, ex.ToString(), ControllerContext.ActionDescriptor.ControllerName, ControllerContext.ActionDescriptor.ActionName,ControllerContext.HttpContext.Request.Method);
+        objreturn.strMessage = "Record not saved, Try again";
+        objreturn.isError = true;
+        objreturn.type = PopupMessageType.error.ToString();
+    }
+    return Json(objreturn);
+}
+
+        public bool ValidQualificationData(QualificationRequest formmodel, ref JsonResponseModel objreturn)
+        {
+            bool allow = false;
+            try
+            {
+                if (!ValidControlValue(formmodel.QuaName, ControlInputType.none))
+                {
+                    if (ValidLength(formmodel.QuaName))
+                    {
+                        objreturn.strMessage = "Enter valid Qualification name!";
+                    }
+                    else
+                    {
+                        objreturn.strMessage = "Enter banner name!";
+                    }
+                }
+                else
+                {
+                    allow = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLogger.Error(ex.Message, ex.ToString(), ControllerContext.ActionDescriptor.ControllerName, ControllerContext.ActionDescriptor.ActionName, ControllerContext.HttpContext.Request.Method);
+                objreturn.strMessage = "Record not saved, Try again";
+                objreturn.isError = true;
+                objreturn.type = PopupMessageType.error.ToString();
+            }
+            return allow;
+        }
+
+        public bool ValidControlValue(dynamic controlValue, ControlInputType type = ControlInputType.none)
+        {
+            return ValidControlValue(controlValue, type);
+        }
+
+        public bool ValidLength(dynamic controlValue)
+        {
+            return ValidLength(controlValue);
+        }
+
+
+
         [HttpPost]
         [Route("/Qualification/DeleteQualificationData")]
         public JsonResponseModel DeleteQualificationData(long QuaId)
@@ -142,3 +227,6 @@ namespace Recruitment.Controllers
         }
     }
 }
+
+
+
