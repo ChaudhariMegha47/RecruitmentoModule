@@ -1,4 +1,4 @@
-﻿using Employee.Common;
+﻿using Recruitment.Common;
 using Microsoft.AspNetCore.Mvc;
 using Recruitment.IService.Serivce;
 using Recruitment.Model.Service;
@@ -21,23 +21,27 @@ namespace Recruitment.Controllers
             this.qualificationservice = qualificationservice;
         }
 
-      
+
         [HttpPost]
         [Route("/Qualification/GetQualificationDetails")]
-        public JsonResponseModel GetQualificationDetails(long QuaId)
+        public JsonResponseModel GetQualificationDetails(long eduid)
         {
             JsonResponseModel objreturn = new JsonResponseModel();
             try
             {
-                //id = HttpUtility.UrlDecode(id).Replace('+', '-');
-                //langId = HttpUtility.UrlDecode(langId).Replace('+', '-');
-
-                var qualification = qualificationservice.Get(QuaId);
+                var qualification = qualificationservice.Get(eduid);
                 if (qualification != null)
                 {
+                    // Populate QualificationRequest object
+                    QualificationRequest qua = new QualificationRequest();
+                    qua.EduId = qualification.edu_id;
+                    qua.QuaName = qualification.qualificationname;
+                    qua.IsActive = qualification.IsActive;
+
+                    // Populate JsonResponseModel
                     objreturn.strMessage = "";
                     objreturn.isError = false;
-                    objreturn.result = qualificationservice.Get(QuaId);
+                    objreturn.result = qua;
                 }
                 else
                 {
@@ -45,97 +49,45 @@ namespace Recruitment.Controllers
                     objreturn.isError = true;
                     objreturn.type = PopupMessageType.error.ToString();
                 }
-
             }
             catch (Exception ex)
             {
+                // Handle exception
                 ErrorLogger.Error(ex.Message, ex.ToString(), ControllerContext.ActionDescriptor.ControllerName, ControllerContext.ActionDescriptor.ActionName, ControllerContext.HttpContext.Request.Method);
+                objreturn.strMessage = "An error occurred.";
+                objreturn.isError = true;
+                objreturn.type = PopupMessageType.error.ToString();
             }
             return objreturn;
         }
 
 
-      [HttpPost]
-[Route("/Qualification/SaveQualificationData")]
-public JsonResult SaveQualificationData([FromForm] QualificationRequest formmodel)
-{
-    JsonResponseModel objreturn = new JsonResponseModel();
-    try
-    {
-        if (ValidQualificationData(formmodel, ref objreturn))
+        [HttpPost]
+        [Route("/Qualification/SaveQualificationData")]
+        public JsonResponseModel SaveQualificationData(QualificationRequest qualificationModel)
         {
-            if (ModelState.IsValid)
-            {
-                QualificationModel QualificationModel = new QualificationModel();
-                QualificationModel.qualificationname = formmodel.QuaName;
-                QualificationModel.IsActive = formmodel.IsActive;
-                objreturn = qualificationservice.AddOrUpdate(QualificationModel);
-            }
-            else
-            {
-                objreturn.strMessage = "Form Input is not valid";
-                objreturn.isError = true;
-                objreturn.type = PopupMessageType.error.ToString();
-            }
-        }
-        else
-        {
-            objreturn.strMessage = objreturn.strMessage;
-            objreturn.isError = true;
-            objreturn.type = PopupMessageType.error.ToString();
-        }
-    }
-    catch (Exception ex)
-    {
-        ErrorLogger.Error(ex.Message, ex.ToString(), ControllerContext.ActionDescriptor.ControllerName, ControllerContext.ActionDescriptor.ActionName,ControllerContext.HttpContext.Request.Method);
-        objreturn.strMessage = "Record not saved, Try again";
-        objreturn.isError = true;
-        objreturn.type = PopupMessageType.error.ToString();
-    }
-    return Json(objreturn);
-}
-
-        public bool ValidQualificationData(QualificationRequest formmodel, ref JsonResponseModel objreturn)
-        {
-            bool allow = false;
+            JsonResponseModel obj = new JsonResponseModel();
             try
             {
-                if (!ValidControlValue(formmodel.QuaName, ControlInputType.none))
-                {
-                    if (ValidLength(formmodel.QuaName))
-                    {
-                        objreturn.strMessage = "Enter valid Qualification name!";
-                    }
-                    else
-                    {
-                        objreturn.strMessage = "Enter banner name!";
-                    }
-                }
-                else
-                {
-                    allow = true;
-                }
+                QualificationModel model = new QualificationModel();
+                // model.edu_id = qualificationModel.EduId;
+                model.qualificationname = qualificationModel.QuaName;
+                model.IsActive = qualificationModel.IsActive;
+
+                // Call the service method to add or update the employee
+                var result = qualificationservice.AddOrUpdate(model);
+                obj.result = result.result;
+                obj.Message = "Record saved successfully";
             }
             catch (Exception ex)
             {
-                ErrorLogger.Error(ex.Message, ex.ToString(), ControllerContext.ActionDescriptor.ControllerName, ControllerContext.ActionDescriptor.ActionName, ControllerContext.HttpContext.Request.Method);
-                objreturn.strMessage = "Record not saved, Try again";
-                objreturn.isError = true;
-                objreturn.type = PopupMessageType.error.ToString();
+                // Handle error
+                obj.result = false;
+                obj.Message = "An error occurred: " + ex.Message;
             }
-            return allow;
-        }
 
-        public bool ValidControlValue(dynamic controlValue, ControlInputType type = ControlInputType.none)
-        {
-            return ValidControlValue(controlValue, type);
+            return obj;
         }
-
-        public bool ValidLength(dynamic controlValue)
-        {
-            return ValidLength(controlValue);
-        }
-
 
 
         [HttpPost]
@@ -199,7 +151,7 @@ public JsonResult SaveQualificationData([FromForm] QualificationRequest formmode
                 obj.result = result.result;
                 obj.Message = "Record saved successfully";
             }
-           catch (Exception ex)
+            catch (Exception ex)
             {
                 // Handle error
                 obj.result = false;

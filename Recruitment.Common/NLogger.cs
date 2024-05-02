@@ -1,7 +1,7 @@
 ﻿using NLog;
 
 
-namespace Employee.Common
+namespace Recruitment.Common
 {
     public enum LogErrorFIle
     {

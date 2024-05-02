@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using Employee.Common;
+using Recruitment.Common;
 using Recruitment.IService.Serivce;
 using Recruitment.Services.Service;
 

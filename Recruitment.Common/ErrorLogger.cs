@@ -1,4 +1,4 @@
-﻿namespace Employee.Common
+﻿namespace Recruitment.Common
 {
     public class ErrorLogger
     {

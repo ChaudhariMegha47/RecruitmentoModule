@@ -13,7 +13,7 @@
                             <div class="col-md-12 text-right">
                                     @* <button type="button" class="btn btn-outline-primary btn-round mr-2" id="btnAddNew"> *@
                                        @*  <i class="fa fa-plus mr-1"></i>Add New @ViewData["Title"] *@
-                                    <a href="@Url.Action("Qualificationmaster", "Qualification")" id="addQualificationBtn" data-bs-toggle="modal" data-bs-target="#addQualificationModal" class="btn btn-outline-primary btn-round mr-2" style="float:right">Add Qualification</a>
+                                    <a id="addQualificationBtn" data-bs-toggle="modal" class="btn btn-outline-primary btn-round mr-2" style="float:right">Add Qualification</a>
                                    
                             </div>
                         </div></br>
@@ -62,8 +62,8 @@
                         @Html.AntiForgeryToken()
                         <input type="hidden" asp-for="EduId" />
                         <div class="mb-3">
-                            <label for="QuaName" class="form-label" asp-for="QuaName">Qualification Name:</label>
-                            <input type="text" class="form-control" id="QuaName" name="qualificationName" required>
+                            <label class="form-label" asp-for="QuaName">Qualification Name:</label>
+                            <input type="text" class="form-control" id="QuaName" name="QuaName" required>
                             <span class="text-danger" id="qualificationError"></span>
                             <div class="col-md-4 mt-1">
                                 <div class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">

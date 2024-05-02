@@ -1,9 +1,13 @@
 ﻿
 $(document).ready(function () {
     BindGrid();
+
+    $('#addQualificationBtn').click(function () {
+        $('#addQualificationModal').modal('show');
+    });
     $('#btnMdlSave').click(function () {
         //console.log("into this");
-        debugger;
+        
         // Validation
         var QuaName = $('#QuaName').val();
         // Reset previous errors
@@ -14,7 +18,6 @@ $(document).ready(function () {
             $('#qualificationError').text('Please enter First Name.');
             return;
         }
-        var isActive = $('#IsActive').is(':checked');
 
         var formdata = new FormData($('#form')[0]);
 
@@ -44,20 +47,19 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 if (data != null && data != undefined) {
-                    ShowMessage(data.strMessage, "", data.type);
+                    debugger;
+                    //ShowMessage(data.strMessage, "", data.type);
                     BindGrid();
-                    $('#addQualificationModal').modal('show');
-                    if (typeof data.isError != 'undefined' && data.isError == false) {
-                        $('#addQualificationModal').modal('hide');
-                        ClearForm();
-                    }
+                    $('#addQualificationModal').modal('hide');
+                    alert(data.message);
+                    $('#form')[0].reset();
                 }
                 else {
-                    ShowMessage("Record not saved, Try again", "", "error");
+                    alert("Record not saved, Try again", "", "error");
                 }
             },
             error: function (ex) {
-                ShowMessage("Something went wrong, Try again!", "", "error");
+                alert("Something went wrong, Try again!", "", "error");
             }
         });
 
@@ -65,74 +67,53 @@ $(document).ready(function () {
 });
 
 
-
 function EditModel(eduid) {
-    ShowLoader();
-
-    // Prepare form data
-    var formdata = new FormData($('#form')[0]);
-    var token = $('input[name="AntiforgeryFieldname"]').val();
-
-    // Make AJAX request to get qualification details
+    debugger;
     $.ajax({
-        type: "post",
-        contentType: false,
-        url: ResolveUrl("/Qualification/GetQualificationDetails"),
-        data: { QuaId: eduid }, // Pass QuaId to the server
+        type: "POST",
+        url: "/Qualification/GetQualificationDetails",
+        data: { eduid: eduid },
         success: function (data) {
-            $('#addQualificationModal').modal('show');
-
             if (data.isError) {
-                ShowMessage(data.strMessage, "", "error");
-                HideLoader();
+                alert(data.strMessage);
             } else {
                 var qualification = data.result;
 
-                // Loop through qualification data and populate form fields
+                // Populate form fields
                 Object.keys(qualification).forEach(function (key) {
-                    var field = $('#' + key);
+                    var value = qualification[key];
 
-                    if (field.length > 0) {
-                        if (key === "description") {
-                            CKEDITOR.instances['Description'].setData(qualification[key]);
+                    // Check if the key exists as an ID in the form
+                    var element = $('#' + key);
+                    if (element.length) {
+                        if (key === "IsActive") {
+                            // Handle checkbox for IsActive
+                            element.prop('checked', value);
                         } else {
-                            field.val(qualification[key]);
+                            element.val(value);
                         }
                     }
                 });
             }
+            $('#addQualificationModal').modal('show');
         },
         error: function (ex) {
-            ShowMessage("Something went wrong, Try again!", "", "error");
-            HideLoader();
+            ShowMessage("Something went wrong. Please try again.", "", "error");
         }
     });
 }
 
 
-// Handle delete button click
-$('.delete-btn').click(function () {
-    var qualificationId = $(this).data('qualification-id');
-    var row = $(this).closest('tr');
 
-    // Confirm deletion with user
-    if (confirm('Are you sure you want to delete this Qualification Name?')) {
-        // Send AJAX request to delete employee
-        $.ajax({
-            type: "POST",
-            url: ResolveUrl("/Qualification/DeleteQualificationData"),
-            data: { qualificationId: qualificationId },
-            success: function (result) {
-                // Remove the corresponding row from the table upon successful deletion
-                row.remove();
-                alert('Department deleted successfully.');
-            },
-            error: function () {
-                alert("An error occurred while deleting the Qualification.");
-            }
-        });
-    }
-});
+function DeleteData(row, rowname = '') {
+    debugger;
+    var form = $('#form');
+   // var token = $('input[name="AntiforgeryFieldname"]', form).val();
+
+    confirmDelete("Do you want to delete " + rowname, "/Qualification/DeleteQualificationData", row, "POST");
+
+    BindGrid();
+}
 
 function BindGrid() {
     debugger;
@@ -175,6 +156,7 @@ function BindGrid() {
                 // Settings.
                 var jsonObj = json.data;
                 // Data
+                console.log(jsonObj);
                 return jsonObj;
             }
         },
@@ -201,8 +183,8 @@ function BindGrid() {
             {
                 data: null,
                 render: function (data, type, row) {
-                    var strEdit = "<a class=\"btn mb-0 btn-outline-success btnedit\" title=\"Edit\" onclick=\"EditModel('" + row.id + "','" + 1 + "');\" ><i class=\"fas fa-pencil-alt\"></i>Edit</a>&nbsp;";
-                    var strRemove = "<a class=\"btn mb-0 btn-outline-danger btndelete\" title=\"Delete\" onclick=\"DeleteData('" + row.id + "', '" + row.title + "');\"><i class=\"fas fa-trash-alt\"></i>Delete</a>";
+                    var strEdit = "<button class=\"btn mb-0 btn-outline-success btnedit\" title=\"Edit\" onclick=\"EditModel('" + row.edu_id + "');\" ><i class=\"fas fa-pencil-alt\"></i>Edit</button>&nbsp;";
+                    var strRemove = "<button class=\"btn mb-0 btn-outline-danger btndelete\" title=\"Delete\" onclick=\"DeleteData('" + row.edu_id + "');\"><i class=\"fas fa-trash-alt\"></i>Delete</button>";
                     var strMain = strEdit + strRemove;
                     return strMain;
                 }, autoWidth: true

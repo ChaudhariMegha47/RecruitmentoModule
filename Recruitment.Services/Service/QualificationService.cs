@@ -1,14 +1,8 @@
-﻿using Employee.Common;
+﻿using Recruitment.Common;
 using Recruitment.IService.Serivce;
 using Recruitment.Model.Service;
 using Recruitment.Model.System;
-using Recruitment.Services.Service;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Recruitment.Services.Service
 {
@@ -63,7 +57,6 @@ namespace Recruitment.Services.Service
                 response.Message = "An error occurred while adding/updating employee.";
             }
             return response;
-
         }
 
 

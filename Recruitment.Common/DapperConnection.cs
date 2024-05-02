@@ -2,13 +2,13 @@
 using MySql.Data.MySqlClient;
 using System.Data;
 
-namespace Employee.Common
+namespace Recruitment.Common
 {
     public class DapperConnection
     {
         public static string? connectionString;
         public static bool isDevlopment;
-        public readonly object Employees;
+        public readonly object Recruitment;
 
         public static bool ValidateConnection()
         {

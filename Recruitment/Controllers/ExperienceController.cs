@@ -1,4 +1,4 @@
-﻿using Employee.Common;
+﻿using Recruitment.Common;
 using Microsoft.AspNetCore.Mvc;
 using Recruitment.IService.Serivce;
 using Recruitment.Model.Service;
