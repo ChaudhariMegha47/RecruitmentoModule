@@ -21,23 +21,6 @@ $(document).ready(function () {
 
         var formdata = new FormData($('#form')[0]);
 
-        //$.ajax({
-
-        //    type: "POST",
-        //    url: "/Qualification/SaveQualificationData",
-        //    contentType: false,
-        //    data: formdata,
-        //    dataType: "json",
-        //    success: function (res) {
-        //        $("#LanguageId").empty();
-        //        $.each(res, function (data, value) {
-        //            $("#LanguageId").append($("<option></option>").val(value.value).html(value.text));
-        //        });
-        //        HideLoader();
-        //    }
-
-        //});
-
         $.ajax({
             type: "POST",
             url: "/Qualification/SaveQualificationData",
@@ -47,7 +30,7 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (data) {
                 if (data != null && data != undefined) {
-                    debugger;
+                   
                     //ShowMessage(data.strMessage, "", data.type);
                     BindGrid();
                     $('#addQualificationModal').modal('hide');
@@ -82,14 +65,18 @@ function EditModel(eduid) {
                 // Populate form fields
                 Object.keys(qualification).forEach(function (key) {
                     var value = qualification[key];
-
                     // Check if the key exists as an ID in the form
                     var element = $('#' + key);
-                    if (element.length) {
-                        if (key === "IsActive") {
+           
+                    if (element.length > 0) { // Check if element exists
+                        if (key === "isActive") {
                             // Handle checkbox for IsActive
                             element.prop('checked', value);
+                        } else if (key === "quaName") {
+                            // Assuming 'quaName' is an input field, use .val() to set its value
+                            element.val(value);
                         } else {
+                            // Assuming other fields are text fields, use .val() to set their values
                             element.val(value);
                         }
                     }
@@ -105,18 +92,34 @@ function EditModel(eduid) {
 
 
 
-function DeleteData(row, rowname = '') {
+
+
+function DeleteData(eduid) {
     debugger;
-    var form = $('#form');
+    //var form = $('#form');
    // var token = $('input[name="AntiforgeryFieldname"]', form).val();
 
-    confirmDelete("Do you want to delete " + rowname, "/Qualification/DeleteQualificationData", row, "POST");
+    alert("Do you want to delete ?");
+    $.ajax({
+        type: "POST",
+        url: "/Qualification/DeleteQualificationData",
+        data: { eduid: eduid },
+        success: function (result) {
+            // Remove the corresponding row from the table upon successful deletion
+            eduid.remove();
+            alert('Employee deleted successfully.');
+        },
+        error: function () {
+            alert("An error occurred while deleting the employee.");
+        }
+    });
+
 
     BindGrid();
 }
 
 function BindGrid() {
-    debugger;
+  
     if ($.fn.DataTable.isDataTable("#tbldata")) {
         $('#tbldata').DataTable().clear().destroy();
     }
@@ -144,7 +147,7 @@ function BindGrid() {
         },
         "ajax": {
             "url": "/Qualification/GetQualificationData",
-            "contentType": "application/x-www-form-urlencoded",
+            "contentType": false,
             "type": "POST",
             'data': {
                 "AntiforgeryFieldname": token

@@ -92,23 +92,22 @@ namespace Recruitment.Controllers
 
         [HttpPost]
         [Route("/Qualification/DeleteQualificationData")]
-        public JsonResponseModel DeleteQualificationData(long QuaId)
+        public JsonResponseModel DeleteQualificationData(long eduid)
         {
             JsonResponseModel objreturn = new JsonResponseModel();
             try
             {
                 var qualificationservice = new QualificationService(); // Instantiate your service or repository class
-                objreturn = qualificationservice.Delete(QuaId);
+                objreturn = qualificationservice.Delete(eduid);
             }
             catch (Exception ex)
             {
-                ErrorLogger.Error(ex.Message, ex.ToString(), ControllerContext.ActionDescriptor.ControllerName, ControllerContext.ActionDescriptor.ActionName, ControllerContext.HttpContext.Request.Method);
-                objreturn.strMessage = "Record not deleted, Try again";
-                objreturn.isError = true;
-                objreturn.type = PopupMessageType.error.ToString();
+                // Handle error
+                return objreturn;
             }
             return objreturn;
         }
+
 
         [HttpGet]
         public IActionResult QualificationMaster()
@@ -159,23 +158,6 @@ namespace Recruitment.Controllers
             }
 
             return obj;
-        }
-
-        [HttpPost]
-        public JsonResponseModel QuaDelete(long qualificationId)
-        {
-            JsonResponseModel objreturn = new JsonResponseModel();
-            try
-            {
-                var qualificationservice = new QualificationService(); // Instantiate your service or repository class
-                objreturn = qualificationservice.Delete(qualificationId); // Assuming you have a method to delete employee data
-            }
-            catch (Exception ex)
-            {
-                // Handle error
-                return objreturn;
-            }
-            return objreturn;
         }
     }
 }

@@ -69,6 +69,7 @@ namespace Recruitment.Services.Service
             {
 
 
+
                 Dictionary<string, object> dictionary = new Dictionary<string, object>();
                 dictionary.Add("Edu_id", Edu_id);
 
@@ -76,7 +77,7 @@ namespace Recruitment.Services.Service
                 dapperConnection.GetListResult<int>("RemoveQualification", CommandType.StoredProcedure, dictionary);
                 response.Success = true;
                 response.isError = false;
-                response.Message = "Qualification Name deleted successfully.";
+                response.Message = "Qualification deleted successfully.";
             }
             catch (Exception ex)
             {
