@@ -67,14 +67,11 @@ namespace Recruitment.Services.Service
             JsonResponseModel response = new JsonResponseModel();
             try
             {
-
-
-
                 Dictionary<string, object> dictionary = new Dictionary<string, object>();
-                dictionary.Add("Edu_id", Edu_id);
+                dictionary.Add("id", Edu_id);
 
                 // Your logic for deleting employee here
-                dapperConnection.GetListResult<int>("RemoveQualification", CommandType.StoredProcedure, dictionary);
+                dapperConnection.GetListResult<long>("RemoveQualification", CommandType.StoredProcedure, dictionary);
                 response.Success = true;
                 response.isError = false;
                 response.Message = "Qualification deleted successfully.";

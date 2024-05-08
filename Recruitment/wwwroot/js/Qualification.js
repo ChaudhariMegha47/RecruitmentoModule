@@ -49,38 +49,56 @@ $(document).ready(function () {
     });
 });
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 function EditModel(eduid) {
-    debugger;
+  
     $.ajax({
         type: "POST",
         url: "/Qualification/GetQualificationDetails",
         data: { eduid: eduid },
         success: function (data) {
+            debugger;
             if (data.isError) {
                 alert(data.strMessage);
             } else {
-                var qualification = data.result;
+                var dataList = data.result;
 
-                // Populate form fields
-                Object.keys(qualification).forEach(function (key) {
-                    var value = qualification[key];
-                    // Check if the key exists as an ID in the form
-                    var element = $('#' + key);
-           
-                    if (element.length > 0) { // Check if element exists
-                        if (key === "isActive") {
-                            // Handle checkbox for IsActive
-                            element.prop('checked', value);
-                        } else if (key === "quaName") {
-                            // Assuming 'quaName' is an input field, use .val() to set its value
-                            element.val(value);
-                        } else {
-                            // Assuming other fields are text fields, use .val() to set their values
-                            element.val(value);
+                Object.keys(dataList).forEach(function (key) {
+
+                    if ($('#' + capitalizeFirstLetter(key)) != null && $('#' + key) != undefined) {
+                        if (key.includes("is")) {
+                            $('#' + capitalizeFirstLetter(key)).prop('checked', dataList[key]);
+                        }
+                        else {
+                            $('#' + capitalizeFirstLetter(key)).val(dataList[key]);
                         }
                     }
+
                 });
+
+                // Populate form fields
+                //Object.keys(qualification).forEach(function (key) {
+                //    var value = qualification[key];
+                //    // Check if the key exists as an ID in the form
+                //    var element = $('#' + key);
+           
+                //    if (element.length > 0) { // Check if element exists
+                //        if (key === "isActive") {
+                //            // Handle checkbox for IsActive
+                //            element.prop('checked', value);
+                //        } else if (key === "quaName") {
+                //            $('#QuaName').val(dataList[key]);
+                //            // Assuming 'quaName' is an input field, use .val() to set its value
+                //            //element.val(value);
+                //        } else {
+                //            // Assuming other fields are text fields, use .val() to set their values
+                //            element.val(value);
+                //        }
+                //    }
+                //});
             }
             $('#addQualificationModal').modal('show');
         },
@@ -91,31 +109,23 @@ function EditModel(eduid) {
 }
 
 
-
-
-
 function DeleteData(eduid) {
     debugger;
-    //var form = $('#form');
-   // var token = $('input[name="AntiforgeryFieldname"]', form).val();
-
-    alert("Do you want to delete ?");
-    $.ajax({
-        type: "POST",
-        url: "/Qualification/DeleteQualificationData",
-        data: { eduid: eduid },
-        success: function (result) {
-            // Remove the corresponding row from the table upon successful deletion
-            eduid.remove();
-            alert('Employee deleted successfully.');
-        },
-        error: function () {
-            alert("An error occurred while deleting the employee.");
-        }
-    });
-
-
-    BindGrid();
+    if (confirm('Are you sure you want to delete this?')) { 
+         $.ajax({
+             type: "POST",
+             url: "/Qualification/DeleteQualificationData",
+             data: { eduid: eduid },
+            success: function (result) {
+                BindGrid();
+                alert('Employee deleted successfully.');
+            },
+            error: function () {
+                alert("An error occurred while deleting the employee.");
+            }
+        });
+    }
+ 
 }
 
 function BindGrid() {

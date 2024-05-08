@@ -4,7 +4,7 @@ $(document).ready(function () {
     $('#btnMdlSave').click(function () {
 
         // Validation
-        var Experience = $('#experienceyear').val();
+        var Experience = $('#Experience').val();
 
         // Custom validations
         if (!Experience) {
@@ -114,7 +114,6 @@ $('.delete-btn').click(function () {
 
 
 function BindGrid() {
-    debugger;
     if ($.fn.DataTable.isDataTable("#tbldata")) {
         $('#tbldata').DataTable().clear().destroy();
     }
@@ -170,10 +169,12 @@ function BindGrid() {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 }, autoWidth: true
             },
-            { data: "experienceyear", name: "Experience", autoWidth: true },
+            { data: "Experience", name: "Experience", autoWidth: true },
             {
                 data: null,
                 render: function (data, type, row) {
+
+
                     return row.isActive ? yesBadge : noBadge;
                 }, autoWidth: true
             },
