@@ -1,7 +1,7 @@
 ﻿@using Recruitment.Models.Entities
-@model QualificationRequest
+@model ExperienceRequest
 
-<h2>Qualification List</h2>
+<h2>Experience List</h2>
 
 <section class="basic-elements">
     <div class="row">
@@ -11,10 +11,10 @@
                     <div class="card-block card-dashboard">
                         <div class="row">
                             <div class="col-md-12 text-right">
-                                    @* <button type="button" class="btn btn-outline-primary btn-round mr-2" id="btnAddNew"> *@
-                                       @*  <i class="fa fa-plus mr-1"></i>Add New @ViewData["Title"] *@
-                                    <a id="addQualificationBtn" data-bs-toggle="modal" class="btn btn-outline-primary btn-round mr-2" style="float:right">Add Qualification</a>
-                                   
+                                @* <button type="button" class="btn btn-outline-primary btn-round mr-2" id="btnAddNew"> *@
+                                @*  <i class="fa fa-plus mr-1"></i>Add New @ViewData["Title"] *@
+                                <a id="addExperienceBtn" data-bs-toggle="modal" class="btn btn-outline-primary btn-round mr-2" style="float:right">Add Experience</a>
+
                             </div>
                         </div></br>
                         <div class="row">
@@ -23,7 +23,7 @@
                                     <thead>
                                         <tr>
                                             <th>Sr No.</th>
-                                            <th>Name</th>
+                                            <th>Experience</th>
                                             <th>Is Active</th>
                                             <th>Actions</th>
                                         </tr>
@@ -47,37 +47,37 @@
 @section Scripts {
     <script src="@Href("~/js/ckeditor.js")"></script>
 
-    <script src="@Href("~/js/Qualification.js")"></script>
+    <script src="@Href("~/js/Experience.js")"></script>
     <!-- Modal -->
-    <div class="modal fade" id="addQualificationModal" tabindex="-1" aria-labelledby="addQualificationModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addExperienceModal" tabindex="-1" aria-labelledby="addExperienceModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addQualificationModalLabel">@ViewData["Title"] Qualification</h5>
+                    <h5 class="modal-title" id="addExperienceModalLabel">@ViewData["Title"] Experience</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <div class="modal-body">
                     <form id="form">
                         @Html.AntiForgeryToken()
-                        <input type="hidden" asp-for="EduId" />
+                        <input type="hidden" asp-for="ExpId" />
                         <div class="mb-3">
-                            <label class="form-label" asp-for="QuaName">Qualification Name:</label>
-                            <input type="text" class="form-control" id="QuaName" name="QuaName" required>
-                            <span class="text-danger" id="qualificationError"></span>
+                            <label class="form-label" asp-for="Experience">Experience :</label>
+                            <input type="text" class="form-control" id="Experience" name="Experience" required>
+                            <span class="text-danger" id="experienceError"></span>
                             <div class="col-md-4 mt-1">
                                 <div class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
                                     <br />
                                     <input type="checkbox" class="custom-control-input" asp-for="IsActive" />
                                     <label class="custom-control-label float-left">Is Active</label>
                                 </div>
-                          </div>
+                            </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                        <button type="button" class="btn grey btn-outline-secondary btn-round" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-outline-primary btn-round" id="btnMdlSave">Add</button>
+                    <button type="button" class="btn grey btn-outline-secondary btn-round" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-outline-primary btn-round" id="btnMdlSave">Save</button>
                 </div>
             </div>
         </div>

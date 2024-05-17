@@ -31,8 +31,9 @@ namespace Recruitment.Services.Service
             try
             {
                 Dictionary<string, object> dictionary = new Dictionary<string, object>();
-                dictionary.Add("Exp_id", model.exp_id);
-                dictionary.Add("experienceyear", model.experienceyear);
+                dictionary.Add("id", model.exp_id);
+                dictionary.Add("experienceyear", model.experience);
+                dictionary.Add("IsActive", model.IsActive);
 
                 // Assuming dapperConnection is your Dapper connection instance
                 //var data = dapperConnection.GetListResult("InsertOrUpdateEmployee",  CommandType.StoredProcedure, dictionary).ToList();
@@ -68,7 +69,7 @@ namespace Recruitment.Services.Service
             try
             {
                 Dictionary<string, object> dictionary = new Dictionary<string, object>();
-                dictionary.Add("Exp_id", ExpId);
+                dictionary.Add("id", ExpId);
 
                 // Your logic for deleting employee here
                 dapperConnection.GetListResult<int>("RemoveExperience", CommandType.StoredProcedure, dictionary);

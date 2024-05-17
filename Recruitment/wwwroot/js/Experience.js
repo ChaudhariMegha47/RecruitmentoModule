@@ -1,119 +1,133 @@
 ﻿
 $(document).ready(function () {
     BindGrid();
-    $('#btnMdlSave').click(function () {
 
+    $('#addExperienceBtn').click(function () {
+        $('#addExperienceModal').modal('show');
+    });
+    $('#btnMdlSave').click(function () {
         // Validation
         var Experience = $('#Experience').val();
+        // Reset previous errors
+        $('.text-danger').text('');
 
         // Custom validations
         if (!Experience) {
-            $('#experienceError').text('Please enter Experience.');
+            $('#experienceError').text('Please enter First Name.');
             return;
         }
 
-        var formdata = new FormData($('#form')[0]); // Create FormData object from the form
+        var formdata = new FormData($('#form')[0]);
 
-        // Send AJAX request to add qualification
         $.ajax({
             type: "POST",
-            url: "/Experience/AddOrUpdate",
+            url: "/Experience/SaveExperienceData",
             data: formdata,
-            dataType: 'json',
             processData: false,
             contentType: false,
-            success: function (result) {
-                if (result != null && result != undefined) {
-                    alert(result.Message); // Assuming 'Message' is the property that holds the success message
+            dataType: 'json',
+            success: function (data) {
+                if (data != null && data != undefined) {
+
+                    //ShowMessage(data.strMessage, "", data.type);
+                    BindGrid();
                     $('#addExperienceModal').modal('hide');
-                    ClearForm(); // Assuming this function clears the form
-                    // Reload the page to update the qualification list
-                    BindGrid(); // Assuming 'BindGrid()' function reloads the table data
-                } else {
-                    alert("Record not saved, Try again");
+                    alert(data.message);
+                    $('#form')[0].reset();
+                }
+                else {
+                    alert("Record not saved, Try again", "", "error");
                 }
             },
             error: function (ex) {
-                alert("Something went wrong, Try again!");
+                alert("Something went wrong, Try again!", "", "error");
             }
         });
+
     });
 });
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
+function EditModel(expid) {
 
-function EditModel(eduid) {
-    ShowLoader();
-
-    // Prepare form data
-    var formdata = new FormData($('#form')[0]);
-    var token = $('input[name="AntiforgeryFieldname"]').val();
-
-    // Make AJAX request to get qualification details
     $.ajax({
-        type: "post",
-        contentType: false,
-        url: ResolveUrl("/Experience/GetExperienceDetails"),
-        data: { QuaId: eduid }, // Pass QuaId to the server
+        type: "POST",
+        url: "/Experience/GetExperienceDetails",
+        data: { expid: expid },
         success: function (data) {
-            $('#addExperienceModal').modal('show');
 
             if (data.isError) {
-                ShowMessage(data.strMessage, "", "error");
-                HideLoader();
+                alert(data.strMessage);
             } else {
-                var qualification = data.result;
+                var dataList = data.result;
 
-                // Loop through qualification data and populate form fields
-                Object.keys(qualification).forEach(function (key) {
-                    var field = $('#' + key);
+                Object.keys(dataList).forEach(function (key) {
 
-                    if (field.length > 0) {
-                        if (key === "description") {
-                            CKEDITOR.instances['Description'].setData(qualification[key]);
-                        } else {
-                            field.val(qualification[key]);
+                    if ($('#' + capitalizeFirstLetter(key)) != null && $('#' + key) != undefined) {
+                        if (key.includes("is")) {
+                            $('#' + capitalizeFirstLetter(key)).prop('checked', dataList[key]);
+                        }
+                        else {
+                            $('#' + capitalizeFirstLetter(key)).val(dataList[key]);
                         }
                     }
+
                 });
+
+                // Populate form fields
+                //Object.keys(qualification).forEach(function (key) {
+                //    var value = qualification[key];
+                //    // Check if the key exists as an ID in the form
+                //    var element = $('#' + key);
+
+                //    if (element.length > 0) { // Check if element exists
+                //        if (key === "isActive") {
+                //            // Handle checkbox for IsActive
+                //            element.prop('checked', value);
+                //        } else if (key === "quaName") {
+                //            $('#QuaName').val(dataList[key]);
+                //            // Assuming 'quaName' is an input field, use .val() to set its value
+                //            //element.val(value);
+                //        } else {
+                //            // Assuming other fields are text fields, use .val() to set their values
+                //            element.val(value);
+                //        }
+                //    }
+                //});
             }
+            $('#addExperienceModal').modal('show');
         },
         error: function (ex) {
-            ShowMessage("Something went wrong, Try again!", "", "error");
-            HideLoader();
+            ShowMessage("Something went wrong. Please try again.", "", "error");
         }
     });
 }
 
 
+function DeleteData(expid) {
 
-// Handle delete button click
-$('.delete-btn').click(function () {
-    var qualificationId = $(this).data('qualification-id');
-    var row = $(this).closest('tr');
-
-    // Confirm deletion with user
-    if (confirm('Are you sure you want to delete this Qualification Name?')) {
-        // Send AJAX request to delete employee
+    if (confirm('Are you sure you want to delete this?')) {
         $.ajax({
             type: "POST",
-            url: ResolveUrl("/Qualification/DeleteQualificationData"),
-            data: { qualificationId: qualificationId },
+            url: "/Experience/DeleteExperienceData",
+            data: { expid: expid },
             success: function (result) {
-                // Remove the corresponding row from the table upon successful deletion
-                row.remove();
-                alert('Department deleted successfully.');
+                BindGrid();
+                alert('deleted successfully.');
             },
             error: function () {
-                alert("An error occurred while deleting the Qualification.");
+                alert("An error occurred while deleting the Experience.");
             }
         });
     }
-});
 
-
+}
 
 function BindGrid() {
+
     if ($.fn.DataTable.isDataTable("#tbldata")) {
         $('#tbldata').DataTable().clear().destroy();
     }
@@ -141,7 +155,7 @@ function BindGrid() {
         },
         "ajax": {
             "url": "/Experience/GetExperienceData",
-            "contentType": "application/x-www-form-urlencoded",
+            "contentType": false,
             "type": "POST",
             'data': {
                 "AntiforgeryFieldname": token
@@ -153,6 +167,7 @@ function BindGrid() {
                 // Settings.
                 var jsonObj = json.data;
                 // Data
+                console.log(jsonObj);
                 return jsonObj;
             }
         },
@@ -169,20 +184,18 @@ function BindGrid() {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 }, autoWidth: true
             },
-            { data: "Experience", name: "Experience", autoWidth: true },
+            { data: "experience", name: "Experience", autoWidth: true },
             {
                 data: null,
                 render: function (data, type, row) {
-
-
                     return row.isActive ? yesBadge : noBadge;
                 }, autoWidth: true
             },
             {
                 data: null,
                 render: function (data, type, row) {
-                    var strEdit = "<a class=\"btn mb-0 btn-outline-success btnedit\" title=\"Edit\" onclick=\"EditModel('" + row.id + "','" + 1 + "');\" ><i class=\"fas fa-pencil-alt\"></i>Edit</a>&nbsp;";
-                    var strRemove = "<a class=\"btn mb-0 btn-outline-danger btndelete\" title=\"Delete\" onclick=\"DeleteData('" + row.id + "', '" + row.title + "');\"><i class=\"fas fa-trash-alt\"></i>Delete</a>";
+                    var strEdit = "<button class=\"btn mb-0 btn-outline-success btnedit\" title=\"Edit\" onclick=\"EditModel('" + row.exp_id + "');\" ><i class=\"fas fa-pencil-alt\"></i>Edit</button>&nbsp;";
+                    var strRemove = "<button class=\"btn mb-0 btn-outline-danger btndelete\" title=\"Delete\" onclick=\"DeleteData('" + row.exp_id + "');\"><i class=\"fas fa-trash-alt\"></i>Delete</button>";
                     var strMain = strEdit + strRemove;
                     return strMain;
                 }, autoWidth: true
@@ -191,3 +204,11 @@ function BindGrid() {
 
     });
 }
+
+
+
+
+
+
+
+

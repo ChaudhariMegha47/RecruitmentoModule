@@ -14,6 +14,6 @@ namespace Recruitment.IService.Serivce
         ExperienceModel Get(long id);
 
         JsonResponseModel AddOrUpdate(ExperienceModel model);
-        JsonResponseModel Delete(long EduId);
+        JsonResponseModel Delete(long ExpId);
     }
 }

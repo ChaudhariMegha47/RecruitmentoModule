@@ -8,8 +8,8 @@ namespace Recruitment.Model.Service
 {
     public class ExperienceModel
     {
-        public int? exp_id { get; set; }
-        public String experienceyear { get; set; }
+        public long exp_id { get; set; }
+        public String experience { get; set; }
         public bool IsActive { get; set; } = true;
     }
 }

@@ -60,7 +60,7 @@ function EditModel(eduid) {
         url: "/Qualification/GetQualificationDetails",
         data: { eduid: eduid },
         success: function (data) {
-            debugger;
+         
             if (data.isError) {
                 alert(data.strMessage);
             } else {
@@ -110,7 +110,7 @@ function EditModel(eduid) {
 
 
 function DeleteData(eduid) {
-    debugger;
+
     if (confirm('Are you sure you want to delete this?')) { 
          $.ajax({
              type: "POST",

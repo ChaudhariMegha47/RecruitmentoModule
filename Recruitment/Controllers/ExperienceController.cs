@@ -1,5 +1,5 @@
-﻿using Recruitment.Common;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Recruitment.Common;
 using Recruitment.IService.Serivce;
 using Recruitment.Model.Service;
 using Recruitment.Model.System;
@@ -10,69 +10,13 @@ namespace Recruitment.Controllers
 {
     public class ExperienceController : Controller
     {
-        private IExperienceService experienceservice;
+        private IExperienceService experienceService;
 
-        public ExperienceController(IExperienceService experienceservice)
+        public ExperienceController(IExperienceService experienceService)
         {
-          this.experienceservice = experienceservice;
+            this.experienceService = experienceService;
         }
-
-
-        [HttpPost]
-        [Route("/Experience/GetExperienceDetails")]
-        public JsonResponseModel GetExperienceDetails(long ExpId)
-        {
-            JsonResponseModel objreturn = new JsonResponseModel();
-            try
-            {
-                //id = HttpUtility.UrlDecode(id).Replace('+', '-');
-                //langId = HttpUtility.UrlDecode(langId).Replace('+', '-');
-
-                var qualification = experienceservice.Get(ExpId);
-                if (qualification != null)
-                {
-                    objreturn.strMessage = "";
-                    objreturn.isError = false;
-                    objreturn.result = experienceservice.Get(ExpId);
-                }
-                else
-                {
-                    objreturn.strMessage = "Enter Valid Id.";
-                    objreturn.isError = true;
-                    objreturn.type = PopupMessageType.error.ToString();
-                }
-
-            }
-            catch (Exception ex)
-            {
-                ErrorLogger.Error(ex.Message, ex.ToString(), ControllerContext.ActionDescriptor.ControllerName, ControllerContext.ActionDescriptor.ActionName, ControllerContext.HttpContext.Request.Method);
-            }
-            return objreturn;
-        }
-
-
-        [HttpPost]
-        [Route("/Experience/DeleteExperienceData")]
-        public JsonResponseModel DeleteExperienceData(long QuaId)
-        {
-            JsonResponseModel objreturn = new JsonResponseModel();
-            try
-            {
-                var qualificationservice = new QualificationService(); // Instantiate your service or repository class
-                objreturn = qualificationservice.Delete(QuaId);
-            }
-            catch (Exception ex)
-            {
-                ErrorLogger.Error(ex.Message, ex.ToString(), ControllerContext.ActionDescriptor.ControllerName, ControllerContext.ActionDescriptor.ActionName, ControllerContext.HttpContext.Request.Method);
-                objreturn.strMessage = "Record not deleted, Try again";
-                objreturn.isError = true;
-                objreturn.type = PopupMessageType.error.ToString();
-            }
-            return objreturn;
-        }
-
-        [HttpGet]
-        public IActionResult Experiencemaster()
+        public IActionResult Index()
         {
             return View();
         }
@@ -83,7 +27,7 @@ namespace Recruitment.Controllers
         {
             try
             {
-                var lsdata = experienceservice.GetList();
+                var lsdata = experienceService.GetList();
 
                 return Json(new { recordsFiltered = lsdata.Count(), recordsTotal = lsdata.Count(), data = lsdata });
             }
@@ -96,20 +40,20 @@ namespace Recruitment.Controllers
 
         }
 
-
         [HttpPost]
-        [Route("/Experience/AddOrUpdate")]
-        public JsonResponseModel AddOrUpdate(ExperienceModel experienceModel)
+        [Route("/Experience/SaveExperienceData")]
+        public JsonResponseModel SaveExperienceData(ExperienceRequest experienceRequest)
         {
             JsonResponseModel obj = new JsonResponseModel();
-
             try
             {
                 ExperienceModel model = new ExperienceModel();
-                model.exp_id = experienceModel.exp_id;
-                model.experienceyear = experienceModel.experienceyear;
+                model.exp_id = experienceRequest.ExpId;
+                model.experience = experienceRequest.Experience;
+                model.IsActive = experienceRequest.IsActive;
+
                 // Call the service method to add or update the employee
-                var result = experienceservice.AddOrUpdate(model);
+                var result = experienceService.AddOrUpdate(model);
                 obj.result = result.result;
                 obj.Message = "Record saved successfully";
             }
@@ -124,13 +68,54 @@ namespace Recruitment.Controllers
         }
 
         [HttpPost]
-        public JsonResponseModel QuaDelete(long qualificationId)
+        [Route("/Experience/GetExperienceDetails")]
+        public JsonResponseModel GetExperienceDetails(long expid)
         {
             JsonResponseModel objreturn = new JsonResponseModel();
             try
             {
-                var qualificationservice = new QualificationService(); // Instantiate your service or repository class
-                objreturn = experienceservice.Delete(qualificationId); // Assuming you have a method to delete employee data
+                var experience = experienceService.Get(expid);
+                if (experience != null)
+                {
+                    // Populate QualificationRequest object
+                    ExperienceRequest exp = new ExperienceRequest();
+                    exp.ExpId = experience.exp_id;
+                    exp.Experience = experience.experience;
+                    exp.IsActive = experience.IsActive;
+
+                    // Populate JsonResponseModel
+                    objreturn.strMessage = "";
+                    objreturn.isError = false;
+
+                    objreturn.result = exp;
+                }
+                else
+                {
+                    objreturn.strMessage = "Enter Valid Id.";
+                    objreturn.isError = true;
+                    objreturn.type = PopupMessageType.error.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exception
+                ErrorLogger.Error(ex.Message, ex.ToString(), ControllerContext.ActionDescriptor.ControllerName, ControllerContext.ActionDescriptor.ActionName, ControllerContext.HttpContext.Request.Method);
+                objreturn.strMessage = "An error occurred.";
+                objreturn.isError = true;
+                objreturn.type = PopupMessageType.error.ToString();
+            }
+            return objreturn;
+        }
+
+        [HttpPost]
+        [Route("/Experience/DeleteExperienceData")]
+        public JsonResponseModel DeleteExperienceData(long expid)
+        {
+            JsonResponseModel objreturn = new JsonResponseModel();
+            try
+            {
+                var experienceService = new ExperienceService(); // Instantiate your service or repository class
+                objreturn = experienceService.Delete(expid);
             }
             catch (Exception ex)
             {
@@ -139,5 +124,6 @@ namespace Recruitment.Controllers
             }
             return objreturn;
         }
+
     }
 }
