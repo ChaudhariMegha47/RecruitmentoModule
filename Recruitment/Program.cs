@@ -20,6 +20,8 @@ builder.Services.AddControllersWithViews();
 // Dependency Injection
 builder.Services.AddScoped<IQualificationService, QualificationService>();
 builder.Services.AddScoped<IExperienceService, ExperienceService>();
+builder.Services.AddScoped<IRoleService, RoleService>();
+builder.Services.AddScoped<ICreatejobService, CreatejobService>();
 
 
 

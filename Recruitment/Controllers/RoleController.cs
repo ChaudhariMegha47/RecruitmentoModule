@@ -8,26 +8,27 @@ using Recruitment.Services.Service;
 
 namespace Recruitment.Controllers
 {
-    public class ExperienceController : Controller
+    public class RoleController : Controller
     {
-        private IExperienceService experienceService;
+        private IRoleService roleService;
 
-        public ExperienceController(IExperienceService experienceService)
+        public RoleController(IRoleService roleService)
         {
-            this.experienceService = experienceService;
+            this.roleService = roleService;
         }
+
         public IActionResult Index()
         {
             return View();
         }
 
         [HttpPost]
-        [Route("/Experience/GetExperienceData")]
-        public JsonResult GetExperienceData()
+        [Route("/Role/GetRoleData")]
+        public JsonResult GetRoleData()
         {
             try
             {
-                var lsdata = experienceService.GetList();
+                var lsdata = roleService.GetList();
 
                 return Json(new { recordsFiltered = lsdata.Count(), recordsTotal = lsdata.Count(), data = lsdata });
             }
@@ -41,19 +42,19 @@ namespace Recruitment.Controllers
         }
 
         [HttpPost]
-        [Route("/Experience/SaveExperienceData")]
-        public JsonResponseModel SaveExperienceData(ExperienceRequest experienceRequest)
+        [Route("/Role/SaveRoleData")]
+        public JsonResponseModel SaveRoleData(RoleRequest roleRequest)
         {
             JsonResponseModel obj = new JsonResponseModel();
             try
             {
-                ExperienceModel model = new ExperienceModel();
-                model.exp_id = experienceRequest.ExpId;
-                model.experience = experienceRequest.Experience;
-                model.IsActive = experienceRequest.IsActive;
+                RoleModel model = new RoleModel();
+                model.role_id = roleRequest.RoleId;
+                model.rolename = roleRequest.Rolename;
+                model.IsActive = roleRequest.IsActive;
 
                 // Call the service method to add or update the employee
-                var result = experienceService.AddOrUpdate(model);
+                var result = roleService.AddOrUpdate(model);
                 obj.result = result.result;
                 obj.Message = "Record saved successfully";
             }
@@ -68,20 +69,20 @@ namespace Recruitment.Controllers
         }
 
         [HttpPost]
-        [Route("/Experience/EditExperienceDetails")]
-        public JsonResponseModel EditExperienceDetails(long expid)
+        [Route("/Role/GetRoleDetails")]
+        public JsonResponseModel GetRoleDetails(long roleid)
         {
             JsonResponseModel objreturn = new JsonResponseModel();
             try
             {
-                var experience = experienceService.Get(expid);
-                if (experience != null)
+                var role = roleService.Get(roleid);
+                if (role != null)
                 {
                     // Populate QualificationRequest object
-                    ExperienceRequest exp = new ExperienceRequest();
-                    exp.ExpId = experience.exp_id;
-                    exp.Experience = experience.experience;
-                    exp.IsActive = experience.IsActive;
+                    RoleRequest exp = new RoleRequest();
+                    exp.RoleId = role.role_id;
+                    exp.Rolename = role.rolename;
+                    exp.IsActive = role.IsActive;
 
                     // Populate JsonResponseModel
                     objreturn.strMessage = "";
@@ -108,14 +109,14 @@ namespace Recruitment.Controllers
         }
 
         [HttpPost]
-        [Route("/Experience/DeleteExperienceData")]
-        public JsonResponseModel DeleteExperienceData(long expid)
+        [Route("/Role/DeleteRoleData")]
+        public JsonResponseModel DeleteRoleData(long roleid)
         {
             JsonResponseModel objreturn = new JsonResponseModel();
             try
             {
-                var experienceService = new ExperienceService(); // Instantiate your service or repository class
-                objreturn = experienceService.Delete(expid);
+                var roleservice = new RoleService(); // Instantiate your service or repository class
+                objreturn = roleservice.Delete(roleid);
             }
             catch (Exception ex)
             {
@@ -124,6 +125,5 @@ namespace Recruitment.Controllers
             }
             return objreturn;
         }
-
     }
 }

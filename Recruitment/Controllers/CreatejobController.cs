@@ -8,13 +8,12 @@ using Recruitment.Services.Service;
 
 namespace Recruitment.Controllers
 {
-    public class ExperienceController : Controller
+    public class CreatejobController : Controller
     {
-        private IExperienceService experienceService;
-
-        public ExperienceController(IExperienceService experienceService)
+        private ICreatejobService createjobService;
+        public CreatejobController(ICreatejobService createjobService)
         {
-            this.experienceService = experienceService;
+            this.createjobService = createjobService;
         }
         public IActionResult Index()
         {
@@ -22,12 +21,12 @@ namespace Recruitment.Controllers
         }
 
         [HttpPost]
-        [Route("/Experience/GetExperienceData")]
-        public JsonResult GetExperienceData()
+        [Route("/Createjob/GetJobData")]
+        public JsonResult GetJobData()
         {
             try
             {
-                var lsdata = experienceService.GetList();
+                var lsdata = createjobService.GetList();
 
                 return Json(new { recordsFiltered = lsdata.Count(), recordsTotal = lsdata.Count(), data = lsdata });
             }
@@ -41,19 +40,27 @@ namespace Recruitment.Controllers
         }
 
         [HttpPost]
-        [Route("/Experience/SaveExperienceData")]
-        public JsonResponseModel SaveExperienceData(ExperienceRequest experienceRequest)
+        [Route("/Createjob/SaveJobData")]
+        public JsonResponseModel SaveJobData(CreatejobRequest createjobRequest)
         {
             JsonResponseModel obj = new JsonResponseModel();
             try
             {
-                ExperienceModel model = new ExperienceModel();
-                model.exp_id = experienceRequest.ExpId;
-                model.experience = experienceRequest.Experience;
-                model.IsActive = experienceRequest.IsActive;
+                CreatejobModel model = new CreatejobModel();
+                model.job_id = createjobRequest.JobId;
+                model.title = createjobRequest.Title;
+                model.jobdescription = createjobRequest.Jobdescription;
+                model.qualification = createjobRequest.Qualification;
+                model.experience = createjobRequest.Experience;
+                model.age = createjobRequest.Age;
+                model.validupto = createjobRequest.Validupto;
+                model.vacancies = createjobRequest.Vacancies;
+                model.createddate = createjobRequest.Createddate;
+                model.createdby = createjobRequest.Createdby;
+                model.IsActive = createjobRequest.IsActive;
 
                 // Call the service method to add or update the employee
-                var result = experienceService.AddOrUpdate(model);
+                var result = createjobService.AddOrUpdate(model);
                 obj.result = result.result;
                 obj.Message = "Record saved successfully";
             }
@@ -68,26 +75,34 @@ namespace Recruitment.Controllers
         }
 
         [HttpPost]
-        [Route("/Experience/EditExperienceDetails")]
-        public JsonResponseModel EditExperienceDetails(long expid)
+        [Route("/Createjob/EditJobDetails")]
+        public JsonResponseModel EditJobDetails(long jobid)
         {
             JsonResponseModel objreturn = new JsonResponseModel();
             try
             {
-                var experience = experienceService.Get(expid);
-                if (experience != null)
+                var createjob = createjobService.Get(jobid);
+                if (createjob != null)
                 {
                     // Populate QualificationRequest object
-                    ExperienceRequest exp = new ExperienceRequest();
-                    exp.ExpId = experience.exp_id;
-                    exp.Experience = experience.experience;
-                    exp.IsActive = experience.IsActive;
+                    CreatejobRequest job = new CreatejobRequest();
+                    job.JobId = createjob.job_id;
+                    job.Title = createjob.title;
+                    job.Jobdescription = createjob.jobdescription;
+                    job.Qualification = createjob.qualification;
+                    job.Experience = createjob.experience;
+                    job.Age = createjob.age;
+                    job.Validupto = createjob.validupto;
+                    job.Vacancies = createjob.vacancies;
+                    job.Createddate = createjob.createddate;
+                    job.Createdby = createjob.createdby;
+                    job.IsActive = createjob.IsActive;
 
                     // Populate JsonResponseModel
                     objreturn.strMessage = "";
                     objreturn.isError = false;
 
-                    objreturn.result = exp;
+                    objreturn.result = job;
                 }
                 else
                 {
@@ -108,14 +123,14 @@ namespace Recruitment.Controllers
         }
 
         [HttpPost]
-        [Route("/Experience/DeleteExperienceData")]
-        public JsonResponseModel DeleteExperienceData(long expid)
+        [Route("/Createjob/DeleteJobData")]
+        public JsonResponseModel DeleteJobData(long jobid)
         {
             JsonResponseModel objreturn = new JsonResponseModel();
             try
             {
-                var experienceService = new ExperienceService(); // Instantiate your service or repository class
-                objreturn = experienceService.Delete(expid);
+                var createjobService = new CreatejobService(); // Instantiate your service or repository class
+                objreturn = createjobService.Delete(jobid);
             }
             catch (Exception ex)
             {
@@ -124,6 +139,5 @@ namespace Recruitment.Controllers
             }
             return objreturn;
         }
-
     }
 }

@@ -2,18 +2,59 @@
 $(document).ready(function () {
     BindGrid();
 
-    $('#addExperienceBtn').click(function () {
-        $('#addExperienceModal').modal('show');
+    $('#addjobBtn').click(function () {
+        $('#addjobModal').modal('show');
     });
     $('#btnMdlSave').click(function () {
         // Validation
+        var Title = $('#Title').val();
+        var Jobdescription = $('#Jobdescription').val();
+        var Qualification = $('#Qualification').val();
         var Experience = $('#Experience').val();
+        var Age = $('#Age').val();
+        var Validupto = $('#Validupto').val();
+        var Vacancies = $('#Vacancies').val();
+        var Createddate = $('#Createddate').val();
+        var Createdby = $('#Createdby').val();
         // Reset previous errors
         $('.text-danger').text('');
 
+
         // Custom validations
+        if (!Title) {
+            $('#jobError').text('Please enter Title.');
+            return;
+        }
+        if (!Jobdescription) {
+            $('#jobdescError').text('Please enter Job decription.');
+            return;
+        }
+        if (!Qualification) {
+            $('#qualificationError').text('Please enter Qualification.');
+            return;
+        }
         if (!Experience) {
-            $('#experienceError').text('Please enter First Name.');
+            $('#experienceError').text('Please enter Experience.');
+            return;
+        }
+        if (!Age) {
+            $('#ageError').text('Please enter Age.');
+            return;
+        }
+        if (!Validupto) {
+            $('#validuptoError').text('Please enter form due date.');
+            return;
+        }
+        if (!Vacancies) {
+            $('#vacanciesError').text('Please enter Vacancies.');
+            return;
+        }
+        if (!Createddate) {
+            $('#createddateError').text('Please enter Created date.');
+            return;
+        }
+        if (!Createdby) {
+            $('#createdbyError').text('Please enter Created by.');
             return;
         }
 
@@ -21,7 +62,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "/Experience/SaveExperienceData",
+            url: "/Createjob/SaveJobData",
             data: formdata,
             processData: false,
             contentType: false,
@@ -31,7 +72,7 @@ $(document).ready(function () {
 
                     //ShowMessage(data.strMessage, "", data.type);
                     BindGrid();
-                    $('#addExperienceModal').modal('hide');
+                    $('#addjobModal').modal('hide');
                     alert(data.message);
                     $('#form')[0].reset();
                 }
@@ -51,12 +92,12 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function EditModel(expid) {
+function EditModel(jobid) {
 
     $.ajax({
         type: "POST",
-        url: "/Experience/GetExperienceDetails",
-        data: { expid: expid },
+        url: "/Createjob/EditJobDetails",
+        data: { jobid: jobid },
         success: function (data) {
 
             if (data.isError) {
@@ -98,7 +139,7 @@ function EditModel(expid) {
                 //    }
                 //});
             }
-            $('#addExperienceModal').modal('show');
+            $('#addjobModal').modal('show');
         },
         error: function (ex) {
             ShowMessage("Something went wrong. Please try again.", "", "error");
@@ -107,13 +148,13 @@ function EditModel(expid) {
 }
 
 
-function DeleteData(expid) {
+function DeleteData(jobid) {
 
     if (confirm('Are you sure you want to delete this?')) {
         $.ajax({
             type: "POST",
-            url: "/Experience/DeleteExperienceData",
-            data: { expid: expid },
+            url: "/Createjob/DeleteJobData",
+            data: { jobid: jobid },
             success: function (result) {
                 BindGrid();
                 alert('deleted successfully.');
@@ -127,7 +168,7 @@ function DeleteData(expid) {
 }
 
 function BindGrid() {
-
+    debugger;
     if ($.fn.DataTable.isDataTable("#tbldata")) {
         $('#tbldata').DataTable().clear().destroy();
     }
@@ -154,7 +195,7 @@ function BindGrid() {
             });
         },
         "ajax": {
-            "url": "/Experience/GetExperienceData",
+            "url": "/Createjob/GetJobData",
             "contentType": false,
             "type": "POST",
             'data': {
@@ -184,7 +225,16 @@ function BindGrid() {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 }, autoWidth: true
             },
+            { data: "title", name: "Title", autoWidth: true },
+            { data: "jobdescription", name: "Jobdecription", autoWidth: true },
+            { data: "qualification", name: "Qualification", autoWidth: true },
             { data: "experience", name: "Experience", autoWidth: true },
+            { data: "age", name: "Age", autoWidth: true },
+            { data: "validupto", name: "Validupto", autoWidth: true },
+            { data: "vacancies", name: "Vacancies", autoWidth: true },
+            { data: "createddate", name: "Createddate", autoWidth: true },
+            { data: "createdby", name: "Createdby", autoWidth: true },
+
             {
                 data: null,
                 render: function (data, type, row) {
@@ -194,8 +244,8 @@ function BindGrid() {
             {
                 data: null,
                 render: function (data, type, row) {
-                    var strEdit = "<button class=\"btn mb-0 btn-outline-success btnedit\" title=\"Edit\" onclick=\"EditModel('" + row.exp_id + "');\" ><i class=\"fas fa-pencil-alt\"></i>Edit</button>&nbsp;";
-                    var strRemove = "<button class=\"btn mb-0 btn-outline-danger btndelete\" title=\"Delete\" onclick=\"DeleteData('" + row.exp_id + "');\"><i class=\"fas fa-trash-alt\"></i>Delete</button>";
+                    var strEdit = "<button class=\"btn mb-0 btn-outline-success btnedit\" title=\"Edit\" onclick=\"EditModel('" + row.job_id + "');\" ><i class=\"fas fa-pencil-alt\"></i>Edit</button>&nbsp;";
+                    var strRemove = "<button class=\"btn mb-0 btn-outline-danger btndelete\" title=\"Delete\" onclick=\"DeleteData('" + row.job_id + "');\"><i class=\"fas fa-trash-alt\"></i>Delete</button>";
                     var strMain = strEdit + strRemove;
                     return strMain;
                 }, autoWidth: true

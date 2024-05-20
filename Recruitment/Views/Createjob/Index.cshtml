@@ -1,7 +1,7 @@
 ﻿@using Recruitment.Models.Entities
-@model ExperienceRequest
+@model CreatejobRequest
 
-<h2>Experience List</h2>
+<h2>Job List</h2>
 
 <section class="basic-elements">
     <div class="row">
@@ -13,7 +13,7 @@
                             <div class="col-md-12 text-right">
                                 @* <button type="button" class="btn btn-outline-primary btn-round mr-2" id="btnAddNew"> *@
                                 @*  <i class="fa fa-plus mr-1"></i>Add New @ViewData["Title"] *@
-                                <a id="addExperienceBtn" data-bs-toggle="modal" class="btn btn-outline-primary btn-round mr-2" style="float:right">Add Experience</a>
+                                <a id="addjobBtn" data-bs-toggle="modal" class="btn btn-outline-primary btn-round mr-2" style="float:right">Add Job</a>
 
                             </div>
                         </div></br>
@@ -23,7 +23,15 @@
                                     <thead>
                                         <tr>
                                             <th>Sr No.</th>
+                                            <th>Title</th>
+                                            <th>Jobdescription</th>
+                                            <th>Qualification</th>
                                             <th>Experience</th>
+                                            <th>Age</th>
+                                            <th>Validupto</th>
+                                            <th>Vacancies</th>
+                                            <th>Createddate</th>
+                                            <th>Createdby</th>
                                             <th>Is Active</th>
                                             <th>Actions</th>
                                         </tr>
@@ -47,24 +55,57 @@
 @section Scripts {
     <script src="@Href("~/js/ckeditor.js")"></script>
 
-    <script src="@Href("~/js/Pages/Experience.js")"></script>
+    <script src="@Href("~/js/Pages/Createjob.js")"></script>
     <!-- Modal -->
-    <div class="modal fade" id="addExperienceModal" tabindex="-1" aria-labelledby="addExperienceModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addjobModal" tabindex="-1" aria-labelledby="addjobModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addExperienceModalLabel">@ViewData["Title"] Experience</h5>
+                    <h5 class="modal-title" id="addExperienceModalLabel">@ViewData["Title"] Createjob</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
                 <div class="modal-body">
                     <form id="form">
                         @Html.AntiForgeryToken()
-                        <input type="hidden" asp-for="ExpId" />
+                        <input type="hidden" asp-for="JobId" />
                         <div class="mb-3">
+                            <label class="form-label" asp-for="Title">Title :</label>
+                            <input type="text" class="form-control" id="Title" name="Title" required>
+                            <span class="text-danger" id="jobError"></span>
+
+                            <label class="form-label" asp-for="Jobdescription">Jobdescription :</label>
+                            <input type="text" class="form-control" id="Jobdescription" name="Jobdescription" required>
+                            <span class="text-danger" id="jobdescError"></span>
+
+                            <label class="form-label" asp-for="Qualification">Qualification :</label>
+                            <input type="text" class="form-control" id="Qualification" name="Qualification" required>
+                            <span class="text-danger" id="qualificationError"></span>
+
                             <label class="form-label" asp-for="Experience">Experience :</label>
                             <input type="text" class="form-control" id="Experience" name="Experience" required>
                             <span class="text-danger" id="experienceError"></span>
+
+                            <label class="form-label" asp-for="Age">Age :</label>
+                            <input type="text" class="form-control" id="Age" name="Age" required>
+                            <span class="text-danger" id="ageError"></span>
+
+                            <label class="form-label" asp-for="Validupto">Validupto :</label>
+                            <input type="text" class="form-control" id="Validupto" name="Validupto" required>
+                            <span class="text-danger" id="validuptoError"></span>
+
+                            <label class="form-label" asp-for="Vacancies">Vacancies :</label>
+                            <input type="text" class="form-control" id="Vacancies" name="Vacancies" required>
+                            <span class="text-danger" id="vacanciesError"></span>
+
+                            <label class="form-label" asp-for="Createddate">Createddate :</label>
+                            <input type="text" class="form-control" id="Createddate" name="Createddate" required>
+                            <span class="text-danger" id="createddateError"></span>
+
+                            <label class="form-label" asp-for="Createdby">Createdby :</label>
+                            <input type="text" class="form-control" id="Createdby" name="Createdby" required>
+                            <span class="text-danger" id="createdbyError"></span>
+
                             <div class="col-md-4 mt-1">
                                 <div class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
                                     <br />
@@ -83,3 +124,4 @@
         </div>
     </div>
 }
+

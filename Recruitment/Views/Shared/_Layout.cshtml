@@ -138,20 +138,22 @@
                             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
                             <span class="hide-menu">Recruitment<span>
                         </li>
+                        
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-controller="Createjob" asp-action="Index" aria-expanded="false">
+                                <span>
+                                    <img src="https://cdn.hugeicons.com/icons/job-search-stroke-rounded.svg" alt="job-search" width="24" height="24" />
+                                   @*  <i class="hgi-busst hgi-busst-job-search"></i> *@
+                                </span>
+                                <span class="hide-menu">Create Job</span>
+                            </a>
+                        </li>
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="./ui-buttons.html" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-article"></i>
                                 </span>
                                 <span class="hide-menu">List of Candidate</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" href="./ui-alerts.html" aria-expanded="false">
-                                <span>
-                                    <i class="ti ti-alert-circle"></i>
-                                </span>
-                                <span class="hide-menu">Recruitment</span>
                             </a>
                         </li>
                         @*  <li class="sidebar-item">
@@ -212,7 +214,7 @@
                         </li>
 
                         <li class="sidebar-item">
-                            <a class="sidebar-link" href="./sample-page.html" aria-expanded="false">
+                            <a class="sidebar-link" asp-controller="Role" asp-action="Index" aria-expanded="false">
                                 <span>
                                     <i class="ti ti-aperture"></i>
                                 </span>
@@ -307,8 +309,7 @@
 
 
     @*<script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script> *@
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
     <script src="~/assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="~/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/js/sidebarmenu.js"></script>
@@ -316,6 +317,7 @@
     <script src="~/assets/libs/apexcharts/dist/apexcharts.min.js"></script>
     <script src="~/assets/libs/simplebar/dist/simplebar.js"></script>
     <script src="~/assets/js/dashboard.js"></script>
+    <script src="~/js/common.js" asp-append-version="true"></script>
     <script src="https://cdn.datatables.net/2.0.5/js/dataTables.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

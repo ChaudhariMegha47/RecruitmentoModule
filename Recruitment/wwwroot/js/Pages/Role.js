@@ -2,20 +2,18 @@
 $(document).ready(function () {
     BindGrid();
 
-    $('#addQualificationBtn').click(function () {
-        $('#addQualificationModal').modal('show');
+    $('#addRoleBtn').click(function () {
+        $('#addRoleModal').modal('show');
     });
     $('#btnMdlSave').click(function () {
-        //console.log("into this");
-        
         // Validation
-        var QuaName = $('#QuaName').val();
+        var Role = $('#Rolename').val();
         // Reset previous errors
         $('.text-danger').text('');
 
         // Custom validations
-        if (!QuaName) {
-            $('#qualificationError').text('Please enter First Name.');
+        if (!Role) {
+            $('#roleError').text('Please enter Role.');
             return;
         }
 
@@ -23,17 +21,17 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "/Qualification/SaveQualificationData",
+            url: "/Role/SaveRoleData",
             data: formdata,
             processData: false,
             contentType: false,
             dataType: 'json',
             success: function (data) {
                 if (data != null && data != undefined) {
-                   
+
                     //ShowMessage(data.strMessage, "", data.type);
                     BindGrid();
-                    $('#addQualificationModal').modal('hide');
+                    $('#addRoleModal').modal('hide');
                     alert(data.message);
                     $('#form')[0].reset();
                 }
@@ -53,14 +51,14 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function EditModel(eduid) {
-  
+function EditModel(roleid) {
+
     $.ajax({
         type: "POST",
-        url: "/Qualification/GetQualificationDetails",
-        data: { eduid: eduid },
+        url: "/Role/GetRoleDetails",
+        data: { roleid: roleid },
         success: function (data) {
-         
+
             if (data.isError) {
                 alert(data.strMessage);
             } else {
@@ -84,7 +82,7 @@ function EditModel(eduid) {
                 //    var value = qualification[key];
                 //    // Check if the key exists as an ID in the form
                 //    var element = $('#' + key);
-           
+
                 //    if (element.length > 0) { // Check if element exists
                 //        if (key === "isActive") {
                 //            // Handle checkbox for IsActive
@@ -100,7 +98,7 @@ function EditModel(eduid) {
                 //    }
                 //});
             }
-            $('#addQualificationModal').modal('show');
+            $('#addRoleModal').modal('show');
         },
         error: function (ex) {
             ShowMessage("Something went wrong. Please try again.", "", "error");
@@ -109,27 +107,27 @@ function EditModel(eduid) {
 }
 
 
-function DeleteData(eduid) {
+function DeleteData(roleid) {
 
-    if (confirm('Are you sure you want to delete this?')) { 
-         $.ajax({
-             type: "POST",
-             url: "/Qualification/DeleteQualificationData",
-             data: { eduid: eduid },
+    if (confirm('Are you sure you want to delete this?')) {
+        $.ajax({
+            type: "POST",
+            url: "/Role/DeleteRoleData",
+            data: { roleid: roleid },
             success: function (result) {
                 BindGrid();
-                alert('Employee deleted successfully.');
+                alert('deleted successfully.');
             },
             error: function () {
-                alert("An error occurred while deleting the employee.");
+                alert("An error occurred while deleting the Experience.");
             }
         });
     }
- 
+
 }
 
 function BindGrid() {
-  
+
     if ($.fn.DataTable.isDataTable("#tbldata")) {
         $('#tbldata').DataTable().clear().destroy();
     }
@@ -156,7 +154,7 @@ function BindGrid() {
             });
         },
         "ajax": {
-            "url": "/Qualification/GetQualificationData",
+            "url": "/Role/GetRoleData",
             "contentType": false,
             "type": "POST",
             'data': {
@@ -169,7 +167,7 @@ function BindGrid() {
                 // Settings.
                 var jsonObj = json.data;
                 // Data
-                console.log(jsonObj);
+               
                 return jsonObj;
             }
         },
@@ -186,7 +184,7 @@ function BindGrid() {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 }, autoWidth: true
             },
-            { data: "qualificationname", name: "Qualification Name", autoWidth: true },
+            { data: "rolename", name: "Role", autoWidth: true },
             {
                 data: null,
                 render: function (data, type, row) {
@@ -196,8 +194,8 @@ function BindGrid() {
             {
                 data: null,
                 render: function (data, type, row) {
-                    var strEdit = "<button class=\"btn mb-0 btn-outline-success btnedit\" title=\"Edit\" onclick=\"EditModel('" + row.edu_id + "');\" ><i class=\"fas fa-pencil-alt\"></i>Edit</button>&nbsp;";
-                    var strRemove = "<button class=\"btn mb-0 btn-outline-danger btndelete\" title=\"Delete\" onclick=\"DeleteData('" + row.edu_id + "');\"><i class=\"fas fa-trash-alt\"></i>Delete</button>";
+                    var strEdit = "<button class=\"btn mb-0 btn-outline-success btnedit\" title=\"Edit\" onclick=\"EditModel('" + row.role_id + "');\" ><i class=\"fas fa-pencil-alt\"></i>Edit</button>&nbsp;";
+                    var strRemove = "<button class=\"btn mb-0 btn-outline-danger btndelete\" title=\"Delete\" onclick=\"DeleteData('" + row.role_id + "');\"><i class=\"fas fa-trash-alt\"></i>Delete</button>";
                     var strMain = strEdit + strRemove;
                     return strMain;
                 }, autoWidth: true
