@@ -21,6 +21,14 @@ namespace Recruitment.Controllers
             return View();
         }
 
+
+        [HttpGet]
+        public IActionResult ExperienceList()
+        {
+            var experience = experienceService.GetList();
+            return Json(experience);
+        }
+
         [HttpPost]
         [Route("/Experience/GetExperienceData")]
         public JsonResult GetExperienceData()

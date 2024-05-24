@@ -12,7 +12,8 @@ namespace Recruitment.Model.Service
         public String title { get; set; }
         public String jobdescription { get; set; }
         public long qualification { get; set; }
-        public long experience { get; set; }
+        public string experience { get; set; }
+        public string strCreateDate { get; set; }
         public int age { get; set; }
         public DateTime validupto { get; set; }
         public int vacancies { get; set; }

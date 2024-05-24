@@ -27,6 +27,15 @@ namespace Recruitment.Controllers
             return View();
         }
 
+
+        [HttpGet]
+        public IActionResult QualificationList()
+        {
+            var qualification = qualificationservice.GetList();
+            return Json(qualification);
+        }
+
+
         [HttpPost]
         [Route("/Qualification/GetQualificationData")]
         public JsonResult GetQualificationData()

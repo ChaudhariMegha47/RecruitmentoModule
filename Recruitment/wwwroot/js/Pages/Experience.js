@@ -108,7 +108,6 @@ function EditModel(expid) {
 
 
 function DeleteData(expid) {
-
     if (confirm('Are you sure you want to delete this?')) {
         $.ajax({
             type: "POST",
@@ -127,7 +126,6 @@ function DeleteData(expid) {
 }
 
 function BindGrid() {
-
     if ($.fn.DataTable.isDataTable("#tbldata")) {
         $('#tbldata').DataTable().clear().destroy();
     }

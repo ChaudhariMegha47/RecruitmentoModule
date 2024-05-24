@@ -7,16 +7,14 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card card-outline-primary">
-                <div class="card-body collapse show">
+                <div class="card-body collapse show dynamic-height">
                     <div class="card-block card-dashboard">
                         <div class="row">
                             <div class="col-md-12 text-right">
-                                @* <button type="button" class="btn btn-outline-primary btn-round mr-2" id="btnAddNew"> *@
-                                @*  <i class="fa fa-plus mr-1"></i>Add New @ViewData["Title"] *@
                                 <a id="addjobBtn" data-bs-toggle="modal" class="btn btn-outline-primary btn-round mr-2" style="float:right">Add Job</a>
-
                             </div>
-                        </div></br>
+                        </div>
+                        <br />
                         <div class="row">
                             <div class="col-md-12">
                                 <table class="table display nowrap table-striped table-bordered scroll-horizontal w-100 text-center nowrap dataTable no-footer" id="tbldata">
@@ -48,17 +46,15 @@
     </div>
 </section>
 
-
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
 @section Scripts {
     <script src="@Href("~/js/ckeditor.js")"></script>
-
     <script src="@Href("~/js/Pages/Createjob.js")"></script>
     <!-- Modal -->
     <div class="modal fade" id="addjobModal" tabindex="-1" aria-labelledby="addjobModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addExperienceModalLabel">@ViewData["Title"] Createjob</h5>
@@ -66,55 +62,81 @@
                 </div>
 
                 <div class="modal-body">
-                    <form id="form">
-                        @Html.AntiForgeryToken()
-                        <input type="hidden" asp-for="JobId" />
-                        <div class="mb-3">
-                            <label class="form-label" asp-for="Title">Title :</label>
-                            <input type="text" class="form-control" id="Title" name="Title" required>
-                            <span class="text-danger" id="jobError"></span>
-
-                            <label class="form-label" asp-for="Jobdescription">Jobdescription :</label>
-                            <input type="text" class="form-control" id="Jobdescription" name="Jobdescription" required>
-                            <span class="text-danger" id="jobdescError"></span>
-
-                            <label class="form-label" asp-for="Qualification">Qualification :</label>
-                            <input type="text" class="form-control" id="Qualification" name="Qualification" required>
-                            <span class="text-danger" id="qualificationError"></span>
-
-                            <label class="form-label" asp-for="Experience">Experience :</label>
-                            <input type="text" class="form-control" id="Experience" name="Experience" required>
-                            <span class="text-danger" id="experienceError"></span>
-
-                            <label class="form-label" asp-for="Age">Age :</label>
-                            <input type="text" class="form-control" id="Age" name="Age" required>
-                            <span class="text-danger" id="ageError"></span>
-
-                            <label class="form-label" asp-for="Validupto">Validupto :</label>
-                            <input type="text" class="form-control" id="Validupto" name="Validupto" required>
-                            <span class="text-danger" id="validuptoError"></span>
-
-                            <label class="form-label" asp-for="Vacancies">Vacancies :</label>
-                            <input type="text" class="form-control" id="Vacancies" name="Vacancies" required>
-                            <span class="text-danger" id="vacanciesError"></span>
-
-                            <label class="form-label" asp-for="Createddate">Createddate :</label>
-                            <input type="text" class="form-control" id="Createddate" name="Createddate" required>
-                            <span class="text-danger" id="createddateError"></span>
-
-                            <label class="form-label" asp-for="Createdby">Createdby :</label>
-                            <input type="text" class="form-control" id="Createdby" name="Createdby" required>
-                            <span class="text-danger" id="createdbyError"></span>
-
-                            <div class="col-md-4 mt-1">
-                                <div class="custom-control custom-checkbox mb-2 mr-sm-2 mb-sm-0">
-                                    <br />
-                                    <input type="checkbox" class="custom-control-input" asp-for="IsActive" />
-                                    <label class="custom-control-label float-left">Is Active</label>
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="form">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" asp-for="JobId" />
+                                <input type="hidden" asp-for="Createddate" value="@DateTime.Now" />
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label" asp-for="Title">Title :</label>
+                                        <input type="text" class="form-control" id="Title" name="Title">
+                                        <span class="text-danger" id="jobError"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label" asp-for="Jobdescription">Job Description :</label>
+                                        <textarea class="form-control" id="Jobdescription" name="Jobdescription" rows="2"></textarea>
+                                        <span class="text-danger" id="jobdescError"></span>
+                                    </div>
                                 </div>
-                            </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="Qualification">Qualification :</label>
+                                        <select asp-for="qualification" class="form-control">
+                                            <option value="">Select Qualification</option>
+                                        </select>
+                                        <span class="text-danger" id="qualificationError"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="Experience">Experience :</label>
+                                        <select asp-for="Experience" class="form-control">
+                                            <option value="">Select Experience</option>
+                                        </select>
+                                        <span class="text-danger" id="experienceError"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label" asp-for="Age">Age :</label>
+                                        <input type="text" class="form-control" id="Age" name="Age">
+                                        <span class="text-danger" id="ageError"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label" asp-for="Validupto">Valid Upto :</label>
+                                        <input type="date" class="form-control" id="Validupto" name="Validupto">
+                                        <span class="text-danger" id="validuptoError"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label" asp-for="Vacancies">Vacancies :</label>
+                                        <input type="text" class="form-control" id="Vacancies" name="Vacancies">
+                                        <span class="text-danger" id="vacanciesError"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label" asp-for="Createdby">Created By :</label>
+                                        <input type="text" class="form-control" id="Createdby" name="Createdby">
+                                        <span class="text-danger" id="createdbyError"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label" asp-for="IsActive">Is Active</label>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" asp-for="IsActive" />
+                                            <span class="text-danger" id="isactiveError"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
                         </div>
-                    </form>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn grey btn-outline-secondary btn-round" data-bs-dismiss="modal">Close</button>
@@ -124,4 +146,3 @@
         </div>
     </div>
 }
-

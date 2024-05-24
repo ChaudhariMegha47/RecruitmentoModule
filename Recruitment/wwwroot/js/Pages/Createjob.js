@@ -1,6 +1,8 @@
 ﻿
 $(document).ready(function () {
     BindGrid();
+    BindGetExperienceData();
+    BindGetQualificationData();
 
     $('#addjobBtn').click(function () {
         $('#addjobModal').modal('show');
@@ -9,7 +11,7 @@ $(document).ready(function () {
         // Validation
         var Title = $('#Title').val();
         var Jobdescription = $('#Jobdescription').val();
-        var Qualification = $('#Qualification').val();
+        var Qualification = $('#qualification').val();
         var Experience = $('#Experience').val();
         var Age = $('#Age').val();
         var Validupto = $('#Validupto').val();
@@ -17,6 +19,9 @@ $(document).ready(function () {
         var Createddate = $('#Createddate').val();
         var Createdby = $('#Createdby').val();
         // Reset previous errors
+
+
+
         $('.text-danger').text('');
 
 
@@ -93,7 +98,6 @@ function capitalizeFirstLetter(string) {
 }
 
 function EditModel(jobid) {
-
     $.ajax({
         type: "POST",
         url: "/Createjob/EditJobDetails",
@@ -117,27 +121,6 @@ function EditModel(jobid) {
                     }
 
                 });
-
-                // Populate form fields
-                //Object.keys(qualification).forEach(function (key) {
-                //    var value = qualification[key];
-                //    // Check if the key exists as an ID in the form
-                //    var element = $('#' + key);
-
-                //    if (element.length > 0) { // Check if element exists
-                //        if (key === "isActive") {
-                //            // Handle checkbox for IsActive
-                //            element.prop('checked', value);
-                //        } else if (key === "quaName") {
-                //            $('#QuaName').val(dataList[key]);
-                //            // Assuming 'quaName' is an input field, use .val() to set its value
-                //            //element.val(value);
-                //        } else {
-                //            // Assuming other fields are text fields, use .val() to set their values
-                //            element.val(value);
-                //        }
-                //    }
-                //});
             }
             $('#addjobModal').modal('show');
         },
@@ -149,7 +132,6 @@ function EditModel(jobid) {
 
 
 function DeleteData(jobid) {
-
     if (confirm('Are you sure you want to delete this?')) {
         $.ajax({
             type: "POST",
@@ -157,33 +139,94 @@ function DeleteData(jobid) {
             data: { jobid: jobid },
             success: function (result) {
                 BindGrid();
-                alert('deleted successfully.');
+                alert('Deleted successfully.');
             },
             error: function () {
-                alert("An error occurred while deleting the Experience.");
+                alert("An error occurred while deleting the Job.");
             }
         });
     }
 
 }
 
+function BindGetExperienceData() {
+    // Populate experience dropdown
+    $.ajax({
+        type: "GET",
+        url: "/Experience/ExperienceList", // URL to fetch experience data
+        dataType: 'json',
+        success: function (data) {
+            if (data != null && data.length > 0) {
+                // Clear existing options
+                $('#Experience').empty();
+
+                // Add default option
+                $('#Experience').append('<option value="">Select Experience</option>');
+
+                // Iterate over experience data and add options to the dropdown
+                $.each(data, function (index, experience) {
+                    console.log(experience);
+                    $('#Experience').append('<option value="' + experience.exp_id + '">' + experience.experience + '</option>');
+                });
+            } else {
+                // Handle empty or no data
+                $('#Experience').append('<option value="">No data available</option>');
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error fetching experience data: ", textStatus, errorThrown);
+            alert("An error occurred while fetching experience data.");
+        }
+    });
+}
+
+function BindGetQualificationData() {
+    // Populate experience dropdown
+    $.ajax({
+        type: "GET",
+        url: "/Qualification/QualificationList", // URL to fetch experience data
+        dataType: 'json',
+        success: function (data) {
+            if (data != null && data.length > 0) {
+                // Clear existing options
+                $('#qualification').empty();
+
+                // Add default option
+                $('#qualification').append('<option value="">Select Qualification</option>');
+
+                // Iterate over experience data and add options to the dropdown
+                $.each(data, function (index, qualification) {
+                    console.log(qualification);
+                    $('#qualification').append('<option value="' + qualification.edu_id + '">' + qualification.qualificationname + '</option>');
+                });
+            } else {
+                // Handle empty or no data
+                $('#qualification').append('<option value="">No data available</option>');
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error fetching qualification data: ", textStatus, errorThrown);
+            alert("An error occurred while fetching qualification data.");
+        }
+    });
+}
+
 function BindGrid() {
-    debugger;
     if ($.fn.DataTable.isDataTable("#tbldata")) {
         $('#tbldata').DataTable().clear().destroy();
     }
 
-    var yesBadge = '<td><span class="badge badge-info mt-1">Yes</span></td>';
-    var noBadge = '<td><span class="badge badge-secondary mt-1">No</span></td>';
+    var yesBadge = '<span class="badge badge-info mt-1">Yes</span>';
+    var noBadge = '<span class="badge badge-secondary mt-1">No</span>';
 
     var form = $('#frmAddEdit');
     var token = $('input[name="AntiforgeryFieldname"]', form).val();
 
     $("#tbldata").DataTable({
-        "processing": true, // for show progress bar
-        "serverSide": false, // for process server side
-        "filter": true, // this is for disable filter (search box)
-        "orderMulti": false, // for disable multiple column at once
+        "processing": true,
+        "serverSide": false,
+        "filter": true,
+        "orderMulti": false,
         "initComplete": function () {
             var api = this.api();
             var searchInput = $('.dataTables_filter input');
@@ -196,64 +239,60 @@ function BindGrid() {
         },
         "ajax": {
             "url": "/Createjob/GetJobData",
-            "contentType": false,
             "type": "POST",
-            'data': {
-                "AntiforgeryFieldname": token
-                // etc..
+            "headers": {
+                "RequestVerificationToken": token
             },
             "datatype": "json",
             "dataSrc": function (json) {
-
-                // Settings.
-                var jsonObj = json.data;
-                // Data
-                console.log(jsonObj);
-                return jsonObj;
+                console.log(json.data);
+                return json.data;
+            },
+            "error": function (xhr, error, code) {
+                console.log("Error: ", error);
             }
         },
         "columnDefs": [{
             "targets": [0],
-            //"visible": false,
             "searchable": false
         }],
         "columns": [
-
             {
                 name: "Sr No",
                 render: function (data, type, row, meta) {
                     return meta.row + meta.settings._iDisplayStart + 1;
-                }, autoWidth: true
+                },
+                autoWidth: true
             },
             { data: "title", name: "Title", autoWidth: true },
-            { data: "jobdescription", name: "Jobdecription", autoWidth: true },
+            { data: "jobdescription", name: "Jobdescription", autoWidth: true },
             { data: "qualification", name: "Qualification", autoWidth: true },
             { data: "experience", name: "Experience", autoWidth: true },
             { data: "age", name: "Age", autoWidth: true },
             { data: "validupto", name: "Validupto", autoWidth: true },
             { data: "vacancies", name: "Vacancies", autoWidth: true },
-            { data: "createddate", name: "Createddate", autoWidth: true },
+            { data: "strCreateDate", name: "strCreateDate", autoWidth: true },
             { data: "createdby", name: "Createdby", autoWidth: true },
-
             {
-                data: null,
+                data: "isActive",
                 render: function (data, type, row) {
-                    return row.isActive ? yesBadge : noBadge;
-                }, autoWidth: true
+                    return data ? yesBadge : noBadge;
+                },
+                autoWidth: true
             },
             {
-                data: null,
+                data: "job_id",
                 render: function (data, type, row) {
-                    var strEdit = "<button class=\"btn mb-0 btn-outline-success btnedit\" title=\"Edit\" onclick=\"EditModel('" + row.job_id + "');\" ><i class=\"fas fa-pencil-alt\"></i>Edit</button>&nbsp;";
-                    var strRemove = "<button class=\"btn mb-0 btn-outline-danger btndelete\" title=\"Delete\" onclick=\"DeleteData('" + row.job_id + "');\"><i class=\"fas fa-trash-alt\"></i>Delete</button>";
-                    var strMain = strEdit + strRemove;
-                    return strMain;
-                }, autoWidth: true
-            },
+                    var strEdit = `<button class="btn mb-0 btn-outline-success btnedit" title="Edit" onclick="EditModel('${data}');"><i class="fas fa-pencil-alt"></i>Edit</button>&nbsp;`;
+                    var strRemove = `<button class="btn mb-0 btn-outline-danger btndelete" title="Delete" onclick="DeleteData('${data}');"><i class="fas fa-trash-alt"></i>Delete</button>`;
+                    return strEdit + strRemove;
+                },
+                autoWidth: true
+            }
         ]
-
     });
 }
+
 
 
 

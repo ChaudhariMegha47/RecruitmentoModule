@@ -15,6 +15,7 @@ namespace Recruitment.Controllers
         {
             this.createjobService = createjobService;
         }
+
         public IActionResult Index()
         {
             return View();
@@ -50,7 +51,7 @@ namespace Recruitment.Controllers
                 model.job_id = createjobRequest.JobId;
                 model.title = createjobRequest.Title;
                 model.jobdescription = createjobRequest.Jobdescription;
-                model.qualification = createjobRequest.Qualification;
+                model.qualification = createjobRequest.qualification;
                 model.experience = createjobRequest.Experience;
                 model.age = createjobRequest.Age;
                 model.validupto = createjobRequest.Validupto;
@@ -89,7 +90,7 @@ namespace Recruitment.Controllers
                     job.JobId = createjob.job_id;
                     job.Title = createjob.title;
                     job.Jobdescription = createjob.jobdescription;
-                    job.Qualification = createjob.qualification;
+                    job.qualification = createjob.qualification;
                     job.Experience = createjob.experience;
                     job.Age = createjob.age;
                     job.Validupto = createjob.validupto;

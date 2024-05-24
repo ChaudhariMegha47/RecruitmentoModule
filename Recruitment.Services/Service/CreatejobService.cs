@@ -85,7 +85,7 @@ namespace Recruitment.Services.Service
             }
             catch (Exception ex)
             {
-                ErrorLogger.Error($"Error deleting Experience Name with ID {JobId}.", ex.ToString(), "CreatejobService", "Delete");
+                ErrorLogger.Error($"Error deleting Job Name with ID {JobId}.", ex.ToString(), "CreatejobService", "Delete");
                 response.Success = false;
                 response.Message = "An error occurred while deleting Job.";
             }
