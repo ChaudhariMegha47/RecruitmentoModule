@@ -75,9 +75,9 @@
                                         <span class="text-danger" id="jobError"></span>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label" asp-for="Jobdescription">Job Description :</label>
-                                        <textarea class="form-control" id="Jobdescription" name="Jobdescription" rows="2"></textarea>
-                                        <span class="text-danger" id="jobdescError"></span>
+                                        <label class="form-label" asp-for="Vacancies">Vacancies :</label>
+                                        <input type="text" class="form-control" id="Vacancies" name="Vacancies">
+                                        <span class="text-danger" id="vacanciesError"></span>
                                     </div>
                                 </div>
 
@@ -112,15 +112,11 @@
                                 </div>
 
                                 <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label" asp-for="Vacancies">Vacancies :</label>
-                                        <input type="text" class="form-control" id="Vacancies" name="Vacancies">
-                                        <span class="text-danger" id="vacanciesError"></span>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label" asp-for="Createdby">Created By :</label>
-                                        <input type="text" class="form-control" id="Createdby" name="Createdby">
-                                        <span class="text-danger" id="createdbyError"></span>
+                                    <div class="col-sm-12">
+                                        <label class="form-label" asp-for="Jobdescription">Job Description :</label>
+                                        <textarea class="form-control border" rows="4" id="Address" name="Address"></textarea>
+                                      @*   <textarea class="form-control" id="Jobdescription" name="Jobdescription" rows="2"></textarea> *@
+                                        <span class="text-danger" id="jobdescError"></span>
                                     </div>
                                 </div>
 

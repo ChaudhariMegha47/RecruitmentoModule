@@ -266,7 +266,7 @@ function BindGrid() {
             },
             { data: "title", name: "Title", autoWidth: true },
             { data: "jobdescription", name: "Jobdescription", autoWidth: true },
-            { data: "qualification", name: "Qualification", autoWidth: true },
+            { data: "strqualification", name: "strqualification", autoWidth: true },
             { data: "experience", name: "Experience", autoWidth: true },
             { data: "age", name: "Age", autoWidth: true },
             { data: "validupto", name: "Validupto", autoWidth: true },

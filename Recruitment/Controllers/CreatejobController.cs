@@ -24,7 +24,7 @@ namespace Recruitment.Controllers
         [HttpPost]
         [Route("/Createjob/GetJobData")]
         public JsonResult GetJobData()
-        {
+         {
             try
             {
                 var lsdata = createjobService.GetList();
