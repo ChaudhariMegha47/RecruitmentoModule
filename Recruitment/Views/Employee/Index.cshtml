@@ -1,0 +1,144 @@
+﻿@using Recruitment.Models.Entities
+@model EmployeeRequest
+
+<h2>Job List</h2>
+
+<section class="basic-elements">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-outline-primary">
+                <div class="card-body collapse show dynamic-height">
+                    <div class="card-block card-dashboard">
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <a id="addjobBtn" data-bs-toggle="modal" class="btn btn-outline-primary btn-round mr-2" style="float:right">Add Job</a>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table display nowrap table-striped table-bordered scroll-horizontal w-100 text-center nowrap dataTable no-footer" id="tbldata">
+                                    <thead>
+                                        <tr>
+                                            <th>Sr No.</th>
+                                            <th>Title</th>
+                                            <th>Jobdescription</th>
+                                            <th>Qualification</th>
+                                            <th>Experience</th>
+                                            <th>Age</th>
+                                            <th>Validupto</th>
+                                            <th>Vacancies</th>
+                                            <th>Createddate</th>
+                                            <th>Createdby</th>
+                                            <th>Is Active</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+@section Scripts {
+    <script src="@Href("~/js/ckeditor.js")"></script>
+    <script src="@Href("~/js/Pages/Createjob.js")"></script>
+    <!-- Modal -->
+    <div class="modal fade" id="addjobModal" tabindex="-1" aria-labelledby="addjobModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addExperienceModalLabel">@ViewData["Title"] Createjob</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="form">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" asp-for="JobId" />
+                                <input type="hidden" asp-for="Createddate" value="@DateTime.Now" />
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label" asp-for="Title">Title :</label>
+                                        <input type="text" class="form-control" id="Title" name="Title">
+                                        <span class="text-danger" id="jobError"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label" asp-for="Vacancies">Vacancies :</label>
+                                        <input type="text" class="form-control" id="Vacancies" name="Vacancies">
+                                        <span class="text-danger" id="vacanciesError"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="Qualification">Qualification :</label>
+                                        <select asp-for="qualification" class="form-control">
+                                            <option value="">Select Qualification</option>
+                                        </select>
+                                        <span class="text-danger" id="qualificationError"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="Experience">Experience :</label>
+                                        <select asp-for="Experience" class="form-control">
+                                            <option value="">Select Experience</option>
+                                        </select>
+                                        <span class="text-danger" id="experienceError"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label" asp-for="Age">Age :</label>
+                                        <input type="text" class="form-control" id="Age" name="Age">
+                                        <span class="text-danger" id="ageError"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label" asp-for="Validupto">Valid Upto :</label>
+                                        <input type="date" class="form-control" id="Validupto" name="Validupto">
+                                        <span class="text-danger" id="validuptoError"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-sm-12">
+                                        <label class="form-label" asp-for="Jobdescription">Job Description :</label>
+                                        <textarea class="form-control border" rows="4" id="Address" name="Address"></textarea>
+                                        @*   <textarea class="form-control" id="Jobdescription" name="Jobdescription" rows="2"></textarea> *@
+                                        <span class="text-danger" id="jobdescError"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label" asp-for="IsActive">Is Active</label>
+                                        <div class="form-check">
+                                            <input type="checkbox" class="form-check-input" asp-for="IsActive" />
+                                            <span class="text-danger" id="isactiveError"></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn grey btn-outline-secondary btn-round" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-outline-primary btn-round" id="btnMdlSave">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
