@@ -11,6 +11,6 @@
         public string Email { get; set; }
         public string Contactno { get; set; }
         public string Designation { get; set; }
-        public int IsActive { get; set; }
+        public bool IsActive { get; set; }
     }
 }

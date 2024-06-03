@@ -35,7 +35,7 @@ namespace Recruitment.Services.Service
                 dictionary.Add("p_Firstname", model.firstname);
                 dictionary.Add("p_Lastname", model.lastname);
                 dictionary.Add("p_Gender", model.gender);
-                dictionary.Add("p_Dateofbirth", model.dateofbirth);
+                dictionary.Add("p_Dateofbirth", model.strdateofbirth);
                 dictionary.Add("p_Email", model.email);
                 dictionary.Add("p_Contactno", model.contactno);
                 dictionary.Add("p_Designation", model.designation);
@@ -85,7 +85,7 @@ namespace Recruitment.Services.Service
             }
             catch (Exception ex)
             {
-                ErrorLogger.Error($"Error deleting Job Name with ID {EmpId}.", ex.ToString(), "EmployeeService", "Delete");
+                ErrorLogger.Error($"Error deleting Employee Name with ID {EmpId}.", ex.ToString(), "EmployeeService", "Delete");
                 response.Success = false;
                 response.Message = "An error occurred while deleting Employee.";
             }

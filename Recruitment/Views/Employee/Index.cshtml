@@ -9,12 +9,11 @@
             <div class="card card-outline-primary">
                 <div class="card-body collapse show dynamic-height">
                     <div class="card-block card-dashboard">
-                        <div class="row">
+                        <div class="row mb-3">
                             <div class="col-md-12 text-right">
-                                <a id="addjobBtn" data-bs-toggle="modal" class="btn btn-outline-primary btn-round mr-2" style="float:right">Add Job</a>
+                                <a id="addEmployeeBtn" data-bs-toggle="modal" class="btn btn-outline-primary btn-round" style="float:right">Add Employee</a>
                             </div>
                         </div>
-                        <br />
                         <div class="row">
                             <div class="col-md-12">
                                 <table class="table display nowrap table-striped table-bordered scroll-horizontal w-100 text-center nowrap dataTable no-footer" id="tbldata">
@@ -22,19 +21,19 @@
                                         <tr>
                                             <th>Sr No.</th>
                                             <th>Title</th>
-                                            <th>Jobdescription</th>
-                                            <th>Qualification</th>
-                                            <th>Experience</th>
-                                            <th>Age</th>
-                                            <th>Validupto</th>
-                                            <th>Vacancies</th>
-                                            <th>Createddate</th>
-                                            <th>Createdby</th>
+                                            <th>Firstname</th>
+                                            <th>Lastname</th>
+                                            <th>Gender</th>
+                                            <th>Date of Birth</th>
+                                            <th>Email</th>
+                                            <th>Contact No</th>
+                                            <th>Designation</th>
                                             <th>Is Active</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        <!-- Dynamic Rows Here -->
                                     </tbody>
                                 </table>
                             </div>
@@ -53,11 +52,11 @@
     <script src="@Href("~/js/ckeditor.js")"></script>
     <script src="@Href("~/js/Pages/Employee.js")"></script>
     <!-- Modal -->
-    <div class="modal fade" id="addjobModal" tabindex="-1" aria-labelledby="addjobModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addExperienceModalLabel">@ViewData["Title"] Createjob</h5>
+                    <h5 class="modal-title" id="addEmployeeModalLabel">@ViewData["Title"] Employee</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
@@ -66,76 +65,82 @@
                         <div class="card-body">
                             <form id="form">
                                 @Html.AntiForgeryToken()
-                                <input type="hidden" asp-for="JobId" />
-                                <input type="hidden" asp-for="Createddate" value="@DateTime.Now" />
+                                <input type="hidden" asp-for="Emp_id" />
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label class="form-label" asp-for="Title">Title :</label>
-                                        <input type="text" class="form-control" id="Title" name="Title">
-                                        <span class="text-danger" id="jobError"></span>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label" asp-for="Vacancies">Vacancies :</label>
-                                        <input type="text" class="form-control" id="Vacancies" name="Vacancies">
-                                        <span class="text-danger" id="vacanciesError"></span>
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label for="Qualification">Qualification :</label>
-                                        <select asp-for="qualification" class="form-control">
-                                            <option value="">Select Qualification</option>
+                                        <select id="Title" name="Title" class="form-control">
+                                            <option value="mr">Mr.</option>
+                                            <option value="miss">Miss</option>
+                                            <option value="mrs">Mrs.</option>
                                         </select>
-                                        <span class="text-danger" id="qualificationError"></span>
+                                        <span class="text-danger" id="titleError"></span>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="Experience">Experience :</label>
-                                        <select asp-for="Experience" class="form-control">
-                                            <option value="">Select Experience</option>
-                                        </select>
-                                        <span class="text-danger" id="experienceError"></span>
+                                        <label class="form-label" asp-for="Firstname">Firstname :</label>
+                                        <input type="text" class="form-control" id="Firstname" name="Firstname">
+                                        <span class="text-danger" id="firstnameError"></span>
                                     </div>
                                 </div>
 
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <label class="form-label" asp-for="Age">Age :</label>
-                                        <input type="text" class="form-control" id="Age" name="Age">
-                                        <span class="text-danger" id="ageError"></span>
+                                        <label class="form-label" asp-for="Lastname">Lastname :</label>
+                                        <input type="text" class="form-control" id="Lastname" name="Lastname">
+                                        <span class="text-danger" id="lastnameError"></span>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label" asp-for="Validupto">Valid Upto :</label>
-                                        <input type="date" class="form-control" id="Validupto" name="Validupto">
-                                        <span class="text-danger" id="validuptoError"></span>
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <div class="col-sm-12">
-                                        <label class="form-label" asp-for="Jobdescription">Job Description :</label>
-                                        <textarea class="form-control border" rows="4" id="Address" name="Address"></textarea>
-                                        @*   <textarea class="form-control" id="Jobdescription" name="Jobdescription" rows="2"></textarea> *@
-                                        <span class="text-danger" id="jobdescError"></span>
+                                        <label>Gender:</label>
+                                        <div>
+                                            <input type="radio" asp-for="Gender" value="Male" id="Gender" /> Male
+                                            <input type="radio" asp-for="Gender" value="Female" id="Gender" /> Female
+                                            <input type="radio" asp-for="Gender" value="Other" id="Gender" /> Other
+                                        </div>
+                                        <span class="text-danger" id="genderError"></span>
                                     </div>
                                 </div>
 
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <label class="form-label" asp-for="IsActive">Is Active</label>
+                                        <label class="form-label" asp-for="Dateofbirth">Date of Birth :</label>
+                                        <input type="date" class="form-control" id="Dateofbirth" name="Dateofbirth">
+                                        <span class="text-danger" id="dobError"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label" asp-for="Email">Email :</label>
+                                        <input type="text" class="form-control" id="Email" name="Email">
+                                        <span class="text-danger" id="emailError"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label" asp-for="Contactno">Contact No :</label>
+                                        <input class="form-control" type="text" id="Contactno" name="Contactno">
+                                        <span class="text-danger" id="contactnoError"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label" asp-for="Designation">Designation :</label>
+                                        <input class="form-control" id="Designation" name="Designation">
+                                        <span class="text-danger" id="designationError"></span>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label" asp-for="IsActive">Is Active :</label>
                                         <div class="form-check">
                                             <input type="checkbox" class="form-check-input" asp-for="IsActive" />
-                                            <span class="text-danger" id="isactiveError"></span>
                                         </div>
+                                        <span class="text-danger" id="isactiveError"></span>
                                     </div>
                                 </div>
-
                             </form>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn grey btn-outline-secondary btn-round" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-outline-secondary btn-round" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-outline-primary btn-round" id="btnMdlSave">Save</button>
                 </div>
             </div>

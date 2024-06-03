@@ -75,7 +75,7 @@ namespace Recruitment.Services.Service
                 dapperConnection.GetListResult<int>("RemoveExperience", CommandType.StoredProcedure, dictionary);
                 response.Success = true;
                 response.isError = false;
-                response.Message = "Qualification Name deleted successfully.";
+                response.Message = "Experience Name deleted successfully.";
             }
             catch (Exception ex)
             {

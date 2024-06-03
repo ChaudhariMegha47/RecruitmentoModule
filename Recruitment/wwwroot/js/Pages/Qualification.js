@@ -118,7 +118,7 @@ function DeleteData(eduid) {
              data: { eduid: eduid },
             success: function (result) {
                 BindGrid();
-                alert('Employee deleted successfully.');
+                alert('Deleted successfully.');
             },
             error: function () {
                 alert("An error occurred while deleting the employee.");

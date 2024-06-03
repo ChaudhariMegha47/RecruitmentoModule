@@ -13,10 +13,10 @@ namespace Recruitment.Model.Service
         public string firstname { get; set; }
         public string lastname { get; set; }
         public string gender { get; set; }
-        public DateTime dateofbirth { get; set; }
+        public DateTime strdateofbirth { get; set; }
         public string email { get; set; }
         public string contactno { get; set; }
         public string designation { get; set; }
-        public int IsActive { get; set; }
+        public bool IsActive { get; set; }
     }
 }

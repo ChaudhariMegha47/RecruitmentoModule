@@ -51,7 +51,7 @@ namespace Recruitment.Controllers
                 model.firstname = employeeRequest.Firstname;
                 model.lastname = employeeRequest.Lastname;
                 model.gender = employeeRequest.Gender;
-                model.dateofbirth = employeeRequest.Dateofbirth;
+                model.strdateofbirth = employeeRequest.Dateofbirth;
                 model.email = employeeRequest.Email;
                 model.contactno = employeeRequest.Contactno;
                 model.designation = employeeRequest.Designation;
@@ -90,7 +90,7 @@ namespace Recruitment.Controllers
                     job.Firstname = employee.firstname;
                     job.Lastname = employee.lastname;
                     job.Gender = employee.gender;
-                    job.Dateofbirth = employee.dateofbirth;
+                    job.Dateofbirth = employee.strdateofbirth;
                     job.Email = employee.email;
                     job.Contactno = employee.contactno;
                     job.Designation = employee.designation;

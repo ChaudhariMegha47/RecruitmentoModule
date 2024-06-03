@@ -57,6 +57,7 @@ namespace Recruitment.Controllers
                 model.validupto = createjobRequest.Validupto;
                 model.vacancies = createjobRequest.Vacancies;
                 model.createddate = createjobRequest.Createddate;
+                
                 model.createdby = createjobRequest.Createdby;
                 model.IsActive = createjobRequest.IsActive;
 
