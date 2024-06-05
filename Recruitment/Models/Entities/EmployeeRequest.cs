@@ -11,6 +11,7 @@
         public string Email { get; set; }
         public string Contactno { get; set; }
         public string Designation { get; set; }
+        public IFormFile? ImageFile { get; set; }
         public bool IsActive { get; set; }
     }
 }

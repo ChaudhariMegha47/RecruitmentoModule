@@ -19,7 +19,6 @@ $(document).ready(function () {
         var Createddate = $('#Createddate').val();
         //var Createdby = $('#Createdby').val();
         // Reset previous errors
-        debugger;
 
 
         $('.text-danger').text('');
@@ -73,7 +72,6 @@ $(document).ready(function () {
             contentType: false,
             dataType: 'json',
             success: function (data) {
-                debugger;
                 if (data != null && data != undefined) {
 
                     //ShowMessage(data.strMessage, "", data.type);
@@ -151,7 +149,36 @@ function DeleteData(jobid) {
 }
 
 
+function BindGetExperienceData() {
+    // Populate experience dropdown
+    $.ajax({
+        type: "GET",
+        url: "/Experience/ExperienceList", // URL to fetch experience data
+        dataType: 'json',
+        success: function (data) {
+            if (data != null && data.length > 0) {
+                // Clear existing options
+                $('#Experience').empty();
 
+                // Add default option
+                $('#Experience').append('<option value="">Select Experience</option>');
+
+                // Iterate over experience data and add options to the dropdown
+                $.each(data, function (index, experience) {
+                    console.log(experience);
+                    $('#Experience').append('<option value="' + experience.exp_id + '">' + experience.experience + '</option>');
+                });
+            } else {
+                // Handle empty or no data
+                $('#Experience').append('<option value="">No data available</option>');
+            }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.error("Error fetching experience data: ", textStatus, errorThrown);
+            alert("An error occurred while fetching experience data.");
+        }
+    });
+}
 
 function BindGetQualificationData() {
     // Populate experience dropdown

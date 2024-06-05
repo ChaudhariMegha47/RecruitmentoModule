@@ -87,7 +87,8 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function EditModel(empid) {
+function EditModel(empid, IsView) {
+    debugger;
     $.ajax({
         type: "POST",
         url: "/Employee/EditEmployeeDetails",
@@ -108,6 +109,9 @@ function EditModel(empid) {
                 });
             }
             $('#addEmployeeModal').modal('show');
+            if (isview) {
+                $('#btn').hide();
+            }
         },
         error: function (ex) {
             alert("Something went wrong. Please try again.", "", "error");
@@ -133,82 +137,136 @@ function DeleteData(empid) {
 }
 
 function BindGrid() {
-    if ($.fn.DataTable.isDataTable("#tbldata")) {
-        $('#tbldata').DataTable().clear().destroy();
+    // Function to render cards
+    function renderCards(data) {
+        var cardsContainer = $('#cardsContainer');
+        cardsContainer.empty(); // Clear existing cards
+
+        $.each(data, function (index, employee) {
+            var cardHtml = `
+                <div class="col-sm-6 col-xl-3">
+                    <div class="card overflow-hidden rounded-2">
+                        <div class="position-relative">
+                            <a href="javascript:void(0)">
+                                <img src="${employee.image_Path}" class="card-img-top rounded-0" alt="">
+                            </a>
+                            <a href="javascript:void(0)" class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart">
+                                <i class="ti ti-pencil fs-4" onclick="EditModel('${employee.emp_id}');"></i>
+                            </a>
+                           
+                        </div>
+                        <div class="card-body pt-3 p-4">
+                            <h6 class="fw-semibold fs-4">${employee.title} ${employee.firstname} ${employee.lastname}</h6>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <h6 class="fw-semibold fs-4 mb-0">${employee.designation}</h6>
+                                <h6 class="list-unstyled d-flex align-items-center mb-0">View</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+
+            cardsContainer.append(cardHtml);
+        });
+
+
     }
 
-    var yesBadge = '<span class="badge badge-info mt-1">Yes</span>';
-    var noBadge = '<span class="badge badge-secondary mt-1">No</span>';
-
-    var form = $('#frmAddEdit');
-    var token = $('input[name="AntiforgeryFieldname"]', form).val();
-
-    $("#tbldata").DataTable({
-        "processing": true,
-        "serverSide": false,
-        "filter": true,
-        "orderMulti": false,
-        "initComplete": function () {
-            var api = this.api();
-            var searchInput = $('.dataTables_filter input');
-
-            searchInput.on('keyup change', function () {
-                if (searchInput.val() === '') {
-                    api.search('').draw();
+    // Fetch data and render cards
+    function fetchDataAndRenderCards() {
+        $.ajax({
+            url: '/Employee/GetEmployeeData', // Update with your URL
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (response && response.data) {
+                    renderCards(response.data);
                 }
-            });
-        },
-        "ajax": {
-            "url": "/Employee/GetEmployeeData",
-            "type": "POST",
-            "headers": {
-                "RequestVerificationToken": token
             },
-            "datatype": "json",
-            "dataSrc": function (json) {
-                console.log(json.data);
-                return json.data;
-            },
-            "error": function (xhr, error, code) {
-                console.log("Error: ", error);
+            error: function (xhr, status, error) {
+                console.log('Error:', error);
             }
-        },
-        "columnDefs": [{
-            "targets": [0],
-            "searchable": false
-        }],
-        "columns": [
-            {
-                name: "Sr No",
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                },
-                autoWidth: true
-            },
-            { data: "title", name: "Title", autoWidth: true },
-            { data: "firstname", name: "Firstname", autoWidth: true },
-            { data: "lastname", name: "Lastname", autoWidth: true },
-            { data: "gender", name: "Gender", autoWidth: true },
-            { data: "strdateofbirth", name: "strdateofbirth", autoWidth: true },
-            { data: "email", name: "Email", autoWidth: true },
-            { data: "contactno", name: "Contactno", autoWidth: true },
-            { data: "designation", name: "Designation", autoWidth: true },
-            {
-                data: "IsActive",
-                render: function (data, type, row) {
-                    return data ? yesBadge : noBadge;
-                },
-                autoWidth: true
-            },
-            {
-                data: "emp_id",
-                render: function (data, type, row) {
-                    var strEdit = `<button class="btn mb-0 btn-outline-success btnedit" title="Edit" onclick="EditModel('${data}');"><i class="fas fa-pencil-alt"></i>Edit</button>&nbsp;`;
-                    var strRemove = `<button class="btn mb-0 btn-outline-danger btndelete" title="Delete" onclick="DeleteData('${data}');"><i class="fas fa-trash-alt"></i>Delete</button>`;
-                    return strEdit + strRemove;
-                },
-                autoWidth: true
-            }
-        ]
-    });
+        });
+    }
+
+    // Initial call to fetch data and render cards
+    fetchDataAndRenderCards();
+
+    //if ($.fn.DataTable.isDataTable("#tbldata")) {
+    //    $('#tbldata').DataTable().clear().destroy();
+    //}
+
+    //var yesBadge = '<span class="badge badge-info mt-1">Yes</span>';
+    //var noBadge = '<span class="badge badge-secondary mt-1">No</span>';
+
+    //var form = $('#frmAddEdit');
+    //var token = $('input[name="AntiforgeryFieldname"]', form).val();
+
+    //$("#tbldata").DataTable({
+    //    "processing": true,
+    //    "serverSide": false,
+    //    "filter": true,
+    //    "orderMulti": false,
+    //    "initComplete": function () {
+    //        var api = this.api();
+    //        var searchInput = $('.dataTables_filter input');
+
+    //        searchInput.on('keyup change', function () {
+    //            if (searchInput.val() === '') {
+    //                api.search('').draw();
+    //            }
+    //        });
+    //    },
+    //    "ajax": {
+    //        "url": "/Employee/GetEmployeeData",
+    //        "type": "POST",
+    //        "headers": {
+    //            "RequestVerificationToken": token
+    //        },
+    //        "datatype": "json",
+    //        "dataSrc": function (json) {
+    //            console.log(json.data);
+    //            return json.data;
+    //        },
+    //        "error": function (xhr, error, code) {
+    //            console.log("Error: ", error);
+    //        }
+    //    },
+    //    "columnDefs": [{
+    //        "targets": [0],
+    //        "searchable": false
+    //    }],
+    //    "columns": [
+    //        {
+    //            name: "Sr No",
+    //            render: function (data, type, row, meta) {
+    //                return meta.row + meta.settings._iDisplayStart + 1;
+    //            },
+    //            autoWidth: true
+    //        },
+    //        { data: "title", name: "Title", autoWidth: true },
+    //        { data: "firstname", name: "Firstname", autoWidth: true },
+    //        { data: "lastname", name: "Lastname", autoWidth: true },
+    //        { data: "gender", name: "Gender", autoWidth: true },
+    //        { data: "strdateofbirth", name: "strdateofbirth", autoWidth: true },
+    //        { data: "email", name: "Email", autoWidth: true },
+    //        { data: "contactno", name: "Contactno", autoWidth: true },
+    //        { data: "designation", name: "Designation", autoWidth: true },
+    //        {
+    //            data: "IsActive",
+    //            render: function (data, type, row) {
+    //                return data ? yesBadge : noBadge;
+    //            },
+    //            autoWidth: true
+    //        },
+    //        {
+    //            data: "emp_id",
+    //            render: function (data, type, row) {
+    //                var strEdit = `<button class="btn mb-0 btn-outline-success btnedit" title="Edit" onclick="EditModel('${data}');"><i class="fas fa-pencil-alt"></i>Edit</button>&nbsp;`;
+    //                var strRemove = `<button class="btn mb-0 btn-outline-danger btndelete" title="Delete" onclick="DeleteData('${data}');"><i class="fas fa-trash-alt"></i>Delete</button>`;
+    //                return strEdit + strRemove;
+    //            },
+    //            autoWidth: true
+    //        }
+    //    ]
+    //});
 }

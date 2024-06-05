@@ -39,6 +39,7 @@ namespace Recruitment.Services.Service
                 dictionary.Add("p_Email", model.email);
                 dictionary.Add("p_Contactno", model.contactno);
                 dictionary.Add("p_Designation", model.designation);
+                dictionary.Add("p_Image_Path", model.Image_Path);
                 dictionary.Add("p_IsActive", model.IsActive);
 
                 // Assuming dapperConnection is your Dapper connection instance

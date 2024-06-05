@@ -17,6 +17,7 @@ namespace Recruitment.Model.Service
         public string email { get; set; }
         public string contactno { get; set; }
         public string designation { get; set; }
+        public string Image_Path { get; set; }
         public bool IsActive { get; set; }
     }
 }

@@ -1,49 +1,36 @@
 ﻿@using Recruitment.Models.Entities
 @model EmployeeRequest
 
-<h2>Job List</h2>
 
+<style>
+    .card-img-top {
+        height: 210px;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Employee List</h2>
+    </div>
+    <div class="col-md-6">
+        <a id="addEmployeeBtn" data-bs-toggle="modal" class="btn btn-outline-primary btn-round" style="float:right">Add Employee</a>
+    </div>
+</div>
+<br></br>
 <section class="basic-elements">
     <div class="row">
         <div class="col-md-12">
-            <div class="card card-outline-primary">
-                <div class="card-body collapse show dynamic-height">
+            <div class="card-outline-primary">
                     <div class="card-block card-dashboard">
-                        <div class="row mb-3">
-                            <div class="col-md-12 text-right">
-                                <a id="addEmployeeBtn" data-bs-toggle="modal" class="btn btn-outline-primary btn-round" style="float:right">Add Employee</a>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table class="table display nowrap table-striped table-bordered scroll-horizontal w-100 text-center nowrap dataTable no-footer" id="tbldata">
-                                    <thead>
-                                        <tr>
-                                            <th>Sr No.</th>
-                                            <th>Title</th>
-                                            <th>Firstname</th>
-                                            <th>Lastname</th>
-                                            <th>Gender</th>
-                                            <th>Date of Birth</th>
-                                            <th>Email</th>
-                                            <th>Contact No</th>
-                                            <th>Designation</th>
-                                            <th>Is Active</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- Dynamic Rows Here -->
-                                    </tbody>
-                                </table>
-                            </div>
+                        <div id="cardsContainer" class="row">
+                            <!-- Dynamic Cards will be rendered here -->
                         </div>
                     </div>
-                </div>
             </div>
         </div>
     </div>
 </section>
+
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -68,46 +55,41 @@
                                 <input type="hidden" asp-for="Emp_id" />
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <label class="form-label" asp-for="Title">Title :</label>
-                                        <select id="Title" name="Title" class="form-control">
-                                            <option value="mr">Mr.</option>
-                                            <option value="miss">Miss</option>
-                                            <option value="mrs">Mrs.</option>
+                                        <label class="form-label">Employee Image:</label>
+                                        <input type="file" class="form-control" asp-for="ImageFile" id="ImageFile" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label" asp-for="Title">Title:</label>
+                                        <select id="Title" name="Title" class="form-select">
+                                            <option value="Mr">Mr.</option>
+                                            <option value="Miss">Miss</option>
+                                            <option value="Mrs">Mrs.</option>
                                         </select>
                                         <span class="text-danger" id="titleError"></span>
                                     </div>
+                                </div>
+
+                                <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <label class="form-label" asp-for="Firstname">Firstname :</label>
+                                        <label class="form-label" asp-for="Firstname">Firstname:</label>
                                         <input type="text" class="form-control" id="Firstname" name="Firstname">
                                         <span class="text-danger" id="firstnameError"></span>
                                     </div>
-                                </div>
-
-                                <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <label class="form-label" asp-for="Lastname">Lastname :</label>
+                                        <label class="form-label" asp-for="Lastname">Lastname:</label>
                                         <input type="text" class="form-control" id="Lastname" name="Lastname">
                                         <span class="text-danger" id="lastnameError"></span>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label>Gender:</label>
-                                        <div>
-                                            <input type="radio" asp-for="Gender" value="Male" id="Gender" /> Male
-                                            <input type="radio" asp-for="Gender" value="Female" id="Gender" /> Female
-                                            <input type="radio" asp-for="Gender" value="Other" id="Gender" /> Other
-                                        </div>
-                                        <span class="text-danger" id="genderError"></span>
-                                    </div>
                                 </div>
 
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <label class="form-label" asp-for="Dateofbirth">Date of Birth :</label>
+                                        <label class="form-label" asp-for="Dateofbirth">Date of Birth:</label>
                                         <input type="date" class="form-control" id="Dateofbirth" name="Dateofbirth">
                                         <span class="text-danger" id="dobError"></span>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label" asp-for="Email">Email :</label>
+                                        <label class="form-label" asp-for="Email">Email:</label>
                                         <input type="text" class="form-control" id="Email" name="Email">
                                         <span class="text-danger" id="emailError"></span>
                                     </div>
@@ -115,12 +97,12 @@
 
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <label class="form-label" asp-for="Contactno">Contact No :</label>
+                                        <label class="form-label" asp-for="Contactno">Contact No:</label>
                                         <input class="form-control" type="text" id="Contactno" name="Contactno">
                                         <span class="text-danger" id="contactnoError"></span>
                                     </div>
                                     <div class="col-md-6">
-                                        <label class="form-label" asp-for="Designation">Designation :</label>
+                                        <label class="form-label" asp-for="Designation">Designation:</label>
                                         <input class="form-control" id="Designation" name="Designation">
                                         <span class="text-danger" id="designationError"></span>
                                     </div>
@@ -128,7 +110,16 @@
 
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <label class="form-label" asp-for="IsActive">Is Active :</label>
+                                        <label class="form-label">Gender:</label>
+                                        <div>
+                                            <input type="radio" class="form-check-input" asp-for="Gender" value="Male" id="Gender_Male" /> <label class="form-check-label" for="Gender_Male">Male</label>
+                                            <input type="radio" class="form-check-input" asp-for="Gender" value="Female" id="Gender_Female" /> <label class="form-check-label" for="Gender_Female">Female</label>
+                                            <input type="radio" class="form-check-input" asp-for="Gender" value="Other" id="Gender_Other" /> <label class="form-check-label" for="Gender_Other">Other</label>
+                                        </div>
+                                        <span class="text-danger" id="genderError"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label" asp-for="IsActive">Is Active:</label>
                                         <div class="form-check">
                                             <input type="checkbox" class="form-check-input" asp-for="IsActive" />
                                         </div>
@@ -139,6 +130,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary btn-round" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-outline-primary btn-round" id="btnMdlSave">Save</button>

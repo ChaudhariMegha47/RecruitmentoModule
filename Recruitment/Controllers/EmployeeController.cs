@@ -46,6 +46,18 @@ namespace Recruitment.Controllers
             try
             {
                 EmployeeModel model = new EmployeeModel();
+                // Check if an image file is uploaded
+                if (employeeRequest.ImageFile != null && employeeRequest.ImageFile.Length > 0)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(employeeRequest.ImageFile.FileName);
+                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "EmployeeImages", fileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        employeeRequest.ImageFile.CopyTo(stream);
+                    }
+                    model.Image_Path = "/EmployeeImages/" + fileName;
+                }
+
                 model.emp_id = employeeRequest.Emp_id;
                 model.title = employeeRequest.Title;
                 model.firstname = employeeRequest.Firstname;
@@ -94,6 +106,7 @@ namespace Recruitment.Controllers
                     job.Email = employee.email;
                     job.Contactno = employee.contactno;
                     job.Designation = employee.designation;
+                    job.ImageFile = null;
                     job.IsActive = employee.IsActive;
 
                     // Populate JsonResponseModel
