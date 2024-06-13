@@ -87,8 +87,7 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function EditModel(empid, IsView) {
-    debugger;
+function EditModel(empid) {
     $.ajax({
         type: "POST",
         url: "/Employee/EditEmployeeDetails",
@@ -153,13 +152,15 @@ function BindGrid() {
                             <a href="javascript:void(0)" class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart">
                                 <i class="ti ti-pencil fs-4" onclick="EditModel('${employee.emp_id}');"></i>
                             </a>
-                           
                         </div>
                         <div class="card-body pt-3 p-4">
                             <h6 class="fw-semibold fs-4">${employee.title} ${employee.firstname} ${employee.lastname}</h6>
                             <div class="d-flex align-items-center justify-content-between">
                                 <h6 class="fw-semibold fs-4 mb-0">${employee.designation}</h6>
-                                <h6 class="list-unstyled d-flex align-items-center mb-0">View</h6>
+                               <button class="btn mb-0 btn-outline-danger btndelete" title="Delete" onclick="DeleteData('${employee.emp_id
+                               
+                               
+                               }');"><i class="fas fa-trash-alt"></i>Delete</button>
                             </div>
                         </div>
                     </div>
