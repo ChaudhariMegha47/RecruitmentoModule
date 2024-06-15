@@ -2,6 +2,10 @@
     BindGrid();
 
     $('#addEmployeeBtn').click(function () {
+        // Clear the form
+        $('#form')[0].reset();
+        // Clear any previous error messages
+        $('.text-danger').text('');
         $('#addEmployeeModal').modal('show');
     });
 
@@ -108,9 +112,6 @@ function EditModel(empid) {
                 });
             }
             $('#addEmployeeModal').modal('show');
-            if (isview) {
-                $('#btn').hide();
-            }
         },
         error: function (ex) {
             alert("Something went wrong. Please try again.", "", "error");
@@ -157,10 +158,7 @@ function BindGrid() {
                             <h6 class="fw-semibold fs-4">${employee.title} ${employee.firstname} ${employee.lastname}</h6>
                             <div class="d-flex align-items-center justify-content-between">
                                 <h6 class="fw-semibold fs-4 mb-0">${employee.designation}</h6>
-                               <button class="btn mb-0 btn-outline-danger btndelete" title="Delete" onclick="DeleteData('${employee.emp_id
-                               
-                               
-                               }');"><i class="fas fa-trash-alt"></i>Delete</button>
+                               <button class="btn mb-0 btn-outline-danger btndelete" title="Delete" onclick="DeleteData('${employee.emp_id}');"><i class="fas fa-trash-alt"></i>Delete</button>
                             </div>
                         </div>
                     </div>

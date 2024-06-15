@@ -3,6 +3,10 @@ $(document).ready(function () {
     BindGrid();
 
     $('#addExperienceBtn').click(function () {
+        // Clear the form
+        $('#form')[0].reset();
+        // Clear any previous error messages
+        $('.text-danger').text('');
         $('#addExperienceModal').modal('show');
     });
     $('#btnMdlSave').click(function () {

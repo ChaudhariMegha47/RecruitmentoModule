@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Recruitment.Model.Service
 {
-    public class ApplicationformModel
+    public class ListofCandidateModel
     {
         public long candidate_id { get; set; }
         public long job_id { get; set; }

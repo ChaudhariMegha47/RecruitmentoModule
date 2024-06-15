@@ -11,20 +11,20 @@ using System.Threading.Tasks;
 
 namespace Recruitment.Services.Service
 {
-    public class ApplicationformService : IApplicationform
+    public class ListofCandidateService : IListofCandidate
     {
         #region Constants
         private readonly DapperConnection dapperConnection;
         #endregion
 
         #region Constructor
-        public ApplicationformService()
+        public ListofCandidateService()
         {
             dapperConnection = new DapperConnection();
         }
         #endregion
 
-        public JsonResponseModel AddOrUpdate(ApplicationformModel model)
+        public JsonResponseModel AddOrUpdate(ListofCandidateModel model)
         {
             JsonResponseModel response = new JsonResponseModel();
             try
@@ -100,7 +100,7 @@ namespace Recruitment.Services.Service
             return response;
         }
 
-        public ApplicationformModel Get(long id)
+        public ListofCandidateModel Get(long id)
         {
             try
             {
@@ -114,13 +114,13 @@ namespace Recruitment.Services.Service
             }
         }
 
-        public List<ApplicationformModel> GetList()
+        public List<ListofCandidateModel> GetList()
         {
-            _ = new List<ApplicationformModel>();
-            List<ApplicationformModel> lst;
+            _ = new List<ListofCandidateModel>();
+            List<ListofCandidateModel> lst;
             try
             {
-                lst = dapperConnection.GetListResult<ApplicationformModel>("Proc_GetAllListofcandidate", CommandType.StoredProcedure).ToList();
+                lst = dapperConnection.GetListResult<ListofCandidateModel>("Proc_GetAllListofcandidate", CommandType.StoredProcedure).ToList();
             }
             catch (Exception ex)
             {

@@ -5,6 +5,10 @@ $(document).ready(function () {
     BindGetQualificationData();
 
     $('#addjobBtn').click(function () {
+        // Clear the form
+        $('#form')[0].reset();
+        // Clear any previous error messages
+        $('.text-danger').text('');
         $('#addjobModal').modal('show');
     });
     $('#btnMdlSave').click(function () {
@@ -212,85 +216,154 @@ function BindGetQualificationData() {
 }
 
 function BindGrid() {
-    if ($.fn.DataTable.isDataTable("#tbldata")) {
-        $('#tbldata').DataTable().clear().destroy();
+
+    // Function to render cards
+    function renderCards(data) {
+
+
+
+        var cardsContainer = $('#cardsContainer');
+        cardsContainer.empty(); // Clear existing cards
+
+        $.each(data, function (index, job) {
+            var cardHtml = `
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card-outline-primary">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">${job.title}</h5>
+                                <p class="card-text">
+                                    Job Description: ${job.jobdescription}
+                                    <br>
+                                    Qualification: ${job.strqualification}
+                                    <br>
+                                    Experience: ${job.experience}
+                                    <br>
+                                    Age: ${job.age}
+                                    <br>
+                                    Vacancies: ${job.vacancies}
+                                    <br>
+                                    Created By: ${job.createdby}
+                                    <br>
+                                    Valid Upto: ${new Date(job.validupto).toLocaleDateString()}
+                                    <br>
+                                    Created Date: ${new Date(job.createddate).toLocaleDateString()}
+                                    <br>
+                                    IsActive: ${job.isActive ? 'Yes' : 'No'}
+                                </p>
+                                <a href="#" class="card-link" onclick="EditModel('${job.job_id}');">Edit</a>
+                                <a href="#" class="card-link" onclick="DeleteData('${job.job_id}');">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+
+            cardsContainer.append(cardHtml);
+        });
     }
 
-    var yesBadge = '<span class="badge badge-info mt-1">Yes</span>';
-    var noBadge = '<span class="badge badge-secondary mt-1">No</span>';
-
-    var form = $('#frmAddEdit');
-    var token = $('input[name="AntiforgeryFieldname"]', form).val();
-
-    $("#tbldata").DataTable({
-        "processing": true,
-        "serverSide": false,
-        "filter": true,
-        "orderMulti": false,
-        "initComplete": function () {
-            var api = this.api();
-            var searchInput = $('.dataTables_filter input');
-
-            searchInput.on('keyup change', function () {
-                if (searchInput.val() === '') {
-                    api.search('').draw();
+    // Fetch data and render cards
+    function fetchDataAndRenderCards() {
+        $.ajax({
+            url: '/Createjob/GetJobData', // Update with your URL
+            type: 'POST',
+            dataType: 'json',
+            success: function (response) {
+                if (response && response.data) {
+                    renderCards(response.data);
                 }
-            });
-        },
-        "ajax": {
-            "url": "/Createjob/GetJobData",
-            "type": "POST",
-            "headers": {
-                "RequestVerificationToken": token
             },
-            "datatype": "json",
-            "dataSrc": function (json) {
-                console.log(json.data);
-                return json.data;
-            },
-            "error": function (xhr, error, code) {
-                console.log("Error: ", error);
+            error: function (xhr, status, error) {
+                console.log('Error:', error);
             }
-        },
-        "columnDefs": [{
-            "targets": [0],
-            "searchable": false
-        }],
-        "columns": [
-            {
-                name: "Sr No",
-                render: function (data, type, row, meta) {
-                    return meta.row + meta.settings._iDisplayStart + 1;
-                },
-                autoWidth: true
-            },
-            { data: "title", name: "Title", autoWidth: true },
-            { data: "jobdescription", name: "Jobdescription", autoWidth: true },
-            { data: "strqualification", name: "strqualification", autoWidth: true },
-            { data: "experience", name: "Experience", autoWidth: true },
-            { data: "age", name: "Age", autoWidth: true },
-            { data: "validupto", name: "Validupto", autoWidth: true },
-            { data: "vacancies", name: "Vacancies", autoWidth: true },
-            { data: "strCreateDate", name: "strCreateDate", autoWidth: true },
-            { data: "createdby", name: "createdby", autoWidth: true },
-            {
-                data: "isActive",
-                render: function (data, type, row) {
-                    return data ? yesBadge : noBadge;
-                },
-                autoWidth: true
-            },
-            {
-                data: "job_id",
-                render: function (data, type, row) {
-                    var strEdit = `<button class="btn mb-0 btn-outline-success btnedit" title="Edit" onclick="EditModel('${data}');"><i class="fas fa-pencil-alt"></i>Edit</button>&nbsp;`;
-                    var strRemove = `<button class="btn mb-0 btn-outline-danger btndelete" title="Delete" onclick="DeleteData('${data}');"><i class="fas fa-trash-alt"></i>Delete</button>`;
-                    return strEdit + strRemove;
-                },
-                autoWidth: true
-            }
-        ]
-    });
+        });
+    }
+
+    // Initial call to fetch data and render cards
+    fetchDataAndRenderCards();
+
+
+    //if ($.fn.DataTable.isDataTable("#tbldata")) {
+    //    $('#tbldata').DataTable().clear().destroy();
+    //}
+
+    //var yesBadge = '<span class="badge badge-info mt-1">Yes</span>';
+    //var noBadge = '<span class="badge badge-secondary mt-1">No</span>';
+
+    //var form = $('#frmAddEdit');
+    //var token = $('input[name="AntiforgeryFieldname"]', form).val();
+
+    //$("#tbldata").DataTable({
+    //    "processing": true,
+    //    "serverSide": false,
+    //    "filter": true,
+    //    "orderMulti": false,
+    //    "initComplete": function () {
+    //        var api = this.api();
+    //        var searchInput = $('.dataTables_filter input');
+
+    //        searchInput.on('keyup change', function () {
+    //            if (searchInput.val() === '') {
+    //                api.search('').draw();
+    //            }
+    //        });
+    //    },
+    //    "ajax": {
+    //        "url": "/Createjob/GetJobData",
+    //        "type": "POST",
+    //        "headers": {
+    //            "RequestVerificationToken": token
+    //        },
+    //        "datatype": "json",
+    //        "dataSrc": function (json) {
+    //            console.log(json.data);
+    //            return json.data;
+    //        },
+    //        "error": function (xhr, error, code) {
+    //            console.log("Error: ", error);
+    //        }
+    //    },
+    //    "columnDefs": [{
+    //        "targets": [0],
+    //        "searchable": false
+    //    }],
+    //    "columns": [
+    //        {
+    //            name: "Sr No",
+    //            render: function (data, type, row, meta) {
+    //                return meta.row + meta.settings._iDisplayStart + 1;
+    //            },
+    //            autoWidth: true
+    //        },
+    //        { data: "title", name: "Title", autoWidth: true },
+    //        { data: "jobdescription", name: "Jobdescription", autoWidth: true },
+    //        { data: "strqualification", name: "strqualification", autoWidth: true },
+    //        { data: "experience", name: "Experience", autoWidth: true },
+    //        { data: "age", name: "Age", autoWidth: true },
+    //        { data: "validupto", name: "Validupto", autoWidth: true },
+    //        { data: "vacancies", name: "Vacancies", autoWidth: true },
+    //        { data: "strCreateDate", name: "strCreateDate", autoWidth: true },
+    //        { data: "createdby", name: "createdby", autoWidth: true },
+    //        {
+    //            data: "isActive",
+    //            render: function (data, type, row) {
+    //                return data ? yesBadge : noBadge;
+    //            },
+    //            autoWidth: true
+    //        },
+    //        {
+    //            data: "job_id",
+    //            render: function (data, type, row) {
+    //                var strEdit = `<button class="btn mb-0 btn-outline-success btnedit" title="Edit" onclick="EditModel('${data}');"><i class="fas fa-pencil-alt"></i>Edit</button>&nbsp;`;
+    //                var strRemove = `<button class="btn mb-0 btn-outline-danger btndelete" title="Delete" onclick="DeleteData('${data}');"><i class="fas fa-trash-alt"></i>Delete</button>`;
+    //                return strEdit + strRemove;
+    //            },
+    //            autoWidth: true
+    //        }
+    //    ]
+    //});
 }
 
 

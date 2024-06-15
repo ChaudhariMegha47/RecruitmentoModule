@@ -3,6 +3,10 @@ $(document).ready(function () {
     BindGrid();
 
     $('#addQualificationBtn').click(function () {
+        // Clear the form
+        $('#form')[0].reset();
+        // Clear any previous error messages
+        $('.text-danger').text('');
         $('#addQualificationModal').modal('show');
     });
     $('#btnMdlSave').click(function () {

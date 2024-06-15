@@ -1,44 +1,24 @@
 ﻿@using Recruitment.Models.Entities
 @model CreatejobRequest
 
-<h2>Job List</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Job List</h2>
+    </div>
+    <div class="col-md-6">
+        <a id="addjobBtn" data-bs-toggle="modal" class="btn btn-outline-primary btn-round" style="float:right">Add Job</a>
+    </div>
+</div>
+<br></br>
 
 <section class="basic-elements">
     <div class="row">
         <div class="col-md-12">
-            <div class="card card-outline-primary">
-                <div class="card-body collapse show dynamic-height">
-                    <div class="card-block card-dashboard">
-                        <div class="row">
-                            <div class="col-md-12 text-right">
-                                <a id="addjobBtn" data-bs-toggle="modal" class="btn btn-outline-primary btn-round mr-2" style="float:right">Add Job</a>
-                            </div>
-                        </div>
-                        <br />
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table class="table display nowrap table-striped table-bordered scroll-horizontal w-100 text-center nowrap dataTable no-footer" id="tbldata">
-                                    <thead>
-                                        <tr>
-                                            <th>Sr No.</th>
-                                            <th>Title</th>
-                                            <th>Jobdescription</th>
-                                            <th>Qualification</th>
-                                            <th>Experience</th>
-                                            <th>Age</th>
-                                            <th>Validupto</th>
-                                            <th>Vacancies</th>
-                                            <th>Createddate</th>
-                                            <th>Createdby</th>
-                                            <th>Is Active</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+            <div class="card-outline-primary">
+                <div class="card-block card-dashboard">
+                    <div id="cardsContainer" class="row">
+                        <!-- Dynamic Cards will be rendered here -->
                     </div>
                 </div>
             </div>

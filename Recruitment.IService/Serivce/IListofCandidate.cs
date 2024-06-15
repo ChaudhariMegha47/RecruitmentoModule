@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace Recruitment.IService.Serivce
 {
-    public interface IApplicationform
+    public interface IListofCandidate
     {
-        List<ApplicationformModel> GetList();
-        ApplicationformModel Get(long id);
+        List<ListofCandidateModel> GetList();
+        ListofCandidateModel Get(long id);
 
-        JsonResponseModel AddOrUpdate(ApplicationformModel model);
+        JsonResponseModel AddOrUpdate(ListofCandidateModel model);
         JsonResponseModel Delete(long CandidateId);
     }
 }

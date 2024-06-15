@@ -1,6 +1,6 @@
 ﻿namespace Recruitment.Models.Entities
 {
-    public class ApplicationformRequest
+    public class ListofCandidateRequest
     {
         public long Candidate_id { get; set; }
         public long Job_id { get; set; }

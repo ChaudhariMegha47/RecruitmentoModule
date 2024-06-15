@@ -8,10 +8,10 @@ using Recruitment.Services.Service;
 
 namespace Recruitment.Controllers
 {
-    public class ApplicationformController : Controller
+    public class ListofCandidateController : Controller
     {
-        private IApplicationform applicationform;
-        public ApplicationformController(IApplicationform applicationformservice)
+        private IListofCandidate applicationform;
+        public ListofCandidateController(IListofCandidate applicationformservice)
         {
             this.applicationform = applicationformservice;
         }
@@ -22,8 +22,8 @@ namespace Recruitment.Controllers
         }
 
         [HttpPost]
-        [Route("/Applicationform/GetApplicationformData")]
-        public JsonResult GetApplicationformData()
+        [Route("/ListofCandidate/GetListofCandidateData")]
+        public JsonResult GetListofCandidateData()
         {
             try
             {
@@ -41,13 +41,13 @@ namespace Recruitment.Controllers
         }
 
         [HttpPost]
-        [Route("/Applicationform/SaveApplicationformData")]
-        public JsonResponseModel SaveApplicationformData(ApplicationformRequest applicationformModel)
+        [Route("/ListofCandidate/SaveListofCandidateData")]
+        public JsonResponseModel SaveListofCandidateData(ListofCandidateRequest applicationformModel)
         {
             JsonResponseModel obj = new JsonResponseModel();
             try
             {
-                ApplicationformModel model = new ApplicationformModel();
+                ListofCandidateModel model = new ListofCandidateModel();
                 model.candidate_id = applicationformModel.Candidate_id;
                 model.job_id = applicationformModel.Job_id;
                 model.title = applicationformModel.Title;
@@ -83,8 +83,8 @@ namespace Recruitment.Controllers
         }
 
         [HttpPost]
-        [Route("/Applicationform/EditApplicationformDetails")]
-        public JsonResponseModel EditApplicationformDetails(long candidateid)
+        [Route("/ListofCandidate/EditListofCandidateDetails")]
+        public JsonResponseModel EditListofCandidateDetails(long candidateid)
         {
             JsonResponseModel objreturn = new JsonResponseModel();
             try
@@ -93,7 +93,7 @@ namespace Recruitment.Controllers
                 if (application != null)
                 {
                     // Populate QualificationRequest object
-                    ApplicationformRequest obj = new ApplicationformRequest();
+                    ListofCandidateRequest obj = new ListofCandidateRequest();
                     obj.Candidate_id = application.candidate_id;
                     obj.Job_id = application.job_id;
                     obj.Title = application.title;
@@ -138,13 +138,13 @@ namespace Recruitment.Controllers
         }
 
         [HttpPost]
-        [Route("/Applicationform/DeleteApplicationformData")]
-        public JsonResponseModel DeleteApplicationformData(long candidateid)
+        [Route("/ListofCandidate/DeleteListofCandidateData")]
+        public JsonResponseModel DeleteListofCandidateData(long candidateid)
         {
             JsonResponseModel objreturn = new JsonResponseModel();
             try
             {
-                var applicationform = new ApplicationformService(); // Instantiate your service or repository class
+                var applicationform = new ListofCandidateService(); // Instantiate your service or repository class
                 objreturn = applicationform.Delete(candidateid);
             }
             catch (Exception ex)
