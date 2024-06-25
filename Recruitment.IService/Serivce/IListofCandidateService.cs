@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Recruitment.IService.Serivce
 {
-    public interface IListofCandidate
+    public interface IListofCandidateService
     {
         List<ListofCandidateModel> GetList();
         ListofCandidateModel Get(long id);

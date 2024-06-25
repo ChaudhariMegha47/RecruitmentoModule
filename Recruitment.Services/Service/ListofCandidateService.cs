@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Recruitment.Services.Service
 {
-    public class ListofCandidateService : IListofCandidate
+    public class ListofCandidateService : IListofCandidateService
     {
         #region Constants
         private readonly DapperConnection dapperConnection;
@@ -32,6 +32,7 @@ namespace Recruitment.Services.Service
                 Dictionary<string, object> dictionary = new Dictionary<string, object>();
                 dictionary.Add("p_id", model.candidate_id);
                 dictionary.Add("p_jobid", model.job_id);
+                dictionary.Add("p_Image_Path", model.candidate_image);
                 dictionary.Add("p_Title", model.title);
                 dictionary.Add("p_Firstname", model.firstname);
                 dictionary.Add("p_middlename", model.middlename);
@@ -44,9 +45,8 @@ namespace Recruitment.Services.Service
                 dictionary.Add("p_Contactno", model.contactno);
                 dictionary.Add("p_experience", model.experience);
                 dictionary.Add("p_qualification", model.qualification);
-                dictionary.Add("p_result", model.result);
                 dictionary.Add("p_resume_image", model.resume_image);
-                dictionary.Add("p_Image_Path", model.candidate_image);
+                dictionary.Add("p_result", model.result);
                 dictionary.Add("p_IsActive", model.IsActive);
 
                 // Assuming dapperConnection is your Dapper connection instance

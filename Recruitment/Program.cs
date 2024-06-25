@@ -23,7 +23,8 @@ builder.Services.AddScoped<IExperienceService, ExperienceService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<ICreatejobService, CreatejobService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
-builder.Services.AddScoped<IListofCandidate, ApplicationformService>();
+builder.Services.AddScoped<IListofCandidateService, ListofCandidateService>();
+builder.Services.AddScoped<ILoginService, LoginService>();
 
 
 

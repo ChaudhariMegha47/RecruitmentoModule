@@ -10,6 +10,7 @@ namespace Recruitment.Model.Service
     {
         public long candidate_id { get; set; }
         public long job_id { get; set; }
+        public string candidate_image { get; set; }
         public string title { get; set; }
         public string firstname { get; set; }
         public string middlename { get; set; }
@@ -22,9 +23,8 @@ namespace Recruitment.Model.Service
         public int contactno { get; set; }
         public string experience { get; set; }
         public string qualification { get; set; }
-        public string result { get; set; }
         public string resume_image { get; set; }
-        public string candidate_image { get; set; }
+        public string result { get; set; }
         public bool IsActive { get; set; }
     }
 }

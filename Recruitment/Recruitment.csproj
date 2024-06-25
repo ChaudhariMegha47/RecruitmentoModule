@@ -19,6 +19,8 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\EmployeeImages\" />
+    <Folder Include="wwwroot\CandidateImages\" />
+    <Folder Include="wwwroot\ResumeImages\" />
   </ItemGroup>
 
 </Project>

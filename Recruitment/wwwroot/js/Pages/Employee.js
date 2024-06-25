@@ -14,11 +14,13 @@
         var Title = $('#Title').val();
         var Firstname = $('#Firstname').val();
         var Lastname = $('#Lastname').val();
-        var Gender = $('input[name="Gender"]:checked').val();
         var Dateofbirth = $('#Dateofbirth').val();
         var Email = $('#Email').val();
         var Contactno = $('#Contactno').val();
         var Designation = $('#Designation').val();
+        var Gender = $('input[name="Gender"]:checked').val()
+        var IsActive = $('#IsActive').val();
+    
         // Reset previous errors
         $('.text-danger').text('');
 
@@ -35,10 +37,6 @@
             $('#lastnameError').text('Please enter Last name.');
             return;
         }
-        if (!Gender) {
-            $('#genderError').text('Please select Gender.');
-            return;
-        }
         if (!Dateofbirth) {
             $('#dobError').text('Please enter Date of birth.');
             return;
@@ -47,12 +45,20 @@
             $('#emailError').text('Please enter a valid Email.');
             return;
         }
-        if (!Contactno) {
-            $('#contactnoError').text('Please enter Contact no.');
+        if (!validateContactNumber(Contactno)) {
+            $('#contactnoError').text('Please enter 10 digits Contact no.');
             return;
         }
         if (!Designation) {
             $('#designationError').text('Please enter Designation.');
+            return;
+        }
+        if (!Gender) {
+            $('#genderError').text('Please select Gender.');
+            return;
+        }
+        if (!IsActive) {
+            $('#isactiveError').text('Please select IsActive');
             return;
         }
 
@@ -89,6 +95,14 @@ function validateEmail(email) {
 
 function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+function validateContactNumber(contactNumber) {
+    // Regular expression for validating contact numbers
+    var phonePattern = /^(\+?\d{1,4}[\s-]?)?(\(?\d{3}\)?[\s-]?)?\d{3}[\s-]?\d{4}$/;
+
+    // Test the contact number against the pattern
+    return phonePattern.test(contactNumber);
 }
 
 function EditModel(empid) {
@@ -141,10 +155,12 @@ function BindGrid() {
     function renderCards(data) {
         var cardsContainer = $('#cardsContainer');
         cardsContainer.empty(); // Clear existing cards
-
+        var tr = "";
         $.each(data, function (index, employee) {
-            var cardHtml = `
-                <div class="col-sm-6 col-xl-3">
+            tr += `
+                <tr>
+                <td class="row">
+                <div>
                     <div class="card overflow-hidden rounded-2">
                         <div class="position-relative">
                             <a href="javascript:void(0)">
@@ -162,11 +178,18 @@ function BindGrid() {
                             </div>
                         </div>
                     </div>
-                </div>`;
-
-            cardsContainer.append(cardHtml);
+                </div>
+                </td>
+                </tr>`;
         });
 
+        var table = '<table id="tblData"><thead><tr><th></th></tr></thead ><tbody>' + tr + "</tbody></table>";
+        cardsContainer.append(table);
+
+        $('#tblData').DataTable({
+            "pageLength": 5,
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]] // Options for the number of records per page
+        });
 
     }
 

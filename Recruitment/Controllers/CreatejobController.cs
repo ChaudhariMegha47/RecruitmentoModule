@@ -24,7 +24,7 @@ namespace Recruitment.Controllers
         [HttpPost]
         [Route("/Createjob/GetJobData")]
         public JsonResult GetJobData()
-         {
+        {
             try
             {
                 var lsdata = createjobService.GetList();
@@ -57,7 +57,6 @@ namespace Recruitment.Controllers
                 model.validupto = createjobRequest.Validupto;
                 model.vacancies = createjobRequest.Vacancies;
                 model.createddate = createjobRequest.Createddate;
-                
                 model.createdby = createjobRequest.Createdby;
                 model.IsActive = createjobRequest.IsActive;
 
@@ -74,6 +73,45 @@ namespace Recruitment.Controllers
             }
 
             return obj;
+        }
+
+        [HttpPost]
+        [Route("/Createjob/DetailsModel")]
+        public JsonResponseModel DetailsModel(long jobid)
+        {
+            JsonResponseModel objreturn = new JsonResponseModel();
+            try
+            {
+                var createjob = createjobService.Get(jobid);
+                if (createjob != null)
+                {
+                    // Populate QualificationRequest object
+                    CreatejobRequest job = new CreatejobRequest();
+                    job.JobId = createjob.job_id;
+                    job.Jobdescription = createjob.jobdescription;
+
+                    // Populate JsonResponseModel
+                    objreturn.strMessage = "";
+                    objreturn.isError = false;
+
+                    objreturn.result = job;
+                }
+                else
+                {
+                    objreturn.strMessage = "Enter Valid Id.";
+                    objreturn.isError = true;
+                    objreturn.type = PopupMessageType.error.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exception
+                ErrorLogger.Error(ex.Message, ex.ToString(), ControllerContext.ActionDescriptor.ControllerName, ControllerContext.ActionDescriptor.ActionName, ControllerContext.HttpContext.Request.Method);
+                objreturn.strMessage = "An error occurred.";
+                objreturn.isError = true;
+                objreturn.type = PopupMessageType.error.ToString();
+            }
+            return objreturn;
         }
 
         [HttpPost]

@@ -14,13 +14,13 @@ $(document).ready(function () {
     $('#btnMdlSave').click(function () {
         // Validation
         var Title = $('#Title').val();
-        var Jobdescription = $('#Jobdescription').val();
+        var Vacancies = $('#Vacancies').val();
         var Qualification = $('#qualification').val();
         var Experience = $('#Experience').val();
         var Age = $('#Age').val();
         var Validupto = $('#Validupto').val();
-        var Vacancies = $('#Vacancies').val();
-        var Createddate = $('#Createddate').val();
+        var Jobdescription = $('#Jobdescription').val();
+        //var Createddate = $('#Createddate').val();
         //var Createdby = $('#Createdby').val();
         // Reset previous errors
 
@@ -33,8 +33,8 @@ $(document).ready(function () {
             $('#jobError').text('Please enter Title.');
             return;
         }
-        if (!Jobdescription) {
-            $('#jobdescError').text('Please enter Job Description.');
+        if (!Vacancies) {
+            $('#vacanciesError').text('Please enter Vacancies.');
             return;
         }
         if (!Qualification) {
@@ -53,14 +53,15 @@ $(document).ready(function () {
             $('#validuptoError').text('Please enter form due date.');
             return;
         }
-        if (!Vacancies) {
-            $('#vacanciesError').text('Please enter Vacancies.');
+        if (!Jobdescription) {
+            $('#jobdescError').text('Please enter Job Description.');
             return;
         }
-        if (!Createddate) {
-            $('#createddateError').text('Please enter Created date.');
-            return;
-        }
+       
+        //if (!Createddate) {
+        //    $('#createddateError').text('Please enter Created date.');
+        //    return;
+        //}
         //if (!Createdby) {
         //    $('#createdbyError').text('Please enter Created by.');
         //    return;
@@ -100,39 +101,86 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+function DetailModel(jobid) {
+    $.ajax({
+        type: "POST",
+        url: "/Createjob/DetailsModel",
+        data: { jobid: jobid },
+        success: function (data) {
+            if (data.isError) {
+                alert(data.strMessage);
+            } else {
+                var dataList = data.result;
+                Object.keys(dataList).forEach(function (key) {
+                    if ($('#' + capitalizeFirstLetter(key)).length > 0 && $('#' + key).length > 0) {
+                        if (key.includes("is")) {
+                            $('#' + capitalizeFirstLetter(key)).prop('checked', dataList[key]);
+                        }
+                        else if (key == "Jobdescription") {
+                            // Set value to textarea
+                            $('#jobdescription').val(dataList[key]);
+
+                            // Initialize CKEditor
+                            CKEDITOR.replace('Jobdescription');
+                        }
+                        // Handle other input types if needed
+                        else {
+                            $('#' + capitalizeFirstLetter(key)).val(dataList[key]);
+                        }
+                    }
+                });
+            }
+            $('#addDetailModal').modal('show');
+        },
+        error: function (ex) {
+            alert("Something went wrong. Please try again.", "", "error");
+        }
+    });
+}
+
+
 function EditModel(jobid) {
     $.ajax({
         type: "POST",
         url: "/Createjob/EditJobDetails",
         data: { jobid: jobid },
         success: function (data) {
-
             if (data.isError) {
                 alert(data.strMessage);
             } else {
                 var dataList = data.result;
-
                 Object.keys(dataList).forEach(function (key) {
-
                     if ($('#' + capitalizeFirstLetter(key)) != null && $('#' + key) != undefined) {
                         if (key.includes("is")) {
                             $('#' + capitalizeFirstLetter(key)).prop('checked', dataList[key]);
                         }
+                        else if (key == "qualification") {
+
+                            $('#qualification').val(dataList[key]);
+
+                        }
+                        //else if (key == "experience") {
+
+                        //    $('#Experience').val(dataList[key]);
+
+                        //}
+                        //else if (key == "validupto") {
+                        //    $('#Validupto').val(dataList[key]);
+
+                        //}
                         else {
                             $('#' + capitalizeFirstLetter(key)).val(dataList[key]);
                         }
                     }
-
                 });
             }
             $('#addjobModal').modal('show');
         },
         error: function (ex) {
-            ShowMessage("Something went wrong. Please try again.", "", "error");
+            alert("Something went wrong. Please try again.", "", "error");
         }
     });
 }
-
 
 function DeleteData(jobid) {
     if (confirm('Are you sure you want to delete this?')) {
@@ -185,6 +233,7 @@ function BindGetExperienceData() {
 }
 
 function BindGetQualificationData() {
+    
     // Populate experience dropdown
     $.ajax({
         type: "GET",
@@ -215,52 +264,74 @@ function BindGetQualificationData() {
     });
 }
 
+
+
+
 function BindGrid() {
 
     // Function to render cards
-    function renderCards(data) {
-
-
-
+    function renderCards(data) { 
         var cardsContainer = $('#cardsContainer');
         cardsContainer.empty(); // Clear existing cards
-
+        var tr = "";
         $.each(data, function (index, job) {
-            var cardHtml = `
-            <div class="row">
+            tr += `
+    <tr>
+        <td class="row">
+            <div>
                 <div class="col-md-12">
                     <div class="card-outline-primary">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title">${job.title}</h5>
-                                <p class="card-text">
-                                    Job Description: ${job.jobdescription}
-                                    <br>
-                                    Qualification: ${job.strqualification}
-                                    <br>
-                                    Experience: ${job.experience}
-                                    <br>
-                                    Age: ${job.age}
-                                    <br>
-                                    Vacancies: ${job.vacancies}
-                                    <br>
-                                    Created By: ${job.createdby}
-                                    <br>
-                                    Valid Upto: ${new Date(job.validupto).toLocaleDateString()}
-                                    <br>
-                                    Created Date: ${new Date(job.createddate).toLocaleDateString()}
-                                    <br>
-                                    IsActive: ${job.isActive ? 'Yes' : 'No'}
-                                </p>
-                                <a href="#" class="card-link" onclick="EditModel('${job.job_id}');">Edit</a>
-                                <a href="#" class="card-link" onclick="DeleteData('${job.job_id}');">Delete</a>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <h4 class="card-title">${job.title} &nbsp;<span class="ti ti-info-circle fs-6" onclick="DetailModel('${job.job_id}');" style="display: inline;"></span></h4>
+                                        <div>${new Date(job.createddate).toLocaleDateString()}</div><br>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="d-flex justify-content-end">
+                                            <a href="/ListofCandidate/Index?jobId=${job.job_id}" class="btn mb-0 btn-outline-success btnedit d-inline-flex mb-n3 me-3" title="Apply">
+                                                Apply Now
+                                            </a>
+                                            <a href="javascript:void(0)" class="bg-primary rounded-circle p-2 text-white d-inline-flex mb-n3 me-3" style="float: right;" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" onclick="EditModel('${job.job_id}');">
+                                                <i class="ti ti-pencil fs-4"></i>
+                                            </a>
+                                            <a href="javascript:void(0)" class="bg-primary rounded-circle p-2 text-white d-inline-flex mb-n3 me-3" style="float: right;" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" onclick="DeleteData('${job.job_id}');">
+                                                <i class="ti ti-trash fs-4"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3"><label class="form-label">Vacancies:</label><br>${job.vacancies}</div>
+                                    <div class="col-md-3"><label class="form-label">Experience:</label><br>${job.strexperience}</div>
+                                    <div class="col-md-3"><label class="form-label">Qualification:</label><br>${job.strqualification}</div>
+                                    <div class="col-md-3"><label class="form-label">Valid Upto:</label><br>${new Date(job.validupto).toLocaleDateString()}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>`;
+            </div>
+        </td>
+    </tr>`;
+        });
 
-            cardsContainer.append(cardHtml);
+
+        // Apply Now function example
+        function ApplyNow(jobId) {
+            // Implement your logic for applying to the job with jobId
+            console.log(`Applying for job with ID: ${jobId}`);
+            // Add your application logic here, such as redirecting to an application form or handling the application process.
+        }
+
+
+        var table = '<table id="tblData"><thead><tr><th></th></tr></thead ><tbody>' + tr + "</tbody></table>"; 
+        cardsContainer.append(table);
+
+        $('#tblData').DataTable({
+            "pageLength": 5,
+            "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]] // Options for the number of records per page
         });
     }
 
@@ -365,12 +436,3 @@ function BindGrid() {
     //    ]
     //});
 }
-
-
-
-
-
-
-
-
-

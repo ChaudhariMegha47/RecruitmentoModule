@@ -1,7 +1,11 @@
 ﻿@using Recruitment.Models.Entities
 @model CreatejobRequest
 
-
+<style>
+    #tblData{
+        width: 1152.422px !important;
+    }
+</style>
 <div class="row">
     <div class="col-md-6">
         <h2>Job List</h2>
@@ -32,22 +36,25 @@
 @section Scripts {
     <script src="@Href("~/js/ckeditor.js")"></script>
     <script src="@Href("~/js/Pages/Createjob.js")"></script>
+    <script src="@Href("~/js/ckeditor.js")"></script>
+    <script src="~/jquery.js"></script>
+    <script src="~/ckeditor.js"></script>
+    <script src="~/adapters/jquery.js"></script>
     <!-- Modal -->
     <div class="modal fade" id="addjobModal" tabindex="-1" aria-labelledby="addjobModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addExperienceModalLabel">@ViewData["Title"] Createjob</h5>
+                    <h5 class="modal-title" id="addjobModalLabel">@ViewData["Title"] Createjob</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-
                 <div class="modal-body">
                     <div class="card">
                         <div class="card-body">
                             <form id="form">
                                 @Html.AntiForgeryToken()
-                                <input type="hidden" asp-for="JobId" />
-                                <input type="hidden" asp-for="Createddate" value="@DateTime.Now" />
+                                <input type="hidden" id="JobId" name="JobId" />
+                                <input type="hidden" id="Createddate" name="Createddate" value="@DateTime.Now" />
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label class="form-label" asp-for="Title">Title :</label>
@@ -60,24 +67,22 @@
                                         <span class="text-danger" id="vacanciesError"></span>
                                     </div>
                                 </div>
-
                                 <div class="row mb-3">
                                     <div class="col-md-6">
-                                        <label for="Qualification">Qualification :</label>
-                                        <select asp-for="qualification" class="form-control">
+                                        <label asp-for="qualification">Qualification :</label>
+                                        <select id="qualification" name="qualification" class="form-control">
                                             <option value="">Select Qualification</option>
                                         </select>
                                         <span class="text-danger" id="qualificationError"></span>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="Experience">Experience :</label>
-                                        <select asp-for="Experience" class="form-control">
+                                        <label asp-for="Experience">Experience :</label>
+                                        <select id="Experience" name="Experience" class="form-control">
                                             <option value="">Select Experience</option>
                                         </select>
                                         <span class="text-danger" id="experienceError"></span>
                                     </div>
                                 </div>
-
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label class="form-label" asp-for="Age">Age :</label>
@@ -90,25 +95,22 @@
                                         <span class="text-danger" id="validuptoError"></span>
                                     </div>
                                 </div>
-
                                 <div class="row mb-3">
                                     <div class="col-sm-12">
                                         <label class="form-label" asp-for="Jobdescription">JobDescription :</label>
-                                      <textarea class="form-control" id="Jobdescription" name="Jobdescription" rows="2"></textarea>
+                                        <textarea class="form-control" id="Jobdescription" name="Jobdescription" rows="2"></textarea>
                                         <span class="text-danger" id="jobdescError"></span>
                                     </div>
                                 </div>
-
                                 <div class="row mb-3">
                                     <div class="col-md-6">
                                         <label class="form-label" asp-for="IsActive">Is Active</label>
                                         <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" asp-for="IsActive" />
+                                            <input type="checkbox" class="form-check-input" id="IsActive" name="IsActive" />
                                             <span class="text-danger" id="isactiveError"></span>
                                         </div>
                                     </div>
                                 </div>
-
                             </form>
                         </div>
                     </div>
@@ -116,6 +118,34 @@
                 <div class="modal-footer">
                     <button type="button" class="btn grey btn-outline-secondary btn-round" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-outline-primary btn-round" id="btnMdlSave">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="addDetailModal" tabindex="-1" aria-labelledby="addDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="form">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" id="JobId" name="JobId" />
+                                <div class="row mb-3">
+                                    <div class="col-sm-12">
+                                        <label class="form-label" asp-for="Jobdescription">JobDescription :</label>
+                                        <textarea class="form-control editor" id="Jobdescription" name="Jobdescription" rows="2"></textarea>
+                                        <span class="text-danger" id="jobdescError"></span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn grey btn-outline-secondary btn-round" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>

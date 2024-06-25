@@ -5,13 +5,12 @@ using Recruitment.Model.Service;
 using Recruitment.Model.System;
 using Recruitment.Models.Entities;
 using Recruitment.Services.Service;
-
 namespace Recruitment.Controllers
 {
     public class ListofCandidateController : Controller
     {
-        private IListofCandidate applicationform;
-        public ListofCandidateController(IListofCandidate applicationformservice)
+        private IListofCandidateService applicationform;
+        public ListofCandidateController(IListofCandidateService applicationformservice)
         {
             this.applicationform = applicationformservice;
         }
@@ -48,6 +47,31 @@ namespace Recruitment.Controllers
             try
             {
                 ListofCandidateModel model = new ListofCandidateModel();
+                // Check if an image file is uploaded
+                if (applicationformModel.Candidate_image != null && applicationformModel.Candidate_image.Length > 0)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(applicationformModel.Candidate_image.FileName);
+                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "CandidateImages", fileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        applicationformModel.Candidate_image.CopyTo(stream);
+                    }
+                    model.candidate_image = "/CandidateImages/" + fileName;
+                }
+
+                
+                // Check if an image file is uploaded
+                if (applicationformModel.Resume_image != null && applicationformModel.Resume_image.Length > 0)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(applicationformModel.Resume_image.FileName);
+                    string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "ResumeImages", fileName);
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        applicationformModel.Resume_image.CopyTo(stream);
+                    }
+                    model.resume_image = "/ResumeImages/" + fileName;
+                }
+
                 model.candidate_id = applicationformModel.Candidate_id;
                 model.job_id = applicationformModel.Job_id;
                 model.title = applicationformModel.Title;
@@ -61,10 +85,8 @@ namespace Recruitment.Controllers
                 model.address = applicationformModel.Address;
                 model.contactno = applicationformModel.Contactno;
                 model.experience = applicationformModel.Experience;
-                model.qualification = applicationformModel.Qualification;
+                model.qualification = applicationformModel.qualification;
                 model.result = applicationformModel.Result;
-                model.resume_image = applicationformModel.Resume_image;
-                model.candidate_image = applicationformModel.Candidate_image;
                 model.IsActive = applicationformModel.IsActive;
 
                 // Call the service method to add or update the employee
@@ -96,6 +118,7 @@ namespace Recruitment.Controllers
                     ListofCandidateRequest obj = new ListofCandidateRequest();
                     obj.Candidate_id = application.candidate_id;
                     obj.Job_id = application.job_id;
+                    obj.Candidate_image = null;
                     obj.Title = application.title;
                     obj.FirstName = application.firstname;
                     obj.MiddleName = application.middlename;
@@ -107,10 +130,9 @@ namespace Recruitment.Controllers
                     obj.Address = application.address;
                     obj.Contactno = application.contactno;
                     obj.Experience = application.experience;
-                    obj.Qualification = application.qualification;
+                    obj.qualification = application.qualification;
+                    obj.Resume_image = null;
                     obj.Result = application.result;
-                    obj.Resume_image = application.resume_image;
-                    obj.Candidate_image = application.candidate_image;
                     obj.IsActive = application.IsActive;
 
                     // Populate JsonResponseModel

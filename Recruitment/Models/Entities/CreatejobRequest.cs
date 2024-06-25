@@ -6,7 +6,7 @@
         public string Title { get; set; }
         public string Jobdescription { get; set; }
         public long qualification { get; set; }
-        public string Experience { get; set; }
+        public long Experience { get; set; }
         public int Age { get; set; }
         public DateTime Validupto { get; set; }
         public int Vacancies { get; set; }
