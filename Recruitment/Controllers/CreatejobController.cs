@@ -50,13 +50,16 @@ namespace Recruitment.Controllers
                 CreatejobModel model = new CreatejobModel();
                 model.job_id = createjobRequest.JobId;
                 model.title = createjobRequest.Title;
-                model.jobdescription = createjobRequest.Jobdescription;
+                model.jobposition = createjobRequest.Jobposition;
                 model.qualification = createjobRequest.qualification;
-                model.experience = createjobRequest.Experience;
-                model.age = createjobRequest.Age;
-                model.validupto = createjobRequest.Validupto;
+                model.jobtype = createjobRequest.Jobtype;
+                model.jobdescription = createjobRequest.Jobdescription;
                 model.vacancies = createjobRequest.Vacancies;
+                model.experience = createjobRequest.Experience;
+                model.validupto = createjobRequest.Validupto;
                 model.createddate = createjobRequest.Createddate;
+                model.startsalary = createjobRequest.StartSalary;
+                model.endsalary = createjobRequest.EndSalary;
                 model.createdby = createjobRequest.Createdby;
                 model.IsActive = createjobRequest.IsActive;
 
@@ -128,13 +131,16 @@ namespace Recruitment.Controllers
                     CreatejobRequest job = new CreatejobRequest();
                     job.JobId = createjob.job_id;
                     job.Title = createjob.title;
-                    job.Jobdescription = createjob.jobdescription;
+                    job.Jobposition = createjob.jobposition;
                     job.qualification = createjob.qualification;
-                    job.Experience = createjob.experience;
-                    job.Age = createjob.age;
-                    job.Validupto = createjob.validupto;
+                    job.Jobtype = createjob.jobtype;
+                    job.Jobdescription = createjob.jobdescription;
                     job.Vacancies = createjob.vacancies;
+                    job.Experience = createjob.experience;
+                    job.Validupto = createjob.validupto;
                     job.Createddate = createjob.createddate;
+                    job.StartSalary = createjob.startsalary;
+                    job.EndSalary = createjob.endsalary;
                     job.Createdby = createjob.createdby;
                     job.IsActive = createjob.IsActive;
 

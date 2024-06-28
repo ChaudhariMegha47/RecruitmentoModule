@@ -156,31 +156,38 @@ function BindGrid() {
         var cardsContainer = $('#cardsContainer');
         cardsContainer.empty(); // Clear existing cards
         var tr = "";
+        var value = 0;
+
         $.each(data, function (index, employee) {
+            value++;
+            if (value == 1) {
+                tr += "<tr><td><div class='row'>";
+            }
             tr += `
-                <tr>
-                <td class="row">
-                <div>
-                    <div class="card overflow-hidden rounded-2">
-                        <div class="position-relative">
-                            <a href="javascript:void(0)">
-                                <img src="${employee.image_Path}" class="card-img-top rounded-0" alt="">
-                            </a>
-                            <a href="javascript:void(0)" class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart">
-                                <i class="ti ti-pencil fs-4" onclick="EditModel('${employee.emp_id}');"></i>
-                            </a>
-                        </div>
-                        <div class="card-body pt-3 p-4">
-                            <h6 class="fw-semibold fs-4">${employee.title} ${employee.firstname} ${employee.lastname}</h6>
-                            <div class="d-flex align-items-center justify-content-between">
-                                <h6 class="fw-semibold fs-4 mb-0">${employee.designation}</h6>
-                               <button class="btn mb-0 btn-outline-danger btndelete" title="Delete" onclick="DeleteData('${employee.emp_id}');"><i class="fas fa-trash-alt"></i>Delete</button>
+                   <div class="col-md-3">
+                        <div class="card overflow-hidden rounded-2">
+                            <div class="position-relative">
+                                <a href="javascript:void(0)">
+                                    <img src="${employee.image_Path}" class="card-img-top rounded-0" alt="">
+                                </a>
+                                <a href="javascript:void(0)" class="bg-primary rounded-circle p-2 text-white d-inline-flex position-absolute bottom-0 end-0 mb-n3 me-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Add To Cart">
+                                    <i class="ti ti-pencil fs-4" onclick="EditModel('${employee.emp_id}');"></i>
+                                </a>
+                            </div>
+                            <div class="card-body pt-3 p-4">
+                                <h6 class="fw-semibold fs-4">${employee.title} ${employee.firstname} ${employee.lastname}</h6>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <h6 class="fw-semibold fs-4 mb-0">${employee.designation}</h6>
+                                   <button class="btn mb-0 btn-outline-danger btndelete" title="Delete" onclick="DeleteData('${employee.emp_id}');"><i class="fas fa-trash-alt"></i>Delete</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                </td>
-                </tr>`;
+                   </div>`;
+
+            if (value == 4) {
+                tr += "</div></td></tr>";
+                value = 0;
+            }
         });
 
         var table = '<table id="tblData"><thead><tr><th></th></tr></thead ><tbody>' + tr + "</tbody></table>";

@@ -49,70 +49,143 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="card">
-                        <div class="card-body">
-                            <form id="form">
-                                @Html.AntiForgeryToken()
-                                <input type="hidden" id="JobId" name="JobId" />
-                                <input type="hidden" id="Createddate" name="Createddate" value="@DateTime.Now" />
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label" asp-for="Title">Title :</label>
-                                        <input type="text" class="form-control" id="Title" name="Title">
-                                        <span class="text-danger" id="jobError"></span>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label" asp-for="Vacancies">Vacancies :</label>
-                                        <input type="text" class="form-control" id="Vacancies" name="Vacancies">
-                                        <span class="text-danger" id="vacanciesError"></span>
+                    <div class="card-body">
+                        <form class="row g-3 needs-validation was-validated" novalidate="">
+                        <div class="row g-4">
+                            <div class="col-lg-6">
+                                <div>
+                                    <label for="job-title-Input" class="form-label" asp-for="Title">Job Title <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="Title" placeholder="Enter job title" required="">
+                                        <div class="valid-feedback" id="jobError">
+                                        Looks good!
                                     </div>
                                 </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label asp-for="qualification">Qualification :</label>
-                                        <select id="qualification" name="qualification" class="form-control">
-                                            <option value="">Select Qualification</option>
-                                        </select>
-                                        <span class="text-danger" id="qualificationError"></span>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label asp-for="Experience">Experience :</label>
-                                        <select id="Experience" name="Experience" class="form-control">
-                                            <option value="">Select Experience</option>
-                                        </select>
-                                        <span class="text-danger" id="experienceError"></span>
+                            </div>
+                            <div class="col-lg-6">
+                                <div>
+                                    <label for="job-position-Input" class="form-label" asp-for="Jobposition">Job Position <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="Jobposition" placeholder="Enter job position" required="">
+                                    <div class="valid-feedback" id="jobposistionerror">
+                                        Looks good!
                                     </div>
                                 </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label" asp-for="Age">Age :</label>
-                                        <input type="text" class="form-control" id="Age" name="Age">
-                                        <span class="text-danger" id="ageError"></span>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label" asp-for="Validupto">Valid Upto :</label>
-                                        <input type="date" class="form-control" id="Validupto" name="Validupto">
-                                        <span class="text-danger" id="validuptoError"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" asp-for="qualification">Qualification</label>
+                                <select id="qualification" name="qualification" class="form-control">
+                                        <option value="">Select Qualification</option>
+                                </select>
+                                    <div class="valid-feedback" id="qualificationError">
+                                    Looks good!
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div>
+                                    <label for="job-type-Input" class="form-label" asp-for="Jobtype">Job Type <span class="text-danger">*</span></label>
+                                    <select class="form-control" data-choices="" id="Jobtype" name="job-type-Input" required="">
+                                        <option value="">Select job type</option>
+                                        <option value="Full Time">Full Time</option>
+                                        <option value="Part Time">Part Time</option>
+                                        <option value="Freelance">Freelance</option>
+                                        <option value="Intership">Intership</option>
+                                    </select>
+                                    <div class="valid-feedback" id="jobtypeerror">
+                                        Looks good!
                                     </div>
                                 </div>
-                                <div class="row mb-3">
-                                    <div class="col-sm-12">
-                                        <label class="form-label" asp-for="Jobdescription">JobDescription :</label>
-                                        <textarea class="form-control" id="Jobdescription" name="Jobdescription" rows="2"></textarea>
-                                        <span class="text-danger" id="jobdescError"></span>
+                            </div>
+
+                            <div class="col-lg-12">
+                                <div>
+                                    <label for="description-field" class="form-label" asp-for="Jobdescription">Description <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" id="Jobdescription" rows="3" placeholder="Enter description" required=""></textarea>
+                                    <div class="valid-feedback" id="jobdecerror">
+                                        Looks good!
                                     </div>
                                 </div>
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label" asp-for="IsActive">Is Active</label>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="IsActive" name="IsActive" />
-                                            <span class="text-danger" id="isactiveError"></span>
-                                        </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div>
+                                    <label for="vancancy-Input" class="form-label" asp-for="Vacancies">No. of Vancancy <span class="text-danger">*</span></label>
+                                    <input type="number" class="form-control" id="Vacancies" placeholder="No. of vancancy" required="">
+                                    <div class="valid-feedback" id="vacancies">
+                                        Looks good!
                                     </div>
                                 </div>
-                            </form>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" asp-for="Experience">Experience</label>
+                                <select id="Experience" name="Experience" class="form-control">
+                                        <option value="">Select Experience</option>
+                                </select>
+                                    <div class="valid-feedback" id="experienceError">
+                                    Looks good!
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div>
+                                    <label for="last-apply-date-Input" class="form-label" asp-for="Validupto">Last Date of Apply <span class="text-danger">*</span></label>
+                                    <input type="date" class="form-control" id="Validupto" data-provider="flatpickr" data-date-format="d M, Y" placeholder="Select date"  required="">
+                                    <div class="valid-feedback" >
+                                        Looks good!
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div>
+                                    <label for="close-date-Input" class="form-label" asp-for="Createddate">Created Date <span class="text-danger">*</span></label>
+                                    <input type="datetime-local" class="form-control" id="close-date-Input" data-provider="flatpickr" data-date-format="d M, Y" placeholder="" required="">
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div>
+                                    <label for="start-salary-Input" class="form-label" asp-for="StartSalary">Start Salary</label>
+                                    <input type="number" class="form-control" id="start-salary-Input" placeholder="Enter start salary" required="">
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div>
+                                    <label for="last-salary-Input" class="form-label" asp-for="EndSalary">Last Salary</label>
+                                    <input type="number" class="form-control" id="last-salary-Input" placeholder="Enter end salary" required="">
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                </div>
+                            </div>
+
+                         @*    <div class="col-md-6">
+                                <div>
+                                    <label for="country-Input" class="form-label">Country <span class="text-danger"></span></label>
+                                    <input type="text" class="form-control" id="country-Input" placeholder="Enter country" required="">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div>
+                                    <label for="city-Input" class="form-label">State <span class="text-danger"></span></label>
+                                    <input type="text" class="form-control" id="city-Input" placeholder="Enter city" required="">
+                                </div>
+                            </div> *@
+
+                         @*    <div class="col-lg-12">
+                                <div>
+                                    <label for="website-field" class="form-label">Tags</label>
+                                    <input class="form-control" id="choices-text-unique-values" data-choices="" data-choices-text-unique-true="" type="text" value="Design, Remote" required="">
+                                </div>
+                            </div> *@
                         </div>
+                        </form>
                     </div>
                 </div>
                 <div class="modal-footer">

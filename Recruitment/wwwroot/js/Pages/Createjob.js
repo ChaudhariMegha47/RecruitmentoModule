@@ -182,6 +182,11 @@ function EditModel(jobid) {
     });
 }
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+
 function DeleteData(jobid) {
     if (confirm('Are you sure you want to delete this?')) {
         $.ajax({
@@ -276,55 +281,46 @@ function BindGrid() {
         var tr = "";
         $.each(data, function (index, job) {
             tr += `
-    <tr>
-        <td class="row">
-            <div>
-                <div class="col-md-12">
-                    <div class="card-outline-primary">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <h4 class="card-title">${job.title} &nbsp;<span class="ti ti-info-circle fs-6" onclick="DetailModel('${job.job_id}');" style="display: inline;"></span></h4>
-                                        <div>${new Date(job.createddate).toLocaleDateString()}</div><br>
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="d-flex justify-content-end">
-                                            <a href="/ListofCandidate/Index?jobId=${job.job_id}" class="btn mb-0 btn-outline-success btnedit d-inline-flex mb-n3 me-3" title="Apply">
-                                                Apply Now
-                                            </a>
-                                            <a href="javascript:void(0)" class="bg-primary rounded-circle p-2 text-white d-inline-flex mb-n3 me-3" style="float: right;" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" onclick="EditModel('${job.job_id}');">
-                                                <i class="ti ti-pencil fs-4"></i>
-                                            </a>
-                                            <a href="javascript:void(0)" class="bg-primary rounded-circle p-2 text-white d-inline-flex mb-n3 me-3" style="float: right;" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" onclick="DeleteData('${job.job_id}');">
-                                                <i class="ti ti-trash fs-4"></i>
-                                            </a>
+                <tr>
+                    <td class="row">
+                        <div>
+                            <div class="col-md-12">
+                                <div class="card-outline-primary">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <h4 class="card-title">${job.title} &nbsp;<span class="ti ti-info-circle fs-6" onclick="DetailModel('${job.job_id}');" style="display: inline;"></span></h4>
+                                                    <div>${job.createddate}</div><br>
+                                                </div>
+                                                <div class="col-md-8">
+                                                    <div class="d-flex justify-content-end">
+                                                        <a href="/ListofCandidate/Index?jobId=${job.job_id}" class="btn mb-0 btn-outline-success btnedit d-inline-flex mb-n3 me-3" title="Apply" id="addCandidateBtn">
+                                                            Apply Now
+                                                        </a>
+                                                        <a href="javascript:void(0)" class="bg-primary rounded-circle p-2 text-white d-inline-flex mb-n3 me-3" style="float: right;" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" onclick="EditModel('${job.job_id}');">
+                                                            <i class="ti ti-pencil fs-4"></i>
+                                                        </a>
+                                                        <a href="javascript:void(0)" class="bg-primary rounded-circle p-2 text-white d-inline-flex mb-n3 me-3" style="float: right;" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" onclick="DeleteData('${job.job_id}');">
+                                                            <i class="ti ti-trash fs-4"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-3"><label class="form-label">Vacancies:</label><br>${job.vacancies}</div>
+                                                <div class="col-md-3"><label class="form-label">Experience:</label><br>${job.strexperience}</div>
+                                                <div class="col-md-3"><label class="form-label">Qualification:</label><br>${job.strqualification}</div>
+                                                <div class="col-md-3"><label class="form-label">Valid Upto:</label><br>${new Date(job.validupto).toLocaleDateString()}</div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-3"><label class="form-label">Vacancies:</label><br>${job.vacancies}</div>
-                                    <div class="col-md-3"><label class="form-label">Experience:</label><br>${job.strexperience}</div>
-                                    <div class="col-md-3"><label class="form-label">Qualification:</label><br>${job.strqualification}</div>
-                                    <div class="col-md-3"><label class="form-label">Valid Upto:</label><br>${new Date(job.validupto).toLocaleDateString()}</div>
-                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </td>
-    </tr>`;
-        });
-
-
-        // Apply Now function example
-        function ApplyNow(jobId) {
-            // Implement your logic for applying to the job with jobId
-            console.log(`Applying for job with ID: ${jobId}`);
-            // Add your application logic here, such as redirecting to an application form or handling the application process.
-        }
-
+                    </td>
+                </tr>`;
+                    });
 
         var table = '<table id="tblData"><thead><tr><th></th></tr></thead ><tbody>' + tr + "</tbody></table>"; 
         cardsContainer.append(table);

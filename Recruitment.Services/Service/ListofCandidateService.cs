@@ -32,19 +32,19 @@ namespace Recruitment.Services.Service
                 Dictionary<string, object> dictionary = new Dictionary<string, object>();
                 dictionary.Add("p_id", model.candidate_id);
                 dictionary.Add("p_jobid", model.job_id);
-                dictionary.Add("p_Image_Path", model.candidate_image);
                 dictionary.Add("p_Title", model.title);
                 dictionary.Add("p_Firstname", model.firstname);
                 dictionary.Add("p_middlename", model.middlename);
                 dictionary.Add("p_Lastname", model.lastname);
-                dictionary.Add("p_Gender", model.gender);
                 dictionary.Add("p_Dateofbirth", model.dateofbirth);
                 dictionary.Add("p_age", model.age);
-                dictionary.Add("p_Email", model.email);
-                dictionary.Add("p_address", model.address);
                 dictionary.Add("p_Contactno", model.contactno);
-                dictionary.Add("p_experience", model.experience);
+                dictionary.Add("p_Email", model.email);
+                dictionary.Add("p_Gender", model.gender);
+                dictionary.Add("p_address", model.address);
                 dictionary.Add("p_qualification", model.qualification);
+                dictionary.Add("p_experience", model.experience);
+                dictionary.Add("p_Image_Path", model.candidate_image);
                 dictionary.Add("p_resume_image", model.resume_image);
                 dictionary.Add("p_result", model.result);
                 dictionary.Add("p_IsActive", model.IsActive);
@@ -70,7 +70,7 @@ namespace Recruitment.Services.Service
             }
             catch (Exception ex)
             {
-                ErrorLogger.Error("Error adding/updating Job.", ex.ToString(), "ApplicationformService", "AddOrUpdate");
+                ErrorLogger.Error("Error adding/updating Job.", ex.ToString(), "listofCandidateService", "AddOrUpdate");
                 response.Success = false;
                 response.Message = "An error occurred while adding/updating job.";
             }
@@ -93,7 +93,7 @@ namespace Recruitment.Services.Service
             }
             catch (Exception ex)
             {
-                ErrorLogger.Error($"Error deleting Job Name with ID {CandidateId}.", ex.ToString(), "ApplicationformService", "Delete");
+                ErrorLogger.Error($"Error deleting Job Name with ID {CandidateId}.", ex.ToString(), "listofCandidateService", "Delete");
                 response.Success = false;
                 response.Message = "An error occurred while deleting Job.";
             }
@@ -109,7 +109,7 @@ namespace Recruitment.Services.Service
             }
             catch (Exception ex)
             {
-                ErrorLogger.Error("Error Into GetAll Candidate id", ex.ToString(), "ApplicationformService", "Get");
+                ErrorLogger.Error("Error Into GetAll Candidate id", ex.ToString(), "listofCandidateService", "Get");
                 return null;
             }
         }
@@ -124,7 +124,7 @@ namespace Recruitment.Services.Service
             }
             catch (Exception ex)
             {
-                ErrorLogger.Error("Error Into Proc_GetAllJobList", ex.ToString(), "ApplicationformService", "GetList");
+                ErrorLogger.Error("Error Into Proc_GetAllJobList", ex.ToString(), "listofCandidateService", "GetList");
                 lst = null;
             }
             return lst;

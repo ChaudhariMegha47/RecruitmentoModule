@@ -9,10 +9,10 @@ namespace Recruitment.Controllers
 {
     public class ListofCandidateController : Controller
     {
-        private IListofCandidateService applicationform;
-        public ListofCandidateController(IListofCandidateService applicationformservice)
+        private IListofCandidateService listofCandidateService;
+        public ListofCandidateController(IListofCandidateService listofCandidateService)
         {
-            this.applicationform = applicationformservice;
+            this.listofCandidateService = listofCandidateService;
         }
 
         public IActionResult Index()
@@ -26,7 +26,7 @@ namespace Recruitment.Controllers
         {
             try
             {
-                var lsdata = applicationform.GetList();
+                var lsdata = listofCandidateService.GetList();
 
                 return Json(new { recordsFiltered = lsdata.Count(), recordsTotal = lsdata.Count(), data = lsdata });
             }
@@ -41,56 +41,56 @@ namespace Recruitment.Controllers
 
         [HttpPost]
         [Route("/ListofCandidate/SaveListofCandidateData")]
-        public JsonResponseModel SaveListofCandidateData(ListofCandidateRequest applicationformModel)
+        public JsonResponseModel SaveListofCandidateData(ListofCandidateRequest listofCandidateRequest)
         {
             JsonResponseModel obj = new JsonResponseModel();
             try
             {
                 ListofCandidateModel model = new ListofCandidateModel();
                 // Check if an image file is uploaded
-                if (applicationformModel.Candidate_image != null && applicationformModel.Candidate_image.Length > 0)
+                if (listofCandidateRequest.Candidate_image != null && listofCandidateRequest.Candidate_image.Length > 0)
                 {
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(applicationformModel.Candidate_image.FileName);
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(listofCandidateRequest.Candidate_image.FileName);
                     string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "CandidateImages", fileName);
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        applicationformModel.Candidate_image.CopyTo(stream);
+                        listofCandidateRequest.Candidate_image.CopyTo(stream);
                     }
                     model.candidate_image = "/CandidateImages/" + fileName;
                 }
 
                 
                 // Check if an image file is uploaded
-                if (applicationformModel.Resume_image != null && applicationformModel.Resume_image.Length > 0)
+                if (listofCandidateRequest.Resume_image != null && listofCandidateRequest.Resume_image.Length > 0)
                 {
-                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(applicationformModel.Resume_image.FileName);
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(listofCandidateRequest.Resume_image.FileName);
                     string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "ResumeImages", fileName);
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        applicationformModel.Resume_image.CopyTo(stream);
+                        listofCandidateRequest.Resume_image.CopyTo(stream);
                     }
                     model.resume_image = "/ResumeImages/" + fileName;
                 }
 
-                model.candidate_id = applicationformModel.Candidate_id;
-                model.job_id = applicationformModel.Job_id;
-                model.title = applicationformModel.Title;
-                model.firstname = applicationformModel.FirstName;
-                model.middlename = applicationformModel.MiddleName;
-                model.lastname = applicationformModel.LastName;
-                model.gender = applicationformModel.Gender;
-                model.dateofbirth = applicationformModel.Dateofbirth;
-                model.age = applicationformModel.Age;
-                model.email = applicationformModel.Email;
-                model.address = applicationformModel.Address;
-                model.contactno = applicationformModel.Contactno;
-                model.experience = applicationformModel.Experience;
-                model.qualification = applicationformModel.qualification;
-                model.result = applicationformModel.Result;
-                model.IsActive = applicationformModel.IsActive;
+                model.candidate_id = listofCandidateRequest.Candidate_id;
+                model.job_id = listofCandidateRequest.Job_id;
+                model.title = listofCandidateRequest.Title;
+                model.firstname = listofCandidateRequest.FirstName;
+                model.middlename = listofCandidateRequest.MiddleName;
+                model.lastname = listofCandidateRequest.LastName;
+                model.dateofbirth = listofCandidateRequest.Dateofbirth;
+                model.age = listofCandidateRequest.Age;
+                model.contactno = listofCandidateRequest.Contactno;
+                model.email = listofCandidateRequest.Email;
+                model.gender = listofCandidateRequest.Gender;
+                model.address = listofCandidateRequest.Address;
+                model.qualification = listofCandidateRequest.qualification;
+                model.experience = listofCandidateRequest.Experience;
+                model.result = listofCandidateRequest.Result;
+                model.IsActive = listofCandidateRequest.IsActive;
 
                 // Call the service method to add or update the employee
-                var result = applicationform.AddOrUpdate(model);
+                var result = listofCandidateService.AddOrUpdate(model);
                 obj.result = result.result;
                 obj.Message = "Record saved successfully";
             }
@@ -111,26 +111,26 @@ namespace Recruitment.Controllers
             JsonResponseModel objreturn = new JsonResponseModel();
             try
             {
-                var application = applicationform.Get(candidateid);
+                var application = listofCandidateService.Get(candidateid);
                 if (application != null)
                 {
                     // Populate QualificationRequest object
                     ListofCandidateRequest obj = new ListofCandidateRequest();
                     obj.Candidate_id = application.candidate_id;
                     obj.Job_id = application.job_id;
-                    obj.Candidate_image = null;
                     obj.Title = application.title;
                     obj.FirstName = application.firstname;
                     obj.MiddleName = application.middlename;
                     obj.LastName = application.lastname;
-                    obj.Gender = application.gender;
                     obj.Dateofbirth = application.dateofbirth;
                     obj.Age = application.age;
-                    obj.Email = application.email;
-                    obj.Address = application.address;
                     obj.Contactno = application.contactno;
-                    obj.Experience = application.experience;
+                    obj.Email = application.email;
+                    obj.Gender = application.gender;
+                    obj.Address = application.address;
                     obj.qualification = application.qualification;
+                    obj.Experience = application.experience;
+                    obj.Candidate_image = null;
                     obj.Resume_image = null;
                     obj.Result = application.result;
                     obj.IsActive = application.IsActive;

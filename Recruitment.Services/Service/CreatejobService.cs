@@ -32,12 +32,16 @@ namespace Recruitment.Services.Service
                 Dictionary<string, object> dictionary = new Dictionary<string, object>();
                 dictionary.Add("p_id", model.job_id);
                 dictionary.Add("p_Title", model.title);
-                dictionary.Add("p_Jobdescription", model.jobdescription);
+                dictionary.Add("p_Jobposition", model.jobposition);
                 dictionary.Add("p_Qualification", model.qualification);
-                dictionary.Add("p_Experience", model.experience);
-                dictionary.Add("p_Age", model.age);
-                dictionary.Add("p_Validupto", model.validupto);
+                dictionary.Add("p_Jobtype", model.jobtype);
+                dictionary.Add("p_Jobdescription", model.jobdescription);
                 dictionary.Add("p_Vacancies", model.vacancies);
+                dictionary.Add("p_Experience", model.experience);
+                dictionary.Add("p_Validupto", model.validupto);
+                dictionary.Add("p_CreatedDate", model.createddate);
+                dictionary.Add("p_Startsalary", model.startsalary);
+                dictionary.Add("p_Endsalary", model.endsalary);
                 dictionary.Add("p_Createdby", model.createdby);
                 dictionary.Add("p_IsActive", model.IsActive);
 

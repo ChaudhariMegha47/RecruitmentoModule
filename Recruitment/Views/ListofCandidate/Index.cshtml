@@ -1,79 +1,160 @@
 ﻿@using Recruitment.Models.Entities
 @model ListofCandidateRequest
 
-<h2>Candidate List</h2>
-<style>
+<h2>Application Form</h2>
+@* <style>
     .table-responsive {
         max-height: 500px;
         overflow-y: auto;
     }
-</style>
-
-
-
-<section class="basic-elements">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card card-outline-primary">
-                <div class="card-body collapse show">
-                    <div class="card-block card-dashboard">
-                        <div class="row">
-                            <div class="col-md-12 text-right">
-                                @* <button type="button" class="btn btn-outline-primary btn-round mr-2" id="btnAddNew"> *@
-                                @*  <i class="fa fa-plus mr-1"></i>Add New @ViewData["Title"] *@
-                                <a id="addCandidateBtn" data-bs-toggle="modal" class="btn btn-outline-primary btn-round mr-2" style="float:right">Apply Now</a>
-                            </div>
-                        </div>
-                        <br />
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="table-responsive">
-                                    <table class="table display nowrap table-striped table-bordered scroll-horizontal w-100 text-center nowrap dataTable no-footer" id="tbldata">
-                                        <thead>
-                                            <tr>
-                                                <th>Sr No.</th>
-                                                <th>Job</th>
-                                                <th>Candidate Image</th>
-                                                <th>Title</th>
-                                                <th>First Name</th>
-                                                <th>Middle Name</th>
-                                                <th>Last Name</th>
-                                                <th>Gender</th>
-                                                <th>Date of Birth</th>
-                                                <th>Age</th>
-                                                <th>Email</th>
-                                                <th>Address</th>
-                                                <th>Contact No.</th>
-                                                <th>Experience</th>
-                                                <th>Qualification</th>
-                                                <th>Resume</th>
-                                                <th>Result</th>
-                                                <th>Is Active</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+</style> *@
+@section Scripts {
+<script src="@Href("~/js/Pages/ListofCandidate.js")"></script>
+}
+<div class="card" id="addCandidateModal">
+    <div class="card-body">
+        <form id="form">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Candidate_id" />
+            <input type="hidden" asp-for="Job_id" />
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label" asp-for="Title">Title:</label>
+                    <select id="Title" name="Title" class="form-select">
+                        <option value="Mr">Mr.</option>
+                        <option value="Miss">Miss</option>
+                        <option value="Mrs">Mrs.</option>
+                    </select>
+                    <span class="text-danger" id="titleError"></span>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" asp-for="FirstName">Firstname:</label>
+                    <input type="text" class="form-control" id="Firstname" name="Firstname">
+                    <span class="text-danger" id="firstnameError"></span>
                 </div>
             </div>
-        </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label" asp-for="MiddleName">Middle Name :</label>
+                    <input type="text" class="form-control" id="MiddleName" name="Middlename">
+                    <span class="text-danger" id="middlenameError"></span>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" asp-for="LastName">Lastname:</label>
+                    <input type="text" class="form-control" id="Lastname" name="Lastname">
+                    <span class="text-danger" id="lastnameError"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label" asp-for="Dateofbirth">Date of Birth:</label>
+                    <input type="date" class="form-control" id="Dateofbirth" name="Dateofbirth">
+                    <span class="text-danger" id="dobError"></span>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" asp-for="Age">Age :</label>
+                    <input type="text" class="form-control" id="Age" name="Age">
+                    <span class="text-danger" id="ageError"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label" asp-for="Contactno">Contact No. :</label>
+                    <input class="form-control" id="Contactno" name="Contactno">
+                    <span class="text-danger" id="contactnoError"></span>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" asp-for="Email">Email :</label>
+                    <input class="form-control" type="text" id="Email" name="Email">
+                    <span class="text-danger" id="emailError"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Gender:</label>
+                    <div>
+                        <input type="radio" class="form-check-input" asp-for="Gender" value="Male" id="Gender_Male" /> <label class="form-check-label" for="Gender_Male">Male</label> <br />
+                        <input type="radio" class="form-check-input" asp-for="Gender" value="Female" id="Gender_Female" /> <label class="form-check-label" for="Gender_Female">Female</label> <br />
+                        <input type="radio" class="form-check-input" asp-for="Gender" value="Other" id="Gender_Other" /> <label class="form-check-label" for="Gender_Other">Other</label>
+                    </div>
+                    <span class="text-danger" id="genderError"></span>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" asp-for="Address">Address :</label>
+                    <textarea id="Address" name="Address" cols="74" rows="3"></textarea>
+                    <span class="text-danger" id="addressError"></span>
+                </div>
+            </div>  
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label" asp-for="qualification">Qualification :</label>
+                    <select id="qualification" name="qualification" class="form-control">
+                        <option value="">Select Qualification</option>
+                    </select>
+                    <span class="text-danger" id="qualificationError"></span>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" asp-for="Experience">Experience :</label>
+                    <select id="Experience" name="Experience" class="form-control">
+                        <option value="">Select Experience</option>
+                    </select>
+                    <span class="text-danger" id="experienceError"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Candidate Image:</label>
+                    <input type="file" class="form-control" asp-for="Candidate_image" id="CandidateImageFile" />
+                    <span class="text-danger" id="candidateError"></span>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Resume Image:</label>
+                    <input type="file" class="form-control" asp-for="Resume_image" id="ResumeImageFile" />
+                    <span class="text-danger" id="resumeError"></span>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label" asp-for="Result">Status:</label>
+                    <select id="Result" name="Result" class="form-select">
+                        <option value="Pendding">Pendding</option>
+                        <option value="Selected">Selected</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                    <span class="text-danger" id="resultError"></span>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" asp-for="IsActive">Is Active:</label>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" asp-for="IsActive" />
+                    </div>
+                    <span class="text-danger" id="isactiveError"></span>
+                </div>
+            </div>
+            <div style="float:right;">
+          @*       <button type="button" class="btn grey btn-outline-secondary btn-round" data-bs-dismiss="modal">Close</button> *@
+                <button type="submit" class="btn btn-outline-primary btn-round" id="btnMdlSave">Save</button>
+            </div>
+        </form>
     </div>
-</section>
+</div>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
-@section Scripts {
+@* @section Scripts {
     <script src="@Href("~/js/ckeditor.js")"></script>
 
-    <script src="@Href("~/js/Pages/ListofCandidate.js")"></script>
+    <script src="@Href("~/js/Pages/ListofCandidate.js")"></script> *@
     <!-- Modal -->
-    <div class="modal fade" id="addCandidateModal" tabindex="-1" aria-labelledby="addCandidateModalLabel" aria-hidden="true">
+   @*  <div class="modal fade" id="addCandidateModal" tabindex="-1" aria-labelledby="addCandidateModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -82,134 +163,12 @@
                 </div>
 
                 <div class="modal-body">
-                    <div class="card">
-                        <div class="card-body">
-                            <form id="form">
-                                @Html.AntiForgeryToken()
-                                <input type="hidden" asp-for="Candidate_id" />
-                                <input type="hidden" asp-for="Job_id" />
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label">Candidate Image:</label>
-                                        <input type="file" class="form-control" asp-for="Candidate_image" id="CandidateImageFile" />
-                                        <span class="text-danger" id="candidateError"></span>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label" asp-for="Title">Title:</label>
-                                        <select id="Title" name="Title" class="form-select">
-                                            <option value="Mr">Mr.</option>
-                                            <option value="Miss">Miss</option>
-                                            <option value="Mrs">Mrs.</option>
-                                        </select>
-                                        <span class="text-danger" id="titleError"></span>
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label" asp-for="FirstName">Firstname:</label>
-                                        <input type="text" class="form-control" id="Firstname" name="Firstname">
-                                        <span class="text-danger" id="firstnameError"></span>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label" asp-for="MiddleName">Middle Name :</label>
-                                        <input type="text" class="form-control" id="MiddleName" name="Middlename">
-                                        <span class="text-danger" id="middlenameError"></span>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label" asp-for="LastName">Lastname:</label>
-                                        <input type="text" class="form-control" id="Lastname" name="Lastname">
-                                        <span class="text-danger" id="lastnameError"></span>
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label" asp-for="Dateofbirth">Date of Birth:</label>
-                                        <input type="date" class="form-control" id="Dateofbirth" name="Dateofbirth">
-                                        <span class="text-danger" id="dobError"></span>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label" asp-for="Age">Age :</label>
-                                        <input type="text" class="form-control" id="Age" name="Age">
-                                        <span class="text-danger" id="ageError"></span>
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label" asp-for="Address">Address :</label>
-                                        <textarea id="Address" name="Address" rows="2"></textarea>
-                                        <span class="text-danger" id="addressError"></span>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label" asp-for="Email">Email :</label>
-                                        <input class="form-control" type="text" id="Email" name="Email">
-                                        <span class="text-danger" id="emailError"></span>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label" asp-for="Contactno">Contact No. :</label>
-                                        <input class="form-control" id="Contactno" name="Contactno">
-                                        <span class="text-danger" id="contactnoError"></span>
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label">Gender:</label>
-                                        <div>
-                                            <input type="radio" class="form-check-input" asp-for="Gender" value="Male" id="Gender_Male" /> <label class="form-check-label" for="Gender_Male">Male</label>
-                                            <input type="radio" class="form-check-input" asp-for="Gender" value="Female" id="Gender_Female" /> <label class="form-check-label" for="Gender_Female">Female</label>
-                                            <input type="radio" class="form-check-input" asp-for="Gender" value="Other" id="Gender_Other" /> <label class="form-check-label" for="Gender_Other">Other</label>
-                                        </div>
-                                        <span class="text-danger" id="genderError"></span>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="Experience">Experience :</label>
-                                        <select asp-for="Experience" class="form-control">
-                                            <option value="">Select Experience</option>
-                                        </select>
-                                        <span class="text-danger" id="experienceError"></span>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="qualification">Qualification :</label>
-                                        <select asp-for="qualification" class="form-control">
-                                            <option value="">Select Qualification</option>
-                                        </select>
-                                        <span class="text-danger" id="qualificationError"></span>
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <label class="form-label">Resume Image:</label>
-                                        <input type="file" class="form-control" asp-for="Resume_image" id="ResumeImageFile" />
-                                        <span class="text-danger" id="resumeError"></span>
-
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label class="form-label" asp-for="Result">Status :</label>
-                                        <input class="form-control" id="Result" name="Result">
-                                        <span class="text-danger" id="resultError"></span>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label" asp-for="IsActive">Is Active:</label>
-                                    <div class="form-check">
-                                        <input type="checkbox" class="form-check-input" asp-for="IsActive" />
-                                    </div>
-                                    <span class="text-danger" id="isactiveError"></span>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                   
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn grey btn-outline-secondary btn-round" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-outline-primary btn-round" id="btnMdlSave">Save</button>
+                   
                 </div>
             </div>
         </div>
-    </div>
-}
+    </div> *@
+@* } *@
