@@ -12,14 +12,20 @@ $(document).ready(function () {
         $('#addjobModal').modal('show');
     });
     $('#btnMdlSave').click(function () {
+        debugger;
         // Validation
         var Title = $('#Title').val();
-        var Vacancies = $('#Vacancies').val();
+        var Jobposition = $('#Jobposition').val();
         var Qualification = $('#qualification').val();
-        var Experience = $('#Experience').val();
-        var Age = $('#Age').val();
-        var Validupto = $('#Validupto').val();
+        var Jobtype = $('#Jobtype').val();
         var Jobdescription = $('#Jobdescription').val();
+        var Vacancies = $('#Vacancies').val();
+        var Experience = $('#Experience').val();
+        var Validupto = $('#Validupto').val();
+        var Createddate = $('#Createddate').val();
+        var StartSalary = $('#StartSalary').val();
+        var EndSalary = $('#EndSalary').val();
+       
         //var Createddate = $('#Createddate').val();
         //var Createdby = $('#Createdby').val();
         // Reset previous errors
@@ -33,30 +39,48 @@ $(document).ready(function () {
             $('#jobError').text('Please enter Title.');
             return;
         }
-        if (!Vacancies) {
-            $('#vacanciesError').text('Please enter Vacancies.');
+        if (!Jobposition) {
+            $('#jobpositionError').text('Please enter Job position.');
             return;
         }
         if (!Qualification) {
             $('#qualificationError').text('Please enter Qualification.');
             return;
         }
-        if (!Experience) {
-            $('#experienceError').text('Please enter Experience.');
-            return;
-        }
-        if (!Age) {
-            $('#ageError').text('Please enter Age.');
-            return;
-        }
-        if (!Validupto) {
-            $('#validuptoError').text('Please enter form due date.');
+        if (!Jobtype) {
+            $('#jobtypeError').text('Please enter Job type');
             return;
         }
         if (!Jobdescription) {
             $('#jobdescError').text('Please enter Job Description.');
             return;
         }
+        if (!Vacancies) {
+            $('#vacanciesError').text('Please enter Vacancies.');
+            return;
+        }
+       
+        if (!Experience) {
+            $('#experienceError').text('Please enter Experience.');
+            return;
+        }
+        if (!Validupto) {
+            $('#validuptoError').text('Please enter form due date.');
+            return;
+        }
+        if (!Createddate) {
+            $('#createddateError').text('Please enter Created date');
+            return;
+        }
+        if (!StartSalary) {
+            $('#StartSalaryError').text('Please enter Start salary');
+            return;
+        }
+        if (!EndSalary) {
+            $('#EndSalaryError').text('Please enter End salary');
+            return;
+        }
+    
        
         //if (!Createddate) {
         //    $('#createddateError').text('Please enter Created date.');
@@ -77,6 +101,7 @@ $(document).ready(function () {
             contentType: false,
             dataType: 'json',
             success: function (data) {
+                debugger;
                 if (data != null && data != undefined) {
 
                     //ShowMessage(data.strMessage, "", data.type);

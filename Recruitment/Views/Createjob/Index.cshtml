@@ -50,24 +50,26 @@
                 </div>
                 <div class="modal-body">
                     <div class="card-body">
-                        <form class="row g-3 needs-validation was-validated" novalidate="">
+                        <form id="form">
                         <div class="row g-4">
                             <div class="col-lg-6">
                                 <div>
                                     <label for="job-title-Input" class="form-label" asp-for="Title">Job Title <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="Title" placeholder="Enter job title" required="">
-                                        <div class="valid-feedback" id="jobError">
+                                        <input type="text" class="form-control" id="Title" name="Title" placeholder="Enter job title" required="">
+                                        <span class="text-danger" id="jobError"></span>
+                                  @*   <div class="valid-feedback">
                                         Looks good!
-                                    </div>
+                                    </div> *@
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div>
                                     <label for="job-position-Input" class="form-label" asp-for="Jobposition">Job Position <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="Jobposition" placeholder="Enter job position" required="">
-                                    <div class="valid-feedback" id="jobposistionerror">
+                                        <input type="text" class="form-control" id="Jobposition" name="Jobposition" placeholder="Enter job position" required="">
+                                   @*  <div class="valid-feedback">
                                         Looks good!
-                                    </div>
+                                    </div> *@
+                                        <span class="text-danger" id="jobpositionError"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -75,43 +77,47 @@
                                 <select id="qualification" name="qualification" class="form-control">
                                         <option value="">Select Qualification</option>
                                 </select>
-                                    <div class="valid-feedback" id="qualificationError">
+                               @*  <div class="valid-feedback">
                                     Looks good!
-                                </div>
+                                </div> *@
+                                <span class="text-danger" id="qualificationError"></span>
                             </div>
                             <div class="col-lg-6">
                                 <div>
                                     <label for="job-type-Input" class="form-label" asp-for="Jobtype">Job Type <span class="text-danger">*</span></label>
-                                    <select class="form-control" data-choices="" id="Jobtype" name="job-type-Input" required="">
+                                        <select class="form-control" data-choices="" id="Jobtype" name="Jobtype"  required="">
                                         <option value="">Select job type</option>
                                         <option value="Full Time">Full Time</option>
                                         <option value="Part Time">Part Time</option>
                                         <option value="Freelance">Freelance</option>
                                         <option value="Intership">Intership</option>
                                     </select>
-                                    <div class="valid-feedback" id="jobtypeerror">
+                                  @*   <div class="valid-feedback">
                                         Looks good!
-                                    </div>
+                                    </div> *@
+                                        <span class="text-danger" id="jobtypeError"></span>
                                 </div>
                             </div>
 
                             <div class="col-lg-12">
                                 <div>
                                     <label for="description-field" class="form-label" asp-for="Jobdescription">Description <span class="text-danger">*</span></label>
-                                    <textarea class="form-control" id="Jobdescription" rows="3" placeholder="Enter description" required=""></textarea>
-                                    <div class="valid-feedback" id="jobdecerror">
+                                        <textarea class="form-control" id="Jobdescription" rows="3" name="Jobdescription" placeholder="Enter description" required=""></textarea>
+                                   @*  <div class="valid-feedback">
                                         Looks good!
-                                    </div>
+                                    </div> *@
+                                        <span class="text-danger" id="jobdescError"></span>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div>
                                     <label for="vancancy-Input" class="form-label" asp-for="Vacancies">No. of Vancancy <span class="text-danger">*</span></label>
-                                    <input type="number" class="form-control" id="Vacancies" placeholder="No. of vancancy" required="">
-                                    <div class="valid-feedback" id="vacancies">
+                                        <input type="number" class="form-control" id="Vacancies" name="Vacancies" placeholder="No. of vancancy" required="">
+                                  @*   <div class="valid-feedback">
                                         Looks good!
-                                    </div>
+                                    </div> *@
+                                        <span class="text-danger" id="vacanciesError"></span>
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -119,48 +125,53 @@
                                 <select id="Experience" name="Experience" class="form-control">
                                         <option value="">Select Experience</option>
                                 </select>
-                                    <div class="valid-feedback" id="experienceError">
+                               @*  <div class="valid-feedback">
                                     Looks good!
-                                </div>
+                                </div> *@
+                                <span class="text-danger" id="experienceError"></span>
                             </div>
 
                             <div class="col-lg-6">
                                 <div>
                                     <label for="last-apply-date-Input" class="form-label" asp-for="Validupto">Last Date of Apply <span class="text-danger">*</span></label>
-                                    <input type="date" class="form-control" id="Validupto" data-provider="flatpickr" data-date-format="d M, Y" placeholder="Select date"  required="">
-                                    <div class="valid-feedback" >
+                                        <input type="date" class="form-control" id="Validupto" name="Validupto" data-provider="flatpickr" data-date-format="d M, Y" placeholder="Select date" required="">
+                                   @*  <div class="valid-feedback">
                                         Looks good!
-                                    </div>
+                                    </div> *@
+                                        <span class="text-danger" id="validuptoError"></span>
                                 </div>
                             </div>
 
                             <div class="col-lg-6">
                                 <div>
                                     <label for="close-date-Input" class="form-label" asp-for="Createddate">Created Date <span class="text-danger">*</span></label>
-                                    <input type="datetime-local" class="form-control" id="close-date-Input" data-provider="flatpickr" data-date-format="d M, Y" placeholder="" required="">
-                                    <div class="valid-feedback">
+                                        <input type="datetime-local" class="form-control" id="Createddate" name="Createddate" data-provider="flatpickr" data-date-format="d M, Y" placeholder="" required="">
+                                 @*    <div class="valid-feedback">
                                         Looks good!
-                                    </div>
+                                    </div> *@
+                                        <span class="text-danger" id="createddateError"></span>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div>
                                     <label for="start-salary-Input" class="form-label" asp-for="StartSalary">Start Salary</label>
-                                    <input type="number" class="form-control" id="start-salary-Input" placeholder="Enter start salary" required="">
-                                    <div class="valid-feedback">
+                                        <input type="number" class="form-control" id="StartSalary" name="StartSalary" placeholder="Enter start salary" required="">
+                                  @*   <div class="valid-feedback">
                                         Looks good!
-                                    </div>
+                                    </div> *@
+                                        <span class="text-danger" id="StartSalaryError"></span>
                                 </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div>
                                     <label for="last-salary-Input" class="form-label" asp-for="EndSalary">Last Salary</label>
-                                    <input type="number" class="form-control" id="last-salary-Input" placeholder="Enter end salary" required="">
-                                    <div class="valid-feedback">
+                                        <input type="number" class="form-control" id="EndSalary" name="EndSalary" placeholder="Enter end salary" required="">
+                                 @*    <div class="valid-feedback">
                                         Looks good!
-                                    </div>
+                                    </div> *@
+                                        <span class="text-danger" id="EndSalaryError"></span>
                                 </div>
                             </div>
 

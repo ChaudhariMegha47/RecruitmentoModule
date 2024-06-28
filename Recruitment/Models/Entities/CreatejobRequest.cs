@@ -1,4 +1,5 @@
-﻿namespace Recruitment.Models.Entities
+﻿
+namespace Recruitment.Models.Entities
 {
     public class CreatejobRequest
     {
@@ -17,4 +18,5 @@
         public string Createdby { get; set; }
         public bool IsActive { get; set; } = true;
     }
+
 }
