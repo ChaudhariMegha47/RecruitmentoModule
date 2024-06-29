@@ -130,7 +130,6 @@ function DeleteData(expid) {
 }
 
 function BindGrid() {
-    debugger;
     if ($.fn.DataTable.isDataTable("#tbldata")) {
         $('#tbldata').DataTable().clear().destroy();
     }
@@ -140,7 +139,6 @@ function BindGrid() {
 
     var form = $('#frmAddEdit');
     var token = $('input[name="AntiforgeryFieldname"]', form).val();
-    debugger;
     $("#tbldata").DataTable({
         "processing": true, // for show progress bar
         "serverSide": false, // for process server side
