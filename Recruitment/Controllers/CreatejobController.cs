@@ -49,7 +49,7 @@ namespace Recruitment.Controllers
             {
                 CreatejobModel model = new CreatejobModel();
                 model.job_id = createjobRequest.JobId;
-                model.title = createjobRequest.Title;
+                model.jobtitle = createjobRequest.Title;
                 model.jobposition = createjobRequest.Jobposition;
                 model.qualification = createjobRequest.qualification;
                 model.jobtype = createjobRequest.Jobtype;
@@ -130,7 +130,7 @@ namespace Recruitment.Controllers
                     // Populate QualificationRequest object
                     CreatejobRequest job = new CreatejobRequest();
                     job.JobId = createjob.job_id;
-                    job.Title = createjob.title;
+                    job.Title = createjob.jobtitle;
                     job.Jobposition = createjob.jobposition;
                     job.qualification = createjob.qualification;
                     job.Jobtype = createjob.jobtype;
@@ -178,7 +178,7 @@ namespace Recruitment.Controllers
                 var createjobService = new CreatejobService(); // Instantiate your service or repository class
                 objreturn = createjobService.Delete(jobid);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Handle error
                 return objreturn;

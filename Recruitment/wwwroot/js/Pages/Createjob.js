@@ -12,7 +12,6 @@ $(document).ready(function () {
         $('#addjobModal').modal('show');
     });
     $('#btnMdlSave').click(function () {
-        debugger;
         // Validation
         var Title = $('#Title').val();
         var Jobposition = $('#Jobposition').val();
@@ -101,7 +100,6 @@ $(document).ready(function () {
             contentType: false,
             dataType: 'json',
             success: function (data) {
-                debugger;
                 if (data != null && data != undefined) {
 
                     //ShowMessage(data.strMessage, "", data.type);
@@ -141,14 +139,14 @@ function DetailModel(jobid) {
                         if (key.includes("is")) {
                             $('#' + capitalizeFirstLetter(key)).prop('checked', dataList[key]);
                         }
-                        else if (key == "Jobdescription") {
-                            // Set value to textarea
-                            $('#jobdescription').val(dataList[key]);
+                        //else if (key == "Jobdescription") {
+                        //    // Set value to textarea
+                        //    $('#jobdescription').val(dataList[key]);
 
-                            // Initialize CKEditor
-                            CKEDITOR.replace('Jobdescription');
-                        }
-                        // Handle other input types if needed
+                        //    // Initialize CKEditor
+                        //    CKEDITOR.replace('Jobdescription');
+                        //}
+                        //// Handle other input types if needed
                         else {
                             $('#' + capitalizeFirstLetter(key)).val(dataList[key]);
                         }
@@ -315,12 +313,12 @@ function BindGrid() {
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-4">
-                                                    <h4 class="card-title">${job.title} &nbsp;<span class="ti ti-info-circle fs-6" onclick="DetailModel('${job.job_id}');" style="display: inline;"></span></h4>
-                                                    <div>${job.createddate}</div><br>
+                                                    <h4 class="card-title">${job.jobtitle} &nbsp;<span class="ti ti-info-circle fs-6" onclick="DetailModel('${job.job_id}');" style="display: inline;"></span></h4>
+                                                    <div>${job.strCreateDate}</div><br>
                                                 </div>
                                                 <div class="col-md-8">
                                                     <div class="d-flex justify-content-end">
-                                                        <a href="/ListofCandidate/Index?jobId=${job.job_id}" class="btn mb-0 btn-outline-success btnedit d-inline-flex mb-n3 me-3" title="Apply" id="addCandidateBtn">
+                                                        <a href="/ApplicationForm/Index?jobId=${job.job_id}" class="btn mb-0 btn-outline-success btnedit d-inline-flex mb-n3 me-3" title="Apply" id="addCandidateBtn">
                                                             Apply Now
                                                         </a>
                                                         <a href="javascript:void(0)" class="bg-primary rounded-circle p-2 text-white d-inline-flex mb-n3 me-3" style="float: right;" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" onclick="EditModel('${job.job_id}');">
@@ -336,7 +334,7 @@ function BindGrid() {
                                                 <div class="col-md-3"><label class="form-label">Vacancies:</label><br>${job.vacancies}</div>
                                                 <div class="col-md-3"><label class="form-label">Experience:</label><br>${job.strexperience}</div>
                                                 <div class="col-md-3"><label class="form-label">Qualification:</label><br>${job.strqualification}</div>
-                                                <div class="col-md-3"><label class="form-label">Valid Upto:</label><br>${new Date(job.validupto).toLocaleDateString()}</div>
+                                                <div class="col-md-3"><label class="form-label">Valid Upto:</label><br>${new Date(job.strvalidupto).toLocaleDateString()}</div>
                                             </div>
                                         </div>
                                     </div>

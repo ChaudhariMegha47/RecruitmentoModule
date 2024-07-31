@@ -9,7 +9,7 @@ namespace Recruitment.Model.Service
     public class CreatejobModel
     {
         public long job_id { get; set; }
-        public String title { get; set; }
+        public String jobtitle { get; set; }
         public string jobposition { get; set; }
         public long qualification { get; set; }
         public string strqualification { get; set; }
@@ -18,8 +18,8 @@ namespace Recruitment.Model.Service
         public int vacancies { get; set; }
         public long experience { get; set; }
         public string strexperience { get; set; }
-        //public string strvalidupto { get; set; }
         public DateTime validupto { get; set; }
+        public string strvalidupto { get; set; }
         public DateTime createddate { get; set; }
         public string strCreateDate { get; set; }
         public long startsalary { get; set; }

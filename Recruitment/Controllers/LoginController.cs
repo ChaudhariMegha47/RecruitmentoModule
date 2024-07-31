@@ -132,7 +132,7 @@ namespace Recruitment.Controllers
                     var loginService = new LoginService(); // Instantiate your service or repository class
                     objreturn = loginService.Delete(loginid);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // Handle error
                     return objreturn;

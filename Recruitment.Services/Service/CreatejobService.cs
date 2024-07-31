@@ -31,7 +31,7 @@ namespace Recruitment.Services.Service
             {
                 Dictionary<string, object> dictionary = new Dictionary<string, object>();
                 dictionary.Add("p_id", model.job_id);
-                dictionary.Add("p_Title", model.title);
+                dictionary.Add("p_Title", model.jobtitle);
                 dictionary.Add("p_Jobposition", model.jobposition);
                 dictionary.Add("p_Qualification", model.qualification);
                 dictionary.Add("p_Jobtype", model.jobtype);

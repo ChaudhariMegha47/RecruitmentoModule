@@ -1,6 +1,12 @@
 ﻿@using Recruitment.Models.Entities
 @model ExperienceRequest
 
+
+@{
+    ViewData["Title"] = "Experience";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
 <h2>Experience List</h2>
 
 <section class="basic-elements">
@@ -15,7 +21,7 @@
                                 @*  <i class="fa fa-plus mr-1"></i>Add New @ViewData["Title"] *@
                                 <a id="addExperienceBtn" data-bs-toggle="modal" class="btn btn-outline-primary btn-round mr-2" style="float:right">Add Experience</a>
                             </div>
-                        </div></br>
+                        </div> </br>
                         <div class="row">
                             <div class="col-md-12">
                                 <table class="table display nowrap table-striped table-bordered scroll-horizontal w-100 text-center nowrap dataTable no-footer" id="tbldata">

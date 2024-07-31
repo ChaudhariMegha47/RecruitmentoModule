@@ -125,7 +125,7 @@ namespace Recruitment.Controllers
                 var experienceService = new ExperienceService(); // Instantiate your service or repository class
                 objreturn = experienceService.Delete(expid);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Handle error
                 return objreturn;

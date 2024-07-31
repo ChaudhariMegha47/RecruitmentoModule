@@ -118,7 +118,7 @@ namespace Recruitment.Controllers
                 var roleservice = new RoleService(); // Instantiate your service or repository class
                 objreturn = roleservice.Delete(roleid);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Handle error
                 return objreturn;

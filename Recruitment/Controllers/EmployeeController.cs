@@ -143,7 +143,7 @@ namespace Recruitment.Controllers
                 var employeeService = new EmployeeService(); // Instantiate your service or repository class
                 objreturn = employeeService.Delete(empid);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Handle error
                 return objreturn;

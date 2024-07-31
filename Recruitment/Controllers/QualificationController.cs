@@ -133,7 +133,7 @@ namespace Recruitment.Controllers
                 var qualificationservice = new QualificationService(); // Instantiate your service or repository class
                 objreturn = qualificationservice.Delete(eduid);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 // Handle error
                 return objreturn;
